@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.LaptopShop.service.UserService;
 
-// @Controller
-@RestController
+@Controller
 public class UserController {
     private UserService userService;
 
@@ -18,8 +17,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("")
+    @RequestMapping("/")
     public String getHomePage() {
-        return this.userService.handleHello();
+        String test = this.userService.handleHello();
+        return "hello";
     }
+
 }
+
+// @RestController
+// public class UserController {
+// //DI: dependency injection
+// private UserService userService;
+
+// public UserController(UserService userService) {
+// this.userService = userService;
+// }
+
+// @GetMapping("")
+// public String getHomePage() {
+// return this.userService.handleHello();
+// }
+// }
