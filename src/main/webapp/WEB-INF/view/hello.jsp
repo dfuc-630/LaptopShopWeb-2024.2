@@ -19,6 +19,7 @@
             hello from jsp !
             <h1>
                 ${doanphuc}
+                ${doanphuc2}
             </h1>
             <h2>
                 ${dfuc}
