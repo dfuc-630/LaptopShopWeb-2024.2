@@ -1,4 +1,4 @@
-package com.example.LaptopShop.controller;
+package com.example.LaptopShop.controller.admin;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class UserController {
 
         model.addAttribute("usersView", users);
 
-        return "admin/user/table-user";
+        return "admin/user/show";
     }
 
     @RequestMapping("/admin/user/{id}")
@@ -52,7 +52,7 @@ public class UserController {
         model.addAttribute("id", id);
         User user = this.userService.getUserById(id);
         model.addAttribute("user", user);
-        return "admin/user/user-detail";
+        return "admin/user/detail";
     }
 
     @RequestMapping("/admin/user/create")
