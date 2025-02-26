@@ -43,7 +43,11 @@
                                     <label for="exampleInputEmail1" class="form-label">Phone</label>
                                     <form:input type="text" class="form-control" path="phone" />
                                 </div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="row mx-auto">
+                                    <a href="/admin/user" class="btn btn-success col-2">Back</a>
+                                    <button type="submit" class="btn btn-primary col-2 mx-2">Confirm</button>
+
+                                </div>
                             </form:form>
                         </div>
                     </div>

@@ -38,7 +38,12 @@
                                     <label for="exampleInputPassword1" class="form-label">ID</label>
                                     <form:input value="${id}" type="text" class="form-control" path="id" />
                                 </div>
-                                <button type="submit" class="btn btn-danger">Confirm</button>
+                                <div class="row mx-auto">
+                                    <a href="/admin/user" class="btn btn-success col-2">Back</a>
+                                    <button type="submit" class="btn btn-danger col-2 mx-2">Confirm</button>
+
+                                </div>
+
                             </form:form>
                         </div>
                     </div>
