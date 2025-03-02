@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,27 +15,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.LaptopShop.domain.User;
-import com.example.LaptopShop.repository.UserRepository;
 import com.example.LaptopShop.service.UploadService;
 import com.example.LaptopShop.service.UserService;
 
-import jakarta.servlet.ServletContext;
-
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class UserController {
     private final UserService userService;
     private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UploadService uploadService) {
+    public UserController(UserService userService, UploadService uploadService,
+            PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @RequestMapping("/")
@@ -77,9 +77,13 @@ public class UserController {
             @ModelAttribute("newUser") User doanphuc,
             @RequestParam("doanphucFile") MultipartFile file) {
 
-        // System.out.println("run here" + doanphuc);
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
-        // this.userService.handleSaveUser(doanphuc);
+        String hashPassword = this.passwordEncoder.encode(doanphuc.getPassword());
+
+        doanphuc.setAvatar(avatar);
+        doanphuc.setPassword(hashPassword);
+        doanphuc.setRole(this.userService.getRoleByName(doanphuc.getRole().getName()));
+        this.userService.handleSaveUser(doanphuc);
         return "redirect:/admin/user";
     }
 
