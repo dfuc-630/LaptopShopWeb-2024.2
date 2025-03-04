@@ -17,7 +17,7 @@ public class Product {
     private long id;
 
     private String name;
-    private String price;
+    private double price;
     private String image;
     private String detailDesc;
     private String shortDesc;
@@ -25,7 +25,6 @@ public class Product {
     private long sold;
     private String factory;
     private String target;
-
     // khong can thiet/ quan he 1 chieu
     // @OneToMany(mappedBy = "product")
     // List<OrderDetail> orderDetails;
@@ -46,11 +45,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
