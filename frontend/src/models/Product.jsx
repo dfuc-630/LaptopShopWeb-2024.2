@@ -3,7 +3,7 @@ class Product {
         this.id = data.id;
         this.detailDesc = data.detail_desc;
         this.factory = data.factory;
-        this.imgage = data.imgage;
+        this.image = data.image;
         this.name = data.name;
         this.price = data.price;
         this.quantity = data.quantity;
