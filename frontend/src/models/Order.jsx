@@ -9,3 +9,5 @@ class Order {
         // this.createdAt = data.created_at;
     }
 }
+export default Order;
+// src/models/Order.jsx

@@ -14,3 +14,5 @@ class Product {
 }
 
 export default Product;
+// Product class to represent a product
+// src/models/Product.jsx

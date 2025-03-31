@@ -1,56 +1,105 @@
 // src/context/CartContext.jsx
-import { createContext, useContext, useState } from 'react';
-import Product from '../models/Product';
+import React, { createContext, useContext, useState, useCallback } from 'react';
+// Không cần import Product model ở đây nữa nếu cart item lưu đủ thông tin
+// Hoặc import để type-check nếu cần
 
 const CartContext = createContext();
 
+export function useCart() {
+  return useContext(CartContext);
+}
+
 export function CartProvider({ children }) {
-  const [products, setProducts] = useState([
-    new Product({
-      id: 1,
-      detail_desc: 'Laptop Dell XPS 13 với thiết kế mỏng nhẹ, hiệu năng cao, phù hợp cho công việc và giải trí.',
-      factory: 'Dell',
-      image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      name: 'Dell XPS 13',
-      price: '25,000,000 đ',
-      quantity: 1,
-      short_desc: 'Laptop mỏng nhẹ, hiệu năng cao',
-      sold: 150,
-      target: 'Sinh viên, Nhân viên văn phòng',
-    }),
-    new Product({
-      id: 2,
-      detail_desc: 'MacBook Pro 14 với chip M1 Pro, màn hình Retina, lý tưởng cho các nhà phát triển và sáng tạo nội dung.',
-      factory: 'Apple',
-      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      name: 'MacBook Pro 14',
-      price: '45,000,000 đ',
-      quantity: 1,
-      short_desc: 'Hiệu năng mạnh mẽ, màn hình Retina',
-      sold: 200,
-      target: 'Nhà phát triển, Người sáng tạo nội dung',
-    }),
-    new Product({
-      id: 3,
-      detail_desc: 'Asus ROG Zephyrus với card đồ họa RTX 3050, màn hình 144Hz, dành cho game thủ chuyên nghiệp.',
-      factory: 'Asus',
-      image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a0a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
-      name: 'Asus ROG Zephyrus',
-      price: '35,000,000 đ',
-      quantity: 1,
-      short_desc: 'Laptop gaming mạnh mẽ',
-      sold: 100,
-      target: 'Game thủ',
-    }),
-  ]);
+  // State cartItems: Mảng chứa các sản phẩm trong giỏ hàng
+  // Mỗi item trong mảng sẽ có dạng: { product: ProductObject, quantity: number }
+  // Hoặc để đơn giản hơn khi truyền giữa các component và tránh object lồng sâu:
+  // { id: number, name: string, price: number, image: string, quantity: number }
+  // -> Chọn cách lưu thông tin cơ bản để tránh object phức tạp
+  const [cartItems, setCartItems] = useState([]);
+
+  // Hàm thêm sản phẩm vào giỏ hàng
+  const addToCart = useCallback((productToAdd, quantityToAdd = 1) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item => item.id === productToAdd.id);
+
+      if (existingItem) {
+        // Nếu sản phẩm đã có, cập nhật số lượng
+        return prevItems.map(item =>
+          item.id === productToAdd.id
+            ? { ...item, quantity: item.quantity + quantityToAdd }
+            : item
+        );
+      } else {
+        // Nếu sản phẩm chưa có, thêm mới vào giỏ hàng
+        // Chỉ lấy những thông tin cần thiết của product vào cart item
+        const cartItem = {
+          id: productToAdd.id,
+          name: productToAdd.name,
+          price: productToAdd.price, // Quan trọng: price phải là số ở đây
+          image: productToAdd.images ? productToAdd.images[0] : (productToAdd.image || ''), // Lấy ảnh đầu tiên hoặc ảnh mặc định
+          quantity: quantityToAdd,
+        };
+        return [...prevItems, cartItem];
+      }
+    });
+     // console.log("Added to cart:", productToAdd.name, quantityToAdd); // Để debug
+  }, []);
+
+  // Hàm xóa sản phẩm khỏi giỏ hàng
+  const removeFromCart = useCallback((productId) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+     // console.log("Removed from cart:", productId); // Để debug
+  }, []);
+
+  // Hàm cập nhật số lượng sản phẩm
+  const updateQuantity = useCallback((productId, newQuantity) => {
+    // Đảm bảo số lượng không nhỏ hơn 1
+    const quantity = Math.max(1, newQuantity);
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.id === productId ? { ...item, quantity: quantity } : item
+      )
+    );
+    // console.log("Updated quantity:", productId, quantity); // Để debug
+  }, []);
+
+  // Hàm xóa toàn bộ giỏ hàng
+  const clearCart = useCallback(() => {
+    setCartItems([]);
+    // console.log("Cart cleared"); // Để debug
+  }, []);
+
+  // Hàm tính tổng số lượng các sản phẩm trong giỏ
+  const getCartItemCount = useCallback(() => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  }, [cartItems]);
+
+  // Hàm tính tổng tiền của giỏ hàng
+  const getCartTotal = useCallback(() => {
+    return cartItems.reduce((total, item) => {
+        // Đảm bảo price là số và quantity là số
+        const itemPrice = typeof item.price === 'number' ? item.price : 0;
+        const itemQuantity = typeof item.quantity === 'number' ? item.quantity : 0;
+        return total + (itemPrice * itemQuantity);
+    }, 0);
+  }, [cartItems]);
+
+
+  // Giá trị cung cấp bởi Context Provider
+  const contextValue = {
+    cartItems, // Danh sách các sản phẩm trong giỏ
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    getCartItemCount, // Hàm lấy tổng số lượng
+    getCartTotal,     // Hàm lấy tổng tiền
+    // Không cần setProducts nữa, các hàm trên đã đủ để quản lý cartItems
+  };
 
   return (
-    <CartContext.Provider value={{ products, setProducts }}>
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );
-}
-
-export function useCart() {
-  return useContext(CartContext);
 }

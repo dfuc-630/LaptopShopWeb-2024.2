@@ -1,75 +1,99 @@
 // src/components/Header.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { Link, NavLink } from 'react-router-dom'; // Sử dụng NavLink để active link
+import { useCart } from '../context/CartContext'; // Import useCart
 
 function Header() {
-  const { products } = useCart();
-  const totalItems = products.reduce((sum, product) => sum + (product.quantity || 1), 0);
+  // Lấy hàm getCartItemCount từ context
+  const { getCartItemCount } = useCart();
+  const totalItems = getCartItemCount(); // Gọi hàm để lấy số lượng
 
   return (
-    <header className="bg-danger text-white">
+    <header className="bg-danger text-white shadow-sm sticky-top"> {/* Thêm sticky-top */}
       <div className="container">
-        <div className="row align-items-center py-2">
+        <nav className="navbar navbar-expand-lg navbar-dark"> {/* Sử dụng Navbar của Bootstrap */}
           {/* Logo */}
-          <div className="col-md-2">
-            <Link to="/" className="text-white text-decoration-none">
-              <h3 className="mb-0">AE Rọt Shop</h3>
-            </Link>
-          </div>
+          <Link to="/" className="navbar-brand fw-bold fs-4">
+            AE Rọt Shop
+          </Link>
 
-          {/* Thanh tìm kiếm */}
-          <div className="col-md-6">
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Tìm kiếm sản phẩm..."
-                aria-label="Tìm kiếm sản phẩm"
-              />
-              <button className="btn btn-light" type="button">
-                <i className="bi bi-search"></i>
-              </button>
-            </div>
-          </div>
+           {/* Nút bật tắt menu cho mobile */}
+           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+               <span className="navbar-toggler-icon"></span>
+           </button>
 
-          {/* Các icon chức năng */}
-          <div className="col-md-4 d-flex justify-content-end align-items-center">
-            <div className="dropdown me-3">
-              <button
-                className="btn btn-danger text-white dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Danh mục
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><Link className="dropdown-item" to="/category/laptop">Laptop</Link></li>
-                <li><Link className="dropdown-item" to="/category/apple">Apple</Link></li>
-                <li><Link className="dropdown-item" to="/category/samsung">Samsung</Link></li>
-              </ul>
+
+          {/* Menu */}
+          <div className="collapse navbar-collapse" id="navbarNav">
+            {/* Thanh tìm kiếm - căn giữa */}
+            <div className="mx-auto my-2 my-lg-0" style={{ width: '50%' }}>
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Tìm kiếm laptop..."
+                  aria-label="Tìm kiếm sản phẩm"
+                />
+                <button className="btn btn-light" type="button">
+                  <i className="bi bi-search"></i>
+                </button>
+              </div>
             </div>
 
-            <Link to="/" className="text-white me-3">
-              <i className="bi bi-house-door"></i> Trang chủ
-            </Link>
+             {/* Các icon chức năng - căn phải */}
+            <ul className="navbar-nav ms-auto align-items-center">
+               {/* Trang chủ */}
+               <li className="nav-item me-3">
+                 <NavLink
+                    to="/"
+                    className={({ isActive }) => isActive ? "nav-link active text-warning" : "nav-link text-white"}
+                 >
+                   <i className="bi bi-house-door me-1"></i> Trang chủ
+                 </NavLink>
+               </li>
 
-            <Link to="/cart" className="text-white me-3 position-relative">
-              <i className="bi bi-cart"></i> Giỏ hàng
-              {totalItems > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
+               {/* Dropdown Danh mục */}
+               {/* <li className="nav-item dropdown me-3">
+                    <a className="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                       <i className="bi bi-grid-3x3-gap me-1"></i> Danh mục
+                    </a>
+                    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                       <li><Link className="dropdown-item" to="/category/laptop-gaming">Laptop Gaming</Link></li>
+                       <li><Link className="dropdown-item" to="/category/laptop-van-phong">Laptop Văn phòng</Link></li>
+                       <li><Link className="dropdown-item" to="/category/macbook">Macbook</Link></li>
+                       <li><hr className="dropdown-divider" /></li>
+                       <li><Link className="dropdown-item" to="/category/phu-kien">Phụ kiện</Link></li>
+                    </ul>
+               </li> */}
 
-            <Link to="/account" className="text-white">
-              <i className="bi bi-person"></i> Tài khoản
-            </Link>
+
+               {/* Giỏ hàng */}
+               <li className="nav-item me-3">
+                 <NavLink
+                    to="/cart" // Link tới /cart
+                    className={({ isActive }) => isActive ? "nav-link active text-warning position-relative" : "nav-link text-white position-relative"}
+                 >
+                    <i className="bi bi-cart me-1"></i> Giỏ hàng
+                    {totalItems > 0 && (
+                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" style={{ fontSize: '0.65rem' }}>
+                          {totalItems}
+                       </span>
+                    )}
+                 </NavLink>
+               </li>
+
+               {/* Tài khoản */}
+               <li className="nav-item">
+                 <NavLink
+                    to="/account" // Link tới trang tài khoản (cần tạo)
+                    className={({ isActive }) => isActive ? "nav-link active text-warning" : "nav-link text-white"}
+                 >
+                   <i className="bi bi-person me-1"></i> Tài khoản
+                 </NavLink>
+               </li>
+            </ul>
           </div>
-        </div>
+        </nav>
       </div>
     </header>
   );
