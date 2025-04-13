@@ -96,5 +96,7 @@ const users = [
       })
   }
   
-  // Bạn có thể thêm hàm logout nếu backend yêu cầu (ví dụ: hủy token phía server)
-  // export const logoutUser = async (token) => { ... }
+    /**
+     * Giả lập API đăng xuất.
+     * @returns {Promise<void>} - Promise giải quyết khi đăng xuất thành công.
+     */

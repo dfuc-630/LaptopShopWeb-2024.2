@@ -40,7 +40,17 @@ function Header() {
           <div className="collapse navbar-collapse" id="navbarNav">
             {/* Search bar */}
             <div className="mx-auto my-2 my-lg-0" style={{ width: '50%' }}>
-              {/* ... (search bar code) ... */}
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Tìm kiếm laptop..."
+                  aria-label="Tìm kiếm sản phẩm"
+                />
+                <button className="btn btn-light" type="button">
+                  <i className="bi bi-search"></i>
+                </button>
+              </div>
             </div>
 
             {/* Nav items */}

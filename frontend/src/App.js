@@ -8,8 +8,9 @@ import { AuthProvider } from './context/AuthContext.jsx'; // Import AuthProvider
 import HomePage from './pages/HomePage.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import CartPage from './pages/CartPage.jsx';
+import AccountPage from './pages/AccountPage.jsx'; // Import trang tài khoản
+import CheckoutPage from './pages/CheckoutPage.jsx'; // Import trang thanh toán
 // Thêm trang AccountPage, OrdersPage nếu cần
-// import AccountPage from './pages/AccountPage';
 // import OrdersPage from './pages/OrdersPage';
 
 // Components
@@ -53,7 +54,7 @@ function App() {
                  element={
                    <ProtectedRoute>
                      {/* Thay bằng component AccountPage thật */}
-                     <div className='text-center'><h2>Trang Tài Khoản (Được bảo vệ)</h2></div>
+                     <AccountPage /> 
                    </ProtectedRoute>
                  }
                />
@@ -66,6 +67,14 @@ function App() {
                    </ProtectedRoute>
                  }
                />
+               <Route
+                 path="/checkout"
+                 element={
+                   <ProtectedRoute>
+                     <CheckoutPage />
+                   </ProtectedRoute>
+                 }
+              />
 
 
               {/* Route trang chưa có link trong footer ví dụ */}

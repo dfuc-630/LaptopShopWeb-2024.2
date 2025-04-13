@@ -1,22 +1,40 @@
 // src/components/ShoppingCart.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartContext'; // Import hook context
-import { formatCurrency } from '../utils/formatters'; // Import hàm định dạng
+import React, { useState } from 'react'; // Thêm useState
+import { Link, useNavigate } from 'react-router-dom'; // Thêm useNavigate
+import { useCart } from '../context/CartContext';
+import { formatCurrency } from '../utils/formatters';
+import { Container } from 'react-bootstrap'; // Sử dụng Container từ React Bootstrap
+// Import thêm các component từ React Bootstrap
+import { Card, ListGroup, Button, Row, Col, InputGroup, Form, Alert, Spinner } from 'react-bootstrap';
 
 function ShoppingCart() {
-  // Lấy state và các hàm cần thiết từ context
   const {
     cartItems,
     removeFromCart,
     updateQuantity,
     getCartTotal,
     clearCart,
-    getCartItemCount
+    getCartItemCount,
   } = useCart();
+  const navigate = useNavigate(); // Hook để điều hướng
 
-  // Tính tổng tiền
-  const totalCartPrice = getCartTotal();
+  const handleCheckout = () => {
+      console.log("Proceeding to checkout...");
+      // Điều hướng đến trang checkout thay vì alert
+      navigate('/checkout');
+  }
+
+  // State cho mã giảm giá và các chi phí/giảm giá khác (tạm thời)
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountAmount, setDiscountAmount] = useState(0); // Số tiền được giảm
+  const [shippingCost, setShippingCost] = useState(0); // Phí vận chuyển (tạm = 0)
+  const [applyingDiscount, setApplyingDiscount] = useState(false); // Trạng thái đang áp dụng mã
+  const [discountError, setDiscountError] = useState(''); // Lỗi mã giảm giá
+
+  // Tính toán các giá trị
+  const subtotal = getCartTotal(); // Tạm tính
+  const finalTotal = subtotal + shippingCost - discountAmount; // Tổng tiền cuối cùng
+
   // --- Các hàm xử lý sự kiện ---
   const handleRemoveItem = (id) => {
     removeFromCart(id);
@@ -27,12 +45,8 @@ function ShoppingCart() {
   };
 
   const handleDecreaseQuantity = (item) => {
-    // Chỉ giảm nếu số lượng > 1, nếu không thì không làm gì hoặc xóa (tùy logic)
     if (item.quantity > 1) {
       updateQuantity(item.id, item.quantity - 1);
-    } else {
-        // Optional: Hoặc có thể xóa luôn nếu giảm về 0
-        // removeFromCart(item.id);
     }
   };
 
@@ -43,8 +57,38 @@ function ShoppingCart() {
         }
    };
 
+   // Hàm giả lập áp dụng mã giảm giá
+   const handleApplyDiscountCode = () => {
+     setDiscountError('');
+     setApplyingDiscount(true);
+     console.log("Attempting to apply discount code:", discountCode);
+     // --- Logic giả lập ---
+     setTimeout(() => {
+         if (discountCode.toUpperCase() === 'GIAM10') {
+             const calculatedDiscount = subtotal * 0.1; // Giảm 10%
+             setDiscountAmount(calculatedDiscount);
+             console.log("Applied 10% discount:", calculatedDiscount);
+             alert("Áp dụng mã giảm giá 10% thành công!");
+         } else if (discountCode.toUpperCase() === 'FREESHIP') {
+             // Tạm thời chưa xử lý logic phí ship phức tạp
+             setShippingCost(0); // Demo freeship
+             console.log("Applied Freeship (set cost to 0)");
+              alert("Áp dụng mã Freeship thành công!");
+         } else if (discountCode) {
+             setDiscountError(`Mã giảm giá "${discountCode}" không hợp lệ.`);
+             console.log("Invalid discount code");
+             setDiscountAmount(0); // Reset giảm giá nếu mã sai
+         } else {
+             // Không làm gì nếu không nhập mã
+             setDiscountError('Vui lòng nhập mã giảm giá.');
+         }
+         setApplyingDiscount(false);
+     }, 1000); // Giả lập 1 giây xử lý
+   };
+
+   // --- Render UI ---
   return (
-    <div className="container my-4">
+    <Container className="my-4"> {/* Sử dụng Container thay div */}
       <h2 className="mb-4">Giỏ hàng của bạn</h2>
       {cartItems.length === 0 ? (
         <div className="text-center p-5 border rounded bg-light">
@@ -52,153 +96,192 @@ function ShoppingCart() {
            <p className="text-muted mt-3">Giỏ hàng của bạn đang trống.</p>
            <Link to="/" className="btn btn-primary">Tiếp tục mua sắm</Link>
         </div>
-
       ) : (
-        <div className="row">
+        <Row> {/* Sử dụng Row của React Bootstrap */}
           {/* Cột trái: Danh sách sản phẩm */}
-          <div className="col-lg-8 mb-4">
-            <div className="card shadow-sm">
-              <div className="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">Sản phẩm ({cartItems.length})</h5>
-                 {/* Nút xóa tất cả (tùy chọn) */}
-                 <button
-                     className="btn btn-outline-danger btn-sm"
+          <Col lg={8} className="mb-4">
+            <Card className="shadow-sm">
+              <Card.Header className="bg-white d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">Sản phẩm ({getCartItemCount()})</h5>
+                 <Button
+                     variant="outline-danger"
+                     size="sm"
                      onClick={clearCart}
-                     disabled={cartItems.length === 0} // Disable nếu giỏ trống
+                     disabled={cartItems.length === 0}
                  >
                      <i className="bi bi-trash me-1"></i> Xóa tất cả
-                 </button>
-              </div>
-              <div className="list-group list-group-flush">
+                 </Button>
+              </Card.Header>
+              <ListGroup variant="flush">
                 {cartItems.map(item => (
-                  <div key={item.id} className="list-group-item px-3 py-3">
-                    <div className="row align-items-center">
-                      {/* Hình ảnh */}
-                      <div className="col-auto">
+                  <ListGroup.Item key={item.id} className="px-3 py-3">
+                    <Row className="align-items-center">
+                      {/* Ảnh */}
+                      <Col xs={3} sm={2}>
                         <Link to={`/product/${item.id}`}>
                           <img
                             src={item.image || 'https://via.placeholder.com/80'}
                             alt={item.name}
                             className="img-fluid rounded"
-                            style={{ width: '80px', height: '80px', objectFit: 'cover' }}
+                            style={{ /*width: '80px',*/ height: '80px', objectFit: 'contain' }}
                           />
                         </Link>
-                      </div>
-                      {/* Tên sản phẩm */}
-                      <div className="col">
-                        <Link to={`/product/${item.id}`} className="text-decoration-none text-dark fw-medium">
+                      </Col>
+                      {/* Tên & Giá đơn vị */}
+                      <Col xs={9} sm={4} md={5}>
+                        <Link to={`/product/${item.id}`} className="text-decoration-none text-dark fw-medium d-block mb-1" style={{ fontSize: '0.9rem' }}>
                           {item.name}
                         </Link>
-                        {/* Giá đơn vị */}
-                        <p className="text-muted mb-1" style={{ fontSize: '0.9rem' }}>
-                            Đơn giá: {formatCurrency(item.price)}
+                        <p className="text-muted mb-0" style={{ fontSize: '0.85rem' }}>
+                            {formatCurrency(item.price)}
                         </p>
-                         {/* Nút xóa mobile (hiện ở màn hình nhỏ) */}
-                         <button
-                            className="btn btn-link text-danger p-0 d-md-none"
-                            onClick={() => handleRemoveItem(item.id)}
-                            style={{ fontSize: '0.9rem' }}
-                         >
-                           <i className="bi bi-trash"></i> Xóa
-                         </button>
-                      </div>
+                      </Col>
                       {/* Số lượng */}
-                      <div className="col-md-3 d-flex align-items-center justify-content-md-end mt-2 mt-md-0">
-                        <button
-                          className="btn btn-outline-secondary btn-sm px-2"
+                      <Col xs={7} sm={4} md={3} className="d-flex align-items-center justify-content-start justify-content-sm-center mt-2 mt-sm-0">
+                        <Button
+                          variant="outline-secondary"
+                          size="sm"
+                          className="px-2"
                           onClick={() => handleDecreaseQuantity(item)}
-                          disabled={item.quantity <= 1} // Disable nút giảm nếu SL=1
+                          disabled={item.quantity <= 1}
+                          aria-label={`Giảm số lượng ${item.name}`}
                         >
                           <i className="bi bi-dash"></i>
-                        </button>
-                        {/* <span className="mx-2">{item.quantity}</span> */}
-                         <input
+                        </Button>
+                         <Form.Control
                             type="number"
-                            className="form-control form-control-sm text-center mx-1"
+                            size="sm"
+                            className="text-center mx-1"
                             value={item.quantity}
                             min="1"
                             onChange={(e) => handleQuantityChange(item, e)}
                             style={{ width: '50px' }}
                             aria-label={`Số lượng ${item.name}`}
                          />
-                        <button
-                          className="btn btn-outline-secondary btn-sm px-2"
+                        <Button
+                          variant="outline-secondary"
+                          size="sm"
+                          className="px-2"
                           onClick={() => handleIncreaseQuantity(item)}
+                           aria-label={`Tăng số lượng ${item.name}`}
                         >
                           <i className="bi bi-plus"></i>
-                        </button>
-                      </div>
-                       {/* Thành tiền */}
-                       <div className="col-md-2 text-md-end fw-medium mt-2 mt-md-0">
-                            {formatCurrency(item.price * item.quantity)}
-                       </div>
-
-                      {/* Nút xóa desktop */}
-                      <div className="col-auto d-none d-md-block">
-                        <button
-                          className="btn btn-link text-danger p-0"
-                          title="Xóa sản phẩm"
-                          onClick={() => handleRemoveItem(item.id)}
-                        >
-                          <i className="bi bi-trash fs-5"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                        </Button>
+                      </Col>
+                      {/* Thành tiền & Nút xóa */}
+                      <Col xs={5} sm={2} md={2} className="text-end mt-2 mt-sm-0">
+                         <span className="fw-medium d-block mb-1">{formatCurrency(item.price * item.quantity)}</span>
+                         <Button
+                           variant="link"
+                           className="text-danger p-0"
+                           size="sm"
+                           title="Xóa sản phẩm"
+                           onClick={() => handleRemoveItem(item.id)}
+                         >
+                           <i className="bi bi-trash"></i> <span className="d-none d-md-inline">Xóa</span>
+                         </Button>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
                 ))}
-              </div>
-            </div>
-          </div>
+              </ListGroup>
+            </Card>
+          </Col>
 
-          {/* Cột phải: Thông tin tổng quan */}
-          <div className="col-lg-4">
-            <div className="card shadow-sm sticky-lg-top" style={{ top: '80px' }}> {/* Thêm sticky */}
-              <div className="card-body">
-                <h5 className="card-title mb-3">Tổng cộng</h5>
-                {/* Mã giảm giá (UI ví dụ) */}
-                {/* <div className="input-group mb-3">
-                     <input type="text" className="form-control" placeholder="Nhập mã giảm giá" />
-                     <button className="btn btn-outline-secondary" type="button">Áp dụng</button>
+          {/* Cột phải: Thông tin thanh toán */}
+          <Col lg={4}>
+            <Card className="shadow-sm sticky-lg-top" style={{ top: '80px' }}>
+               <Card.Header className="bg-light">
+                   <h5 className="mb-0">Thông tin thanh toán</h5>
+               </Card.Header>
+              <Card.Body>
+                {/* --- Mã giảm giá --- */}
+                <InputGroup className="mb-3">
+                  <Form.Control
+                    placeholder="Nhập mã giảm giá (VD: GIAM10)"
+                    aria-label="Mã giảm giá"
+                    value={discountCode}
+                    onChange={(e) => {
+                        setDiscountCode(e.target.value);
+                        setDiscountError(''); // Xóa lỗi khi người dùng gõ
+                    }}
+                    disabled={applyingDiscount}
+                  />
+                  <Button
+                    variant="outline-primary" // Đổi màu nút áp dụng
+                    onClick={handleApplyDiscountCode}
+                    disabled={!discountCode || applyingDiscount}
+                  >
+                    {applyingDiscount ? (
+                         <>
+                             <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true"/>
+                             <span className="visually-hidden">Đang áp dụng...</span>
+                         </>
+                    ) : (
+                      'Áp dụng'
+                    )}
+                  </Button>
+                </InputGroup>
+                 {discountError && <Alert variant="danger" size="sm" className="py-1 px-2">{discountError}</Alert>}
+                 {discountAmount > 0 && !discountError && <Alert variant="success" size="sm" className="py-1 px-2">Đã áp dụng mã giảm giá!</Alert>}
+
+
+                <hr />
+
+                {/* --- Chi tiết giá --- */}
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="text-muted">Tạm tính:</span>
+                  <span>{formatCurrency(subtotal)}</span>
                 </div>
-                <hr /> */}
 
                 <div className="d-flex justify-content-between mb-2">
-                  <span>Tạm tính ({getCartItemCount()} sản phẩm)</span>
-                  {/* Sử dụng hàm getCartTotal từ context và format */}
-                  <span>{formatCurrency(totalCartPrice)}</span>
+                  <span className="text-muted">Phí vận chuyển:</span>
+                  {/* Placeholder, cần logic tính phí vận chuyển thực tế */}
+                  <span>{shippingCost === 0 ? 'Miễn phí' : formatCurrency(shippingCost)}</span>
                 </div>
-                 {/* Có thể thêm các dòng khác như Phí vận chuyển, Giảm giá */}
-                 {/* <div className="d-flex justify-content-between mb-2">
-                     <span>Phí vận chuyển</span>
-                     <span>Miễn phí</span>
-                 </div>
-                 <div className="d-flex justify-content-between mb-3 text-success">
-                     <span>Giảm giá</span>
-                     <span>- {formatCurrency(0)}</span> // Cần logic tính giảm giá
-                 </div> */}
+
+                {/* Chỉ hiển thị dòng giảm giá nếu có discountAmount > 0 */}
+                {discountAmount > 0 && (
+                  <div className="d-flex justify-content-between mb-2 text-success">
+                    <span>Giảm giá:</span>
+                    <span>- {formatCurrency(discountAmount)}</span>
+                  </div>
+                )}
+
                 <hr />
-                <div className="d-flex justify-content-between fw-bold fs-5">
-                  <span>Tổng tiền</span>
+
+                {/* --- Tổng tiền cuối cùng --- */}
+                <div className="d-flex justify-content-between fw-bold fs-5 mb-3">
+                  <span>Tổng cộng:</span>
                   <span className="text-danger">
-                    {formatCurrency(totalCartPrice)} {/* Hiển thị tổng cuối cùng */}
+                    {formatCurrency(finalTotal)}
                   </span>
                 </div>
-                 <div className="d-grid mt-3">
-                    <button className="btn btn-danger btn-lg">
+
+                {/* --- Nút Thanh toán --- */}
+                 <div className="d-grid">
+                    <Button
+                       variant="danger"
+                       size="lg"
+                       onClick={handleCheckout}
+                       disabled={cartItems.length === 0} // Disable nếu giỏ trống
+                    >
                        Tiến hành đặt hàng
-                    </button>
+                    </Button>
                  </div>
-                 <div className="text-center mt-2">
-                    <Link to="/" className="text-decoration-none">
-                       <i className="bi bi-arrow-left me-1"></i> Tiếp tục mua sắm
+
+                 {/* --- Link Tiếp tục mua sắm --- */}
+                 <div className="text-center mt-3">
+                    <Link to="/" className="text-decoration-none text-primary">
+                       <i className="bi bi-arrow-left me-1"></i> Tiếp tục lựa chọn sản phẩm
                     </Link>
                  </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       )}
-    </div>
+    </Container>
   );
 }
 

@@ -54,7 +54,7 @@ function RegisterForm({ onSwitchToLogin }) {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength={6} // Ví dụ yêu cầu độ dài
+          minLength={6} // yêu cầu độ dài
         />
       </Form.Group>
 
