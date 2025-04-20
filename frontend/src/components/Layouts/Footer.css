@@ -1,0 +1,96 @@
+/* src/components/Footer.css */
+
+.footer {
+    background: linear-gradient(135deg, #64b5f6, #4dd0e1); /* More vibrant gradient */
+    color: #fff;
+    padding: 3rem 0; /* Increased padding */
+    margin-top: 3rem; /* More space above the footer */
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1); /* Subtle top shadow */
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff !important; /* Ensure logo text is white */
+  }
+  
+  .slogan {
+    font-style: italic;
+    color: #e0f7fa; /* Lighter text for the slogan */
+  }
+  
+  .contact-info {
+    margin-bottom: 0.3rem;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+    color: #e1f5fe; /* Light blue for section titles */
+  }
+  
+  .social-links .link-hover:hover,
+  .about-us .link-hover:hover,
+  .policies .link-hover:hover {
+    color: #bbdefb !important; /* Lighter hover effect */
+    transform: translateX(5px); /* Subtle hover animation */
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .social-links .bi {
+    font-size: 1rem;
+    vertical-align: middle;
+    margin-right: 0.3rem;
+  }
+  
+  .payment-icons {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .payment-icon {
+    height: 35px; /* Slightly larger payment icons */
+    opacity: 0.8;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .payment-icon:hover {
+    opacity: 1;
+  }
+  
+  .legal-info {
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .copyright {
+    font-size: 0.8rem;
+    color: #b3e5fc; /* Lighter copyright text */
+  }
+  
+  .copyright a {
+    color: #b3e5fc !important;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .copyright a:hover {
+    color: #fff !important;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .company-info,
+    .social-links,
+    .about-us,
+    .policies,
+    .payments {
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+  
+    .payment-icons {
+      justify-content: center;
+    }
+  }
