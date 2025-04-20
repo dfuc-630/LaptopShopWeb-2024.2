@@ -1,0 +1,101 @@
+/* HomePage.css */
+
+.container.mt-8 {
+    background-color: #f8f9fa; /* Light gray background for the main container */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .bg-gradient-to-r.from-green-100.to-yellow-100 {
+    background: linear-gradient(to right, #e6ffe6, #fffacd); /* Softer gradient */
+    padding: 3rem 2rem; /* More vertical padding */
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-left: 5px solid #aed581; /* Subtle left border accent */
+  }
+  
+  .text-3xl.font-bold.text-gray-800.mb-4.text-center {
+    color: #4a148c; /* Rich purple title */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bi-star-fill.text-yellow-500 {
+    color: #ffc107; /* Brighter yellow stars */
+    font-size: 1.2em;
+  }
+  
+  .text-gray-700.text-center.italic {
+    color: #555; /* Darker italic text */
+    font-size: 1.1em;
+  }
+  
+  .spinner-border.text-primary {
+    border-color: #673ab7; /* Deeper purple spinner */
+    border-width: 0.3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .text-lg.text-gray-700 {
+    color: #777;
+  }
+  
+  .bg-red-100 {
+    background-color: #ffebee; /* Light pink for error */
+    border-color: #e57373 !important; /* More vibrant red border */
+    padding: 1.5rem;
+  }
+  
+  .text-xl.text-red-600.font-semibold {
+    color: #d32f2f; /* Stronger red error text */
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.15);
+  }
+  
+  .bi-exclamation-triangle-fill.text-yellow-500 {
+    color: #ffb300; /* More intense yellow for warning */
+    font-size: 1.1em;
+  }
+  
+  .bg-gray-100 {
+    background-color: #f0f0f0; /* Lighter gray for no products */
+    padding: 2rem;
+    border-radius: 6px;
+  }
+  
+  .text-lg.text-gray-600 {
+    color: #666;
+  }
+  
+  /* Custom styles for the product cards container */
+  .row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4 {
+    margin-top: 1rem;
+  }
+  
+  /* Add a subtle animation to the product cards on hover (example - you might need to adjust based on your ProductCard structure) */
+  /* .row > .col > div { /* Assuming your ProductCard is a direct child of the col */
+  /* transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  /* }
+  
+  /* .row > .col > div:hover {
+  /* transform: translateY(-5px);
+  /* box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  /* } */
+  
+  /* Add a decorative border to the bottom of the hero section */
+  .bg-gradient-to-r.from-green-100.to-yellow-100::after {
+    content: '';
+    display: block;
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(to right, rgba(173, 213, 129, 0.5), rgba(255, 255, 179, 0.5));
+    margin: 1.5rem auto 0;
+    border-radius: 2px;
+  }
+  
+  /* Slightly adjust the overall font for better readability */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+  }
