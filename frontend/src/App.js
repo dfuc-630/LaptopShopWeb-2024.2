@@ -2,22 +2,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext.jsx';
-import { AuthProvider } from './context/AuthContext.jsx'; // Import AuthProvider
+import { AuthProvider } from './context/AuthContext.jsx'; 
 
 // Pages
 import HomePage from './pages/HomePage.jsx';
 import ProductDetailPage from './pages/ProductDetailPage.jsx';
 import CartPage from './pages/CartPage.jsx';
-import AccountPage from './pages/AccountPage.jsx'; // Import trang tài khoản
-import CheckoutPage from './pages/CheckoutPage.jsx'; // Import trang thanh toán
-// Thêm trang AccountPage, OrdersPage nếu cần
-// import OrdersPage from './pages/OrdersPage';
+import AccountPage from './pages/AccountPage.jsx';
+import CheckoutPage from './pages/CheckoutPage.jsx'; 
+import OrdersPage from './pages/OrdersPage.jsx'; 
 
 // Components
 import Header from './components/Layouts/Header.jsx';
 import Footer from './components/Layouts/Footer.jsx';
-import AuthModal from './components/Auth/AuthModal.jsx'; // Import AuthModal
-import ProtectedRoute from './components/ProtectedRoute.jsx'; // Import ProtectedRoute
+import AuthModal from './components/Auth/AuthModal.jsx'; 
+import ProtectedRoute from './components/ProtectedRoute.jsx'; 
 
 // CSS Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -58,15 +57,6 @@ function App() {
                    </ProtectedRoute>
                  }
                />
-                <Route
-                 path="/orders"
-                 element={
-                   <ProtectedRoute>
-                      {/* Thay bằng component OrdersPage thật */}
-                     <div className='text-center'><h2>Trang Đơn Hàng (Được bảo vệ)</h2></div>
-                   </ProtectedRoute>
-                 }
-               />
                <Route
                  path="/checkout"
                  element={
@@ -75,6 +65,24 @@ function App() {
                    </ProtectedRoute>
                  }
               />
+              <Route
+                 path="/orders" // Route chính cho lịch sử đơn hàng
+                 element={
+                   <ProtectedRoute>
+                     <OrdersPage /> {/* Sử dụng component OrdersPage */}
+                   </ProtectedRoute>
+                 }
+               />
+               {/* Thêm Route cho chi tiết đơn hàng (ví dụ) */}
+               <Route
+                  path="/orders/:orderId" // Route xem chi tiết 1 đơn hàng
+                  element={
+                    <ProtectedRoute>
+                       {/* TODO: Tạo component OrderDetailPage */}
+                       <div className='text-center'><h2>Chi tiết đơn hàng (TODO)</h2></div>
+                    </ProtectedRoute>
+                  }
+                />
 
 
               {/* Route trang chưa có link trong footer ví dụ */}
