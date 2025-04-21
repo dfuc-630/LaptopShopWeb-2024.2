@@ -25,6 +25,7 @@ public class Product {
     private long sold;
     private String factory;
     private String target;
+    private String avatar;
     // khong can thiet/ quan he 1 chieu
     // @OneToMany(mappedBy = "product")
     // List<OrderDetail> orderDetails;
@@ -109,11 +110,19 @@ public class Product {
         this.target = target;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public String toString() {
         return "Product [id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", detailDesc="
                 + detailDesc + ", shortDesc=" + shortDesc + ", quantity=" + quantity + ", sold=" + sold + ", factory="
-                + factory + ", target=" + target + "]";
+                + factory + ", target=" + target + ", avatar=" + avatar + "]";
     }
 
 }

@@ -41,7 +41,7 @@
 
                                 <div class="row">
                                     <div class="col-md-6 col-12 mx-auto">
-                                        <h3> Create a user</h3>
+                                        <h3> Create a Product</h3>
                                         <hr />
                                         <form:form method="post" action="/admin/product/create"
                                             modelAttribute="newProduct" enctype="multipart/form-data">
