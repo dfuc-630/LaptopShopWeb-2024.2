@@ -87,7 +87,8 @@
                                                 </div>
 
                                                 <p class="text-center text-muted mt-5 mb-0">Have already an account? <a
-                                                        href="#!" class="fw-bold text-body"><u>Login here</u></a></p>
+                                                        href="/login" class="fw-bold text-body"><u>Login here</u></a>
+                                                </p>
 
                                             </form:form>
 
@@ -98,6 +99,18 @@
                         </div>
                     </div>
                 </section>
+                <script>
+                    document.querySelector("form").addEventListener("submit", function (e) {
+                        const password = document.getElementById("form3Example4cg").value;
+                        const confirmPassword = document.getElementById("form3Example4cdg").value;
+
+                        if (password !== confirmPassword) {
+                            e.preventDefault(); // ngăn form submit
+                            alert("Mật khẩu xác nhận không khớp với mật khẩu!");
+                        }
+                    });
+                </script>
+
             </body>
 
             </html>
