@@ -1,0 +1,23 @@
+/* src/components/ChinhSach/MuaHangPolicy.css */
+.mua-hang-policy {
+    padding: 15px;
+  }
+  
+  .mua-hang-policy h2 {
+    color: #0000ff; /* Màu đặc trưng cho mua hàng */
+    margin-bottom: 15px;
+  }
+  
+  .mua-hang-policy h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .mua-hang-policy ol, .mua-hang-policy ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .mua-hang-policy li {
+    line-height: 1.6;
+  }

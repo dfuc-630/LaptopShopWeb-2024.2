@@ -1,0 +1,23 @@
+/* src/components/ChinhSach/BaoMatPolicy.css */
+.bao-mat-policy {
+    padding: 15px;
+  }
+  
+  .bao-mat-policy h2 {
+    color: #008000; /* Màu đặc trưng cho bảo mật */
+    margin-bottom: 15px;
+  }
+  
+  .bao-mat-policy h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .bao-mat-policy ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .bao-mat-policy li {
+    line-height: 1.6;
+  }

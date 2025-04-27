@@ -1,0 +1,23 @@
+/* src/components/ChinhSach/BaoHanhPolicy.css */
+.bao-hanh-policy {
+    padding: 15px;
+  }
+  
+  .bao-hanh-policy h2 {
+    color: #c82333; /* Màu đặc trưng cho bảo hành */
+    margin-bottom: 15px;
+  }
+  
+  .bao-hanh-policy h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .bao-hanh-policy ul {
+    margin-left: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .bao-hanh-policy li {
+    line-height: 1.6;
+  }
