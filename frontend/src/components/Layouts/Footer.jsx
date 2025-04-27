@@ -5,9 +5,9 @@ import './Footer.css'; // Import custom CSS for the footer
 
 function Footer() {
   // Nên định nghĩa các URL thực tế ở đây hoặc lấy từ config
-  const facebookUrl = "https://facebook.com/fptshop.com.vn"; // Ví dụ
-  const youtubeUrl = "https://www.youtube.com/user/FptShopOnline"; // Ví dụ
-  const tiktokUrl = "https://www.tiktok.com/@fptshop.official"; // Ví dụ
+  const facebookUrl = 'https://www.facebook.com/phu.phung.549668/';
+  const youtubeUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1';
+  const instagramUrl = 'https://www.instagram.com/phuhp_/';
 
   return (
     <footer className="footer text-white py-5 mt-auto">
