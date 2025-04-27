@@ -2,6 +2,7 @@ package com.example.LaptopShop.controller.admin;
 
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,8 @@ public class ProductController {
     public String getProduct(Model model) {
         List<Product> products = this.productService.getAllProducts();
         model.addAttribute("products", products);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("username", username);
         return "admin/product/show";
     }
 

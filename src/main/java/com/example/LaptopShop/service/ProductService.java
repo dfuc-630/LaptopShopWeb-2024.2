@@ -38,4 +38,9 @@ public class ProductService {
     public void deleteProductById(long id) {
         this.productRepository.deleteProductById(id);
     }
+
+    public List<Product> getProductByTarget(String target) {
+        List<Product> products = this.productRepository.getProductByTarget(target);
+        return products;
+    }
 }

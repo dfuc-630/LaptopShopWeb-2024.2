@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.LaptopShop.domain.Role;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.domain.dto.RegisterDTO;
+import com.example.LaptopShop.repository.ProductRepository;
 import com.example.LaptopShop.repository.RoleRepository;
 import com.example.LaptopShop.repository.UserRepository;
 
@@ -16,10 +17,13 @@ import jakarta.transaction.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ProductRepository productRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository,
+            ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.productRepository = productRepository;
     }
 
     public String handleHello() {
@@ -63,5 +67,18 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         return this.userRepository.findByEmail(email);
+    }
+
+    public long countUsers() {
+        return this.userRepository.count();
+    }
+
+    public long countProducts() {
+        return this.productRepository.count();
+    }
+
+    public long countOrders() {
+        return 0;
+        // return this.orderRepository.count() ;
     }
 }

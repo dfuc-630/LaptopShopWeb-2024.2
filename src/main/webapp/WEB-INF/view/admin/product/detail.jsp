@@ -46,7 +46,8 @@
                                                 <li class="list-group-item">Factory: ${product.factory}</li>
                                                 <li class="list-group-item">Sold: ${product.sold}</li>
                                                 <li class="list-group-item">Target: ${product.target}</li>
-                                                <li class="list-group-item">image: ${product.image}</li>
+                                                <img src="${product.image}" alt="">
+                                                <!-- <li class="list-group-item">image: ${product.image}</li> -->
                                             </ul>
                                             <img src="/images/img/${product.image}" alt="">
                                         </div>

@@ -77,6 +77,8 @@
                                             style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
                                         <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a
                                                 href="/register" class="link-danger">Register</a></p>
+                                        <p class="small fw-bold mt-2 pt-1 mb-0">Back to <a href="/"
+                                                class="link-danger">guess mode</a></p>
                                     </div>
 
                                 </form>

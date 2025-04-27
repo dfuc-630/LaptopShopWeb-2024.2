@@ -49,8 +49,9 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
-        String targetUrl = determineTargetUrl(authentication);
 
+        String targetUrl = determineTargetUrl(authentication);
+        // String userEmail = authentication.getPrincipal().getUsername()
         if (response.isCommitted()) {
 
             return;

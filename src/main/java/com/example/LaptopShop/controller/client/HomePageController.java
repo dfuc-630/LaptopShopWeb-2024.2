@@ -1,5 +1,6 @@
 package com.example.LaptopShop.controller.client;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,9 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.LaptopShop.controller.UserInfo;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.domain.dto.RegisterDTO;
 import com.example.LaptopShop.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomePageController {
@@ -25,6 +30,8 @@ public class HomePageController {
 
     @GetMapping("/")
     public String getHomePage() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserInfo.userInfo = username;
         return "client/homepage/show";
     }
 
@@ -49,4 +56,17 @@ public class HomePageController {
 
         return "client/auth/login";
     }
+
+    @GetMapping("/order-history")
+    public String getOrderHistoryPage(Model model, HttpServletRequest request) {
+        User curUser = new User();
+        HttpSession session = request.getSession(false);
+        long id = (long) session.getAttribute("id");
+        curUser.setId(id);
+
+        // List<Order> orders = this.orderService.fetchOrderByUser(curUser) ;
+        // model.addAttribute("orders", orders) ;
+        return "client/cart/order-history";
+    }
+
 }
