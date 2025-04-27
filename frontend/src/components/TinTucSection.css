@@ -1,0 +1,51 @@
+/* src/components/VeChungToi/TinTucSection.css */
+.tin-tuc-section {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .tin-tuc-section h2 {
+    color: #dc3545; /* Màu tiêu đề khác biệt */
+    margin-bottom: 15px;
+  }
+  
+  .danh-sach-tin-tuc {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .item-tin-tuc {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .item-tin-tuc h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+  }
+  
+  .item-tin-tuc .ngay-dang {
+    color: #777;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+  
+  .item-tin-tuc .mo-ta {
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  
+  .item-tin-tuc button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  
+  /* Thêm các kiểu dáng khác */
