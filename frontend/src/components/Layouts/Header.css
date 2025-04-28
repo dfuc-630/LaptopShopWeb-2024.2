@@ -9,7 +9,7 @@
   }
   
   .navbar-brand.logo {
-    color: #fff !important; /* Ensure logo text is always white */
+    color: #441818 !important; /* Ensure logo text is always white */
     font-size: 1.75rem; /* Slightly larger logo */
   }
   
@@ -19,7 +19,7 @@
   
   .navbar-brand .version {
     font-size: 0.8rem;
-    color: #eee;
+    color: #6d4040;
   }
   
   .search-bar {
@@ -63,12 +63,12 @@
     background-color: #dc3545; /* रेड कार्ट बैज */
     font-weight: bold;
     padding: 0.3rem 0.5rem;
-    border: 1px solid #fff; /* White border for contrast */
+    border: 1px solid #8d4c4c; /* White border for contrast */
   }
   
   .loading-text {
     font-style: italic;
-    color: #ccc !important;
+    color: #6d3f3f !important;
   }
   
   .user-icon {
@@ -92,7 +92,7 @@
   }
   
   .user-dropdown .dropdown-item-custom {
-    color: #eee;
+    color: #491a1a;
     transition: background-color 0.2s ease-in-out;
   }
   

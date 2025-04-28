@@ -1,38 +1,58 @@
-.App {
-  text-align: center;
-}
+/* src/styles/ProductDetailPage.css */
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* Định dạng chung cho card-body */
+.product-description .card-body {
+    padding: 1.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  
+  /* Định dạng mô tả từ API (văn bản) */
+  .product-description .api-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1.5rem;
+    white-space: pre-line;
   }
-  to {
-    transform: rotate(360deg);
+  
+  /* Định dạng mô tả động từ factory */
+  .product-description .factory-description {
+    margin-top: 1rem;
   }
-}
+  
+  /* Định dạng các thẻ HTML trong factoryDescription */
+  .product-description .factory-description h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .product-description .factory-description p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .product-description .factory-description strong {
+    font-weight: 700;
+    color: #d32f2f; /* Màu đỏ để nổi bật, có thể thay đổi */
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .product-description .card-body {
+      padding: 1rem;
+    }
+  
+    .product-description .factory-description h3 {
+      font-size: 1.25rem;
+    }
+  
+    .product-description .api-description,
+    .product-description .factory-description p {
+      font-size: 0.95rem;
+    }
+  }

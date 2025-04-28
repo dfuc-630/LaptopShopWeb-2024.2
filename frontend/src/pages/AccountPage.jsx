@@ -2,7 +2,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Container, Row, Col, Card, ListGroup, Button } from 'react-bootstrap';
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
 
 function AccountPage() {
   const { user, logout } = useAuth(); // Lấy thông tin user và hàm logout

@@ -1,49 +1,205 @@
 // src/services/productService.js
 
-// Lưu ý: Giá đã được chuyển thành kiểu Number
-const products = [
-  // Sản phẩm gốc
-  { id: 1, name: "Laptop Lenovo Gaming LOQ 15ARP9", price: 19990000, originalPrice: 22990000, discount: 3000000, images: ["https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80&angle=90"], specs: { cpu: "AMD Ryzen 5 7235HS", ram: "16GB", storage: "512GB SSD", display: "15.6 inch, FHD, 144Hz", gpu: "NVIDIA GeForce RTX 3050 6GB" }, description: "...", relatedProducts: [{ id: 102, name: "MacBook Pro 14", price: 45000000, image: "..." }, { id: 3, name: "Asus ROG Zephyrus", price: 35000000, image: "..." }] },
-  { id: 101, name: 'Dell XPS 13', price: 25000000, images: ['https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "512GB SSD", display: "13.4 inch FHD+", gpu: "Intel Iris Xe" }, description: '...', factory: 'Dell', shortDesc: 'Laptop mỏng nhẹ', sold: 150, target: 'Văn phòng', relatedProducts: [] },
-  { id: 102, name: 'MacBook Pro 14', price: 45000000, images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80'], specs: { cpu: "Apple M1 Pro", ram: "16GB", storage: "512GB SSD", display: "14.2 inch Liquid Retina XDR", gpu: "Integrated" }, description: '...', factory: 'Apple', shortDesc: 'Hiệu năng mạnh mẽ', sold: 200, target: 'Sáng tạo', relatedProducts: [] },
-  { id: 3, name: "Asus ROG Zephyrus G15", price: 35000000, images: ["https://images.unsplash.com/photo-1496181133206-80ce9b88a0a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"], specs: { cpu: "AMD Ryzen 9", ram: "16GB", storage: "1TB SSD", display: "15.6 inch QHD 165Hz", gpu: "RTX 3070" }, description: "Laptop gaming mạnh mẽ...", factory: "Asus", shortDesc: "Gaming đỉnh cao", sold: 100, target: "Game thủ", relatedProducts: []},
+// Lấy API base URL từ biến môi trường, có giá trị dự phòng cho local dev
+const API_BASE_URL = 'http://localhost:8080/data/product'; // Thay đổi fallback nếu cần
 
-  // --- Thêm nhiều sản phẩm giả lập ---
-  { id: 4, name: "HP Spectre x360 14", price: 32500000, images: ["https://via.placeholder.com/300x200/FFD700/000000?text=HP+Spectre"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "1TB SSD", display: "13.5 inch 3K2K OLED", gpu: "Intel Iris Xe" }, description: "Thiết kế xoay gập cao cấp...", factory: "HP", shortDesc: "Cao cấp, linh hoạt", sold: 80, target: "Doanh nhân", relatedProducts: [] },
-  { id: 5, name: "Acer Swift 3", price: 16990000, images: ["https://via.placeholder.com/300x200/C0C0C0/000000?text=Acer+Swift"], specs: { cpu: "AMD Ryzen 5", ram: "8GB", storage: "512GB SSD", display: "14 inch FHD IPS", gpu: "Radeon Graphics" }, description: "Mỏng nhẹ, giá tốt...", factory: "Acer", shortDesc: "Phổ thông, mỏng nhẹ", sold: 250, target: "Sinh viên", relatedProducts: [] },
-  { id: 6, name: "Microsoft Surface Laptop 5", price: 28990000, images: ["https://via.placeholder.com/300x200/ADD8E6/000000?text=Surface+Laptop"], specs: { cpu: "Intel Core i5", ram: "8GB", storage: "512GB SSD", display: "13.5 inch PixelSense", gpu: "Intel Iris Xe" }, description: "Trải nghiệm Windows tốt nhất...", factory: "Microsoft", shortDesc: "Màn hình đẹp, bàn phím tốt", sold: 90, target: "Văn phòng", relatedProducts: [] },
-  { id: 7, name: "Lenovo Yoga Slim 7 Pro", price: 24500000, images: ["https://via.placeholder.com/300x200/E6E6FA/000000?text=Lenovo+Yoga"], specs: { cpu: "AMD Ryzen 7", ram: "16GB", storage: "512GB SSD", display: "14 inch 2.8K OLED", gpu: "Radeon Graphics" }, description: "Màn hình OLED rực rỡ...", factory: "Lenovo", shortDesc: "Mạnh mẽ, màn hình đẹp", sold: 110, target: "Sáng tạo, Văn phòng", relatedProducts: [] },
-  { id: 8, name: "Asus Vivobook 15", price: 14800000, images: ["https://via.placeholder.com/300x200/90EE90/000000?text=Asus+Vivobook"], specs: { cpu: "Intel Core i3", ram: "8GB", storage: "256GB SSD", display: "15.6 inch FHD", gpu: "Intel UHD Graphics" }, description: "Giá rẻ, đáp ứng cơ bản...", factory: "Asus", shortDesc: "Giá rẻ, màn hình lớn", sold: 300, target: "Học sinh, Cơ bản", relatedProducts: [] },
-  { id: 9, name: "Dell Inspiron 16", price: 21500000, images: ["https://via.placeholder.com/300x200/F08080/000000?text=Dell+Inspiron"], specs: { cpu: "Intel Core i5", ram: "16GB", storage: "512GB SSD", display: "16 inch FHD+", gpu: "Intel Iris Xe" }, description: "Màn hình lớn, đa dụng...", factory: "Dell", shortDesc: "Màn hình lớn, RAM nhiều", sold: 130, target: "Văn phòng, Gia đình", relatedProducts: [] },
-  { id: 10, name: "MacBook Air M2", price: 27990000, images: ["https://via.placeholder.com/300x200/87CEEB/000000?text=MacBook+Air"], specs: { cpu: "Apple M2", ram: "8GB", storage: "256GB SSD", display: "13.6 inch Liquid Retina", gpu: "Integrated" }, description: "Thiết kế mới, pin trâu...", factory: "Apple", shortDesc: "Mỏng nhẹ, hiệu năng tốt", sold: 180, target: "Sinh viên, Văn phòng", relatedProducts: [] },
-  // ... Thêm tiếp tục sao chép và sửa đổi cho đủ số lượng bạn muốn (ví dụ 20-30) ...
-  { id: 11, name: "Lenovo Legion 5", price: 29990000, images: ["https://via.placeholder.com/300x200/00008B/FFFFFF?text=Lenovo+Legion"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "512GB SSD", display: "15.6 inch FHD 165Hz", gpu: "RTX 3060" }, description: "Tản nhiệt tốt, hiệu năng cao...", factory: "Lenovo", shortDesc: "Gaming tầm trung", sold: 95, target: "Game thủ", relatedProducts: [] },
-  { id: 12, name: "Acer Predator Helios 300", price: 34500000, images: ["https://via.placeholder.com/300x200/FF0000/FFFFFF?text=Acer+Predator"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "1TB SSD", display: "15.6 inch QHD 165Hz", gpu: "RTX 3070" }, description: "Build hầm hố, mạnh mẽ...", factory: "Acer", shortDesc: "Gaming cao cấp", sold: 70, target: "Game thủ", relatedProducts: [] },
-  { id: 13, name: "HP Envy 13", price: 22000000, images: ["https://via.placeholder.com/300x200/D2691E/FFFFFF?text=HP+Envy"], specs: { cpu: "Intel Core i5", ram: "8GB", storage: "512GB SSD", display: "13.3 inch FHD", gpu: "Intel Iris Xe" }, description: "Thiết kế đẹp, gọn nhẹ...", factory: "HP", shortDesc: "Văn phòng, thời trang", sold: 140, target: "Văn phòng", relatedProducts: [] },
-  { id: 14, name: "MSI Modern 14", price: 17500000, images: ["https://via.placeholder.com/300x200/4682B4/FFFFFF?text=MSI+Modern"], specs: { cpu: "Intel Core i5", ram: "8GB", storage: "512GB SSD", display: "14 inch FHD", gpu: "Intel Iris Xe" }, description: "Cấu hình ổn, giá hợp lý...", factory: "MSI", shortDesc: "Văn phòng, phổ thông", sold: 160, target: "Sinh viên, Văn phòng", relatedProducts: [] },
-  { id: 15, name: "Gigabyte Aorus 15", price: 38990000, images: ["https://via.placeholder.com/300x200/FFA500/000000?text=Gigabyte+Aorus"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "1TB SSD", display: "15.6 inch QHD 240Hz", gpu: "RTX 3080" }, description: "Màn hình tần số quét cao...", factory: "Gigabyte", shortDesc: "Gaming hiệu năng cao", sold: 50, target: "Game thủ chuyên nghiệp", relatedProducts: [] },
-   // Thêm 10 sản phẩm nữa
-  { id: 16, name: "Razer Blade 15", price: 55000000, images: ["https://via.placeholder.com/300x200/00FF00/000000?text=Razer+Blade"], specs: { cpu: "Intel Core i9", ram: "32GB", storage: "1TB SSD", display: "15.6 inch QHD 240Hz", gpu: "RTX 3080 Ti" }, description: "Cao cấp, mỏng nhẹ, mạnh mẽ...", factory: "Razer", shortDesc: "Gaming & Sáng tạo cao cấp", sold: 40, target: "Game thủ, Sáng tạo", relatedProducts: [] },
-  { id: 17, name: "LG Gram 17", price: 31000000, images: ["https://via.placeholder.com/300x200/FFFFFF/000000?text=LG+Gram"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "1TB SSD", display: "17 inch WQXGA IPS", gpu: "Intel Iris Xe" }, description: "Siêu nhẹ, màn hình lớn...", factory: "LG", shortDesc: "Siêu nhẹ, pin trâu", sold: 60, target: "Doanh nhân, Di chuyển", relatedProducts: [] },
-  { id: 18, name: "Samsung Galaxy Book3 Pro", price: 33500000, images: ["https://via.placeholder.com/300x200/B0C4DE/000000?text=Samsung+Book"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "512GB SSD", display: "16 inch 3K AMOLED", gpu: "Intel Iris Xe" }, description: "Màn hình AMOLED đẹp...", factory: "Samsung", shortDesc: "Hệ sinh thái Samsung", sold: 75, target: "Văn phòng, Giải trí", relatedProducts: [] },
-  { id: 19, name: "Framework Laptop 13", price: 30000000, images: ["https://via.placeholder.com/300x200/D3D3D3/000000?text=Framework"], specs: { cpu: "Intel Core i5", ram: "16GB", storage: "512GB SSD", display: "13.5 inch 3:2", gpu: "Intel Iris Xe" }, description: "Dễ dàng sửa chữa, nâng cấp...", factory: "Framework", shortDesc: "Modular, bền vững", sold: 30, target: "Người yêu công nghệ", relatedProducts: [] },
-  { id: 20, name: "Chromebook Duet 5", price: 12000000, images: ["https://via.placeholder.com/300x200/6495ED/FFFFFF?text=Chromebook"], specs: { cpu: "Snapdragon 7c", ram: "8GB", storage: "128GB eMMC", display: "13.3 inch OLED Touch", gpu: "Adreno 618" }, description: "ChromeOS, màn hình OLED...", factory: "Lenovo", shortDesc: "Giá rẻ, 2-in-1", sold: 100, target: "Học sinh, Lướt web", relatedProducts: [] },
-  { id: 21, name: "Asus Zenbook 14 OLED", price: 26500000, images: ["https://via.placeholder.com/300x200/7FFFD4/000000?text=Asus+Zenbook"], specs: { cpu: "Intel Core i5", ram: "16GB", storage: "512GB SSD", display: "14 inch 2.8K OLED", gpu: "Intel Iris Xe" }, description: "OLED đẹp, mỏng nhẹ...", factory: "Asus", shortDesc: "Văn phòng cao cấp", sold: 115, target: "Văn phòng, Sáng tạo", relatedProducts: [] },
-  { id: 22, name: "Dell Latitude 7430", price: 29500000, images: ["https://via.placeholder.com/300x200/A9A9A9/000000?text=Dell+Latitude"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "512GB SSD", display: "14 inch FHD", gpu: "Intel Iris Xe" }, description: "Bền bỉ, bảo mật cho doanh nghiệp...", factory: "Dell", shortDesc: "Doanh nghiệp, bền bỉ", sold: 85, target: "Doanh nghiệp", relatedProducts: [] },
-  { id: 23, name: "HP Pavilion Aero 13", price: 19800000, images: ["https://via.placeholder.com/300x200/FFC0CB/000000?text=HP+Aero"], specs: { cpu: "AMD Ryzen 5", ram: "16GB", storage: "512GB SSD", display: "13.3 inch WUXGA", gpu: "Radeon Graphics" }, description: "Siêu nhẹ dưới 1kg...", factory: "HP", shortDesc: "Siêu nhẹ, giá tốt", sold: 125, target: "Sinh viên, Di chuyển", relatedProducts: [] },
-  { id: 24, name: "ThinkPad X1 Carbon Gen 11", price: 42000000, images: ["https://via.placeholder.com/300x200/000000/FFFFFF?text=ThinkPad+X1"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "1TB SSD", display: "14 inch WUXGA IPS", gpu: "Intel Iris Xe" }, description: "Biểu tượng doanh nhân...", factory: "Lenovo", shortDesc: "Bền bỉ, bàn phím tốt nhất", sold: 55, target: "Doanh nhân", relatedProducts: [] },
-  { id: 25, name: "Surface Pro 9", price: 36000000, images: ["https://via.placeholder.com/300x200/40E0D0/000000?text=Surface+Pro"], specs: { cpu: "Intel Core i7", ram: "16GB", storage: "256GB SSD", display: "13 inch PixelSense Flow", gpu: "Intel Iris Xe" }, description: "Máy tính bảng lai laptop...", factory: "Microsoft", shortDesc: "Linh hoạt, cảm ứng", sold: 65, target: "Sáng tạo, Di chuyển", relatedProducts: [] },
-];
+/**
+ * Fetches all products from the server API.
+ * @returns {Promise<Array>} A promise that resolves to an array of product objects.
+ * @throws {Error} If the network request fails or the server returns an error status.
+ */
+export const getAllProducts = async () => {
+    const url = `${API_BASE_URL}`;
+    console.log(`ProductService: Fetching all products from ${url}`);
+    try {
+        const response = await fetch(url);
 
-export const getProductById = (id) => {
-  const productId = parseInt(id, 10);
-  if (isNaN(productId)) return null;
-  return products.find(product => product.id === productId) || null;
+        if (!response.ok) {
+            throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data && Array.isArray(data) && data.length > 0 && typeof data[0].price !== 'number') {
+            console.warn("ProductService: Dữ liệu giá từ API có thể không phải là số!");
+        }
+
+        console.log('ProductService: Lấy danh sách sản phẩm thành công.');
+        return data;
+
+    } catch (error) {
+        console.error("ProductService: Lỗi khi fetch tất cả sản phẩm:", error);
+        throw new Error('Không thể kết nối hoặc lấy dữ liệu sản phẩm từ máy chủ.');
+    }
 };
 
-export const getAllProducts = () => {
-  // Trả về bản sao để tránh sửa đổi trực tiếp mảng gốc
-  return [...products];
+/**
+ * Fetches a single product by its ID from the server API.
+ * @param {string | number} id - The ID of the product to fetch.
+ * @returns {Promise<object | null>} A promise that resolves to the product object, or null if not found (404).
+ * @throws {Error} If the ID is invalid, network request fails, or server returns an error (other than 404).
+ */
+export const getProductById = async (id) => {
+    const productId = parseInt(id, 10);
+    if (isNaN(productId)) {
+        console.error('ProductService: Mã sản phẩm không hợp lệ:', id);
+        throw new Error('Mã sản phẩm không hợp lệ.');
+    }
+
+    const url = `${API_BASE_URL}/${productId}`;
+    console.log(`ProductService: Fetching product ID ${productId} from ${url}`);
+
+    try {
+        const response = await fetch(url);
+
+        if (response.status === 404) {
+            console.log(`ProductService: Không tìm thấy sản phẩm ID ${productId} (404).`);
+            return null;
+        }
+
+        if (!response.ok) {
+            throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data && typeof data.price !== 'number') {
+            console.warn(`ProductService: Dữ liệu giá cho sản phẩm ID ${productId} có thể không phải là số!`);
+        }
+
+        console.log(`ProductService: Lấy chi tiết sản phẩm ID ${productId} thành công.`);
+        return {
+          ...data,
+          images: data.images || [data.image], // fallback nếu chỉ có 1 ảnh
+          specs: data.specs || {
+            cpu: '',
+            ram: '',
+            storage: '',
+            display: '',
+            gpu: '',
+          },
+          discount: data.discount || 0,
+          originalPrice: data.originalPrice || null,
+          description: data.description || data.detailDesc || '',
+          relatedProducts: data.relatedProducts || [],
+        };
+
+    } catch (error) {
+        console.error(`ProductService: Lỗi khi fetch sản phẩm ID ${productId}:`, error);
+        throw new Error(`Không thể kết nối hoặc lấy chi tiết sản phẩm (ID: ${productId}).`);
+    }
 };
 
-// Có thể thêm các hàm khác nếu cần, ví dụ: tìm kiếm, lọc sản phẩm...
+/**
+ * Generates a dynamic description based on the product's factory.
+ * @param {string} factory - The factory type of the product (e.g., Predator, Nitro, Aspire).
+ * @returns {string} HTML string containing the factory-specific description.
+ */
+export const generateFactoryDescription = (factory) => {
+  let description = '';
+  switch (factory?.toLowerCase()) {
+    case 'asus':
+      description = `
+        <h1>Laptop Gaming ASUS – Chiến Game Cực Đỉnh, Hiệu Năng Mạnh Mẽ, Thiết Kế Ấn Tượng</h1>
+
+        <h3>Sự lựa chọn hoàn hảo cho game thủ từ phổ thông đến chuyên nghiệp</h3>
+    
+        <p>Laptop gaming <strong>ASUS</strong> từ lâu đã là một biểu tượng trong cộng đồng game thủ với các dòng sản phẩm <strong>ROG (Republic of Gamers)</strong> và <strong>TUF Gaming</strong>. Những chiếc máy này không chỉ có hiệu năng khủng, mà còn sở hữu thiết kế đậm chất gaming, hệ thống tản nhiệt tiên tiến và nhiều tính năng tối ưu cho game thủ.</p>
+    
+        <h3>Thiết kế đậm chất gaming – chắc chắn, cá tính</h3>
+        <p>Dòng laptop gaming <strong>ROG</strong> mang đến thiết kế <strong>hầm hố</strong>, đậm chất chiến đấu với những đường cắt sắc sảo, hiệu ứng đèn RGB cực kỳ ấn tượng. Các dòng <strong>TUF Gaming</strong> mang vẻ ngoài chắc chắn, với khả năng chịu được những tác động mạnh mẽ. Cả hai dòng đều sở hữu khung máy cứng cáp, bảo vệ laptop trong mọi điều kiện.</p>
+    
+        <h3>Cấu hình khủng – chiến mượt mọi tựa game từ eSports đến AAA</h3>
+        <p>Laptop gaming ASUS được trang bị vi xử lý <strong>Intel Core i7/i9</strong> hoặc <strong>AMD Ryzen 7/9</strong>, cùng với <strong>card đồ họa NVIDIA GeForce RTX 3060, 3070, 3080</strong> giúp bạn chiến mượt các tựa game AAA, từ <strong>Cyberpunk 2077</strong> đến <strong>League of Legends</strong> hay <strong>Dota 2</strong>. Với <strong>RAM 16GB hoặc 32GB</strong>, bạn có thể đa nhiệm mà không gặp phải hiện tượng giật lag.</p>
+    
+        <h3>Màn hình tần số quét cao – hiển thị mượt mà, không giật lag</h3>
+        <p>Laptop ASUS gaming thường được trang bị màn hình <strong>Full HD hoặc 4K</strong> với <strong>tần số quét lên đến 165Hz</strong>, giúp bạn có những trải nghiệm chơi game mượt mà, phản ứng nhanh và chính xác. Công nghệ <strong>G-Sync</strong> giúp đồng bộ hóa tốc độ khung hình của card đồ họa và màn hình, giảm thiểu hiện tượng xé hình.</p>
+    
+        <h3>Hệ thống tản nhiệt ưu việt – đảm bảo máy không bị nóng</h3>
+        <p>Laptop ASUS gaming sử dụng công nghệ tản nhiệt <strong>Cooler Boost</strong>, với quạt kép và các ống dẫn nhiệt tiên tiến giúp máy luôn duy trì nhiệt độ lý tưởng trong suốt quá trình chơi game căng thẳng. Điều này giúp tăng hiệu suất và kéo dài tuổi thọ của máy.</p>
+    
+        <h3>Bàn phím RGB – kết nối đa dạng – pin đủ dùng</h3>
+        <p>Laptop ASUS gaming có <strong>bàn phím RGB</strong> với hành trình phím cực kỳ chính xác, giúp bạn thao tác nhanh chóng trong mọi trận đấu. Cổng kết nối <strong>USB-C, HDMI</strong> và <strong>RJ45</strong> giúp bạn kết nối với nhiều thiết bị ngoại vi. Máy có <strong>pin sử dụng lên đến 6-8 giờ</strong> cho những công việc nhẹ nhàng hoặc chơi game vừa phải.</p>
+    
+        <h3>Giá cả hợp lý – bảo hành chính hãng</h3>
+        <p>Laptop gaming ASUS có mức giá từ <strong>18 triệu đồng</strong> đến <strong>50 triệu đồng</strong>, tùy vào cấu hình và dòng máy. Sản phẩm được bảo hành chính hãng, giúp bạn an tâm sử dụng lâu dài.</p>
+      `;
+      break;
+    case 'acer':
+      description = `
+        <h1>Laptop Gaming Acer – Chiến Game Mượt Mà, Hiệu Năng Đỉnh Cao, Giá Hấp Dẫn</h1>
+
+        <h3>Lựa chọn lý tưởng cho game thủ đam mê hiệu suất mạnh mẽ</h3>
+
+        <p>Laptop gaming <strong>Acer</strong> được trang bị cấu hình mạnh mẽ, thiết kế đậm chất thể thao điện tử và khả năng chiến mượt mà mọi tựa game. Các dòng như <strong>Acer Predator Helios</strong> và <strong>Acer Nitro 5</strong> được ưa chuộng nhờ khả năng xử lý các tựa game đồ họa cao, từ eSports đến game AAA.</p>
+
+        <h3>Thiết kế hầm hố – đậm chất gaming</h3>
+        <p>Với các dòng <strong>Acer Predator</strong> và <strong>Acer Nitro</strong>, bạn sẽ có những chiếc laptop gaming với thiết kế <strong>hầm hố</strong>, các chi tiết sắc sảo, mạnh mẽ, cùng với hệ thống đèn RGB tạo điểm nhấn nổi bật.</p>
+
+        <h3>Cấu hình mạnh mẽ – chiến mượt mọi tựa game</h3>
+        <p>Laptop Acer gaming được trang bị các bộ vi xử lý <strong>Intel Core i7/i9</strong> hoặc <strong>AMD Ryzen 7/9</strong>, cùng với <strong>card đồ họa NVIDIA GeForce RTX</strong> giúp máy có thể chiến mượt mà các tựa game như <strong>Cyberpunk 2077</strong>, <strong>Fortnite</strong> và <strong>Call of Duty</strong>.</p>
+
+        <h3>Màn hình tần số quét cao – trải nghiệm game mượt mà</h3>
+        <p>Với màn hình <strong>Full HD</strong> hoặc <strong>4K</strong> và tần số quét lên đến <strong>240Hz</strong>, laptop Acer gaming cung cấp hình ảnh sắc nét, mượt mà, đồng thời giảm thiểu hiện tượng xé hình nhờ công nghệ <strong>G-Sync</strong>.</p>
+
+        <h3>Tản nhiệt hiệu quả – chiến game không lo nhiệt độ</h3>
+        <p>Với công nghệ <strong>CoolBoost</strong> và hệ thống quạt kép, Acer giúp giữ cho laptop luôn mát mẻ ngay cả trong những trận game căng thẳng.</p>
+
+        <h3>Giá cả hợp lý – bảo hành chính hãng</h3>
+        <p>Giá laptop gaming Acer dao động từ <strong>15 triệu đồng</strong> đến <strong>40 triệu đồng</strong>, phù hợp với nhiều phân khúc game thủ. Máy được bảo hành chính hãng tại các trung tâm dịch vụ của Acer trên toàn quốc.</p>
+      `;
+      break;
+    case 'lenovo':
+      description = `
+        <h1>Laptop Gaming Lenovo – Hiệu Năng Mạnh Mẽ, Thiết Kế Hầm Hố, Giá Cả Phải Chăng</h1>
+
+        <h3>Chinh phục mọi tựa game với cấu hình cực khủng</h3>
+    
+        <p>Laptop gaming <strong>Lenovo</strong> luôn mang đến cho game thủ một trải nghiệm tuyệt vời với <strong>cấu hình mạnh mẽ</strong> và <strong>thiết kế đậm chất gaming</strong>. Các dòng như <strong>Legion 5</strong> và <strong>Legion 7i</strong> nổi bật với khả năng chiến mượt mà mọi tựa game, từ những trò chơi eSports đến các game AAA yêu cầu cấu hình cao.</p>
+    
+        <h3>Thiết kế hầm hố – đậm chất gaming</h3>
+        <p>Với thiết kế mạnh mẽ và đậm chất thể thao điện tử, các dòng laptop <strong>Lenovo Legion</strong> được trang bị hệ thống đèn RGB và các chi tiết sắc sảo, giúp bạn thể hiện đẳng cấp trong từng trận game. Khung máy chắc chắn, tản nhiệt hiệu quả, mang đến cảm giác gaming chuyên nghiệp.</p>
+    
+        <h3>Cấu hình cực mạnh – chiến game mọi lúc, mọi nơi</h3>
+        <p>Lenovo trang bị cho laptop gaming của mình các vi xử lý <strong>Intel Core i7/i9</strong> hoặc <strong>AMD Ryzen 7/9</strong> kết hợp với <strong>card đồ họa NVIDIA GeForce RTX</strong> giúp máy có thể chiến mượt mà mọi tựa game nặng như <strong>Cyberpunk 2077</strong>, <strong>Red Dead Redemption 2</strong>, và <strong>Call of Duty: Warzone</strong>. Tốc độ xử lý và khả năng đa nhiệm vượt trội sẽ đáp ứng mọi nhu cầu của game thủ.</p>
+    
+        <h3>Màn hình tần số quét cao – trải nghiệm mượt mà</h3>
+        <p>Với màn hình <strong>Full HD</strong> hoặc <strong>4K</strong> và tần số quét lên đến <strong>165Hz</strong>, laptop Lenovo Legion mang đến trải nghiệm game cực kỳ mượt mà. Các công nghệ đồng bộ như <strong>NVIDIA G-Sync</strong> giúp loại bỏ hiện tượng xé hình, mang lại hình ảnh sắc nét và cực kỳ mượt mà.</p>
+    
+        <h3>Tản nhiệt hiệu quả – luôn mát mẻ trong trận đấu</h3>
+        <p>Với công nghệ <strong>Coldfront 3.0</strong>, hệ thống quạt kép và các khe tản nhiệt được thiết kế thông minh, laptop Lenovo Legion giúp duy trì hiệu suất làm việc ổn định và làm mát máy ngay cả khi chiến game lâu dài, giúp bạn thoải mái chơi game mà không lo về nhiệt độ.</p>
+    
+        <h3>Giá cả hợp lý – bảo hành chính hãng</h3>
+        <p>Máy có giá từ <strong>15 triệu đồng</strong> đến <strong>40 triệu đồng</strong>, phù hợp với nhiều đối tượng game thủ. Lenovo cũng cung cấp dịch vụ bảo hành chính hãng tại các trung tâm bảo hành trên toàn quốc, giúp bạn yên tâm khi sử dụng máy lâu dài.</p>
+      `;
+      break;
+      case 'apple':
+        description = `
+            <h1>MacBook – Sự Lựa Chọn Hoàn Hảo Cho Doanh Nhân Và Chuyên Gia</h1>
+
+            <h3>Thiết kế sang trọng – chất liệu cao cấp</h3>
+
+            <p>MacBook luôn nổi bật với thiết kế <strong>sang trọng</strong>, <strong>mỏng nhẹ</strong> và được làm từ chất liệu <strong>nhôm nguyên khối</strong> cao cấp. Dòng sản phẩm này luôn được các doanh nhân và chuyên gia ưa chuộng nhờ vào vẻ ngoài thanh lịch, tinh tế.</p>
+
+            <h3>Cấu hình mạnh mẽ – đáp ứng mọi nhu cầu công việc</h3>
+            <p>MacBook được trang bị chip <strong>Apple M1/M2</strong> hoặc <strong>Intel Core i5/i7</strong>, giúp xử lý nhanh chóng mọi tác vụ, từ chỉnh sửa video, thiết kế đồ họa, cho đến các công việc văn phòng chuyên nghiệp. MacBook Air và MacBook Pro đều sở hữu hiệu năng ấn tượng và thời gian sử dụng pin lâu dài.</p>
+
+            <h3>Màn hình Retina sắc nét – độ sáng cao, màu sắc trung thực</h3>
+            <p>Màn hình Retina của MacBook có độ phân giải cao, với màu sắc <strong>sắc nét</strong> và trung thực. Công nghệ True Tone giúp điều chỉnh ánh sáng màn hình, bảo vệ mắt trong suốt quá trình làm việc.</p>
+
+            <h3>Hệ sinh thái Apple – kết nối mạnh mẽ, dễ dàng sử dụng</h3>
+            <p>MacBook là sản phẩm trong hệ sinh thái <strong>Apple</strong>, giúp kết nối dễ dàng với các thiết bị như iPhone, iPad, Apple Watch, v.v. Bạn có thể tận dụng các tính năng như Handoff, Continuity và AirDrop để làm việc hiệu quả hơn.</p>
+
+            <h3>Giá trị lâu dài – bảo hành chính hãng</h3>
+            <p>MacBook có giá từ <strong>20 triệu đồng</strong> đến <strong>50 triệu đồng</strong>, và được bảo hành chính hãng tại các trung tâm dịch vụ của Apple trên toàn quốc. Sản phẩm này không chỉ có giá trị sử dụng lâu dài mà còn có giá trị bán lại cao.</p>
+        `;
+        break;
+    default:
+      description = `
+        <h3>Thông tin dòng sản phẩm</h3>
+        <p>Đây là một dòng laptop chất lượng với hiệu năng ổn định, phù hợp cho nhiều nhu cầu sử dụng. Vui lòng liên hệ để biết thêm chi tiết!</p>
+      `;
+      break;
+  }
+  return description;
+};
