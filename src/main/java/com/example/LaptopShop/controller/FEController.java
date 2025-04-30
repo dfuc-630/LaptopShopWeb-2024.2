@@ -63,6 +63,9 @@ public class FEController {
     public User getMethodName() {
         String userEmail = UserInfo.userInfo;
         User user = this.userService.getUserByEmail(userEmail);
+        if (user == null) {
+            return null;
+        }
         return user;
     }
 

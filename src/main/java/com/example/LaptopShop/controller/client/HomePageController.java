@@ -30,9 +30,13 @@ public class HomePageController {
 
     @GetMapping("/")
     public String getHomePage() {
+        UserInfo.userInfo = null;
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserInfo.userInfo = username;
-        return "client/homepage/show";
+        if (username == "anonymousUser")
+            UserInfo.userInfo = null;
+        else
+            UserInfo.userInfo = username;
+        return "redirect:http://localhost:3000";
     }
 
     @GetMapping("/register")

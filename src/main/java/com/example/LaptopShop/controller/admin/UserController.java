@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.LaptopShop.controller.UserInfo;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.service.UploadService;
 import com.example.LaptopShop.service.UserService;
@@ -55,7 +56,7 @@ public class UserController {
 
         model.addAttribute("usersView", users);
         // model.addAttribute("roleName", users.getRole());
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = UserInfo.userInfo;
         model.addAttribute("username", username);
         return "admin/user/show";
     }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.LaptopShop.controller.UserInfo;
 import com.example.LaptopShop.domain.Product;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.service.ProductService;
@@ -34,7 +35,8 @@ public class ProductController {
     public String getProduct(Model model) {
         List<Product> products = this.productService.getAllProducts();
         model.addAttribute("products", products);
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        String username = UserInfo.userInfo;
         model.addAttribute("username", username);
         return "admin/product/show";
     }
