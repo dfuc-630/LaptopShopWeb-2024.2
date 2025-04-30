@@ -43,4 +43,8 @@ public class ProductService {
         List<Product> products = this.productRepository.getProductByTarget(target);
         return products;
     }
+
+    public List<Product> searchProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
 }

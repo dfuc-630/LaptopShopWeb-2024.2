@@ -69,4 +69,9 @@ public class FEController {
         return user;
     }
 
+    @GetMapping("/data/product/search/{name}")
+    public List<Product> getProductByName(@PathVariable String name) {
+        return productService.searchProductsByName(name);
+    }
+
 }
