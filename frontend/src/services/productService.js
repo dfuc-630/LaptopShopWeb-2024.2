@@ -1,7 +1,8 @@
 // src/services/productService.js
 
 // Lấy API base URL từ biến môi trường, có giá trị dự phòng cho local dev
-const API_BASE_URL = 'http://localhost:8080/data/product'; // Thay đổi fallback nếu cần
+const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = `${BASE_URL}/data/product`;
 
 /**
  * Fetches all products from the server API.
@@ -9,29 +10,28 @@ const API_BASE_URL = 'http://localhost:8080/data/product'; // Thay đổi fallba
  * @throws {Error} If the network request fails or the server returns an error status.
  */
 export const getAllProducts = async () => {
-    const url = `${API_BASE_URL}`;
-    console.log(`ProductService: Fetching all products from ${url}`);
-    try {
-        const response = await fetch(url);
+  const url = `${API_BASE_URL}`;
+  console.log(`ProductService: Fetching all products from ${url}`);
+  try {
+      const response = await fetch(url);
 
-        if (!response.ok) {
-            throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
-        }
+      if (!response.ok) {
+          console.error(`ProductService: Lỗi HTTP: ${response.status} - ${response.statusText}`);
+          const text = await response.text(); // lấy phản hồi dưới dạng text
+          console.log('Response:', text); // in ra nội dung phản hồi từ API
+          throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
+      }
 
-        const data = await response.json();
+      const data = await response.json();  // giả sử phản hồi hợp lệ là JSON
+      console.log('ProductService: Lấy danh sách sản phẩm thành công.');
+      return data;
 
-        if (data && Array.isArray(data) && data.length > 0 && typeof data[0].price !== 'number') {
-            console.warn("ProductService: Dữ liệu giá từ API có thể không phải là số!");
-        }
-
-        console.log('ProductService: Lấy danh sách sản phẩm thành công.');
-        return data;
-
-    } catch (error) {
-        console.error("ProductService: Lỗi khi fetch tất cả sản phẩm:", error);
-        throw new Error('Không thể kết nối hoặc lấy dữ liệu sản phẩm từ máy chủ.');
-    }
+  } catch (error) {
+      console.error("ProductService: Lỗi khi fetch tất cả sản phẩm:", error);
+      throw new Error('Không thể kết nối hoặc lấy dữ liệu sản phẩm từ máy chủ.');
+  }
 };
+
 
 /**
  * Fetches a single product by its ID from the server API.
@@ -88,6 +88,45 @@ export const getProductById = async (id) => {
         console.error(`ProductService: Lỗi khi fetch sản phẩm ID ${productId}:`, error);
         throw new Error(`Không thể kết nối hoặc lấy chi tiết sản phẩm (ID: ${productId}).`);
     }
+};
+
+// src/services/productService.js
+
+// ... (giữ nguyên các phần code hiện có)
+
+/**
+ * Searches for products by name using the server API.
+ * @param {string} name - The name or keyword to search for products.
+ * @returns {Promise<Array>} A promise that resolves to an array of product objects.
+ * @throws {Error} If the network request fails or the server returns an error status.
+ */
+export const searchProductsByName = async (name) => {
+  if (!name || typeof name !== 'string' || name.trim() === '') {
+    console.error('ProductService: Tên tìm kiếm không hợp lệ:', name);
+    throw new Error('Tên tìm kiếm không hợp lệ.');
+  }
+
+  const url = `${API_BASE_URL}/search/${encodeURIComponent(name.trim())}`;
+  console.log(`ProductService: Searching products with name "${name}" from ${url}`);
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error(`ProductService: Lỗi HTTP: ${response.status} - ${response.statusText}`);
+      const text = await response.text();
+      console.log('Response:', text);
+      throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log(`ProductService: Tìm kiếm sản phẩm với tên "${name}" thành công.`);
+    return data;
+
+  } catch (error) {
+    console.error(`ProductService: Lỗi khi tìm kiếm sản phẩm với tên "${name}":`, error);
+    throw new Error('Không thể kết nối hoặc tìm kiếm sản phẩm từ máy chủ.');
+  }
 };
 
 /**
