@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 
 // Pages
 import HomePage from './pages/HomePage.jsx';
-import ProductDetailPage from './pages/ProductDetailPage.jsx';
+import ProductDetailPage from './pages/ProductDetailPage/ProductDetailPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx'; 

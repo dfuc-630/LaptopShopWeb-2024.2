@@ -4,6 +4,33 @@
 const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 const API_BASE_URL = `${BASE_URL}/data/product`;
 
+//ham tach cac truong thong tin
+const parseProductDetail = (detailDesc) => {
+  if (!detailDesc || typeof detailDesc !== 'string') {
+    return {
+      CPU:'',
+      RAM:'',
+      ROM:'',
+      display:'',
+    }
+  }
+
+  const specs = {
+    CPU: '',
+    RAM: '',
+    ROM: '',
+    display: '',
+  };
+
+  const parts = detailDesc.split(',').map(part => part.trim());
+  if (parts.length >= 1) specs.CPU = parts[0] || '';
+  if (parts.length >= 2) specs.RAM = parts[1] || '';
+  if (parts.length >= 3) specs.ROM = parts[2] || '';
+  if (parts.length >= 4) specs.display = parts[3] || '';
+  
+  return specs;
+}
+
 /**
  * Fetches all products from the server API.
  * @returns {Promise<Array>} A promise that resolves to an array of product objects.
@@ -17,14 +44,19 @@ export const getAllProducts = async () => {
 
       if (!response.ok) {
           console.error(`ProductService: Lỗi HTTP: ${response.status} - ${response.statusText}`);
-          const text = await response.text(); // lấy phản hồi dưới dạng text
-          console.log('Response:', text); // in ra nội dung phản hồi từ API
+          const text = await response.text();
+          console.log('Response:', text);
           throw new Error(`Lỗi HTTP: ${response.status} - ${response.statusText}`);
       }
 
-      const data = await response.json();  // giả sử phản hồi hợp lệ là JSON
+      const data = await response.json();
       console.log('ProductService: Lấy danh sách sản phẩm thành công.');
-      return data;
+      return data.map(product => (
+        {
+          ...product,
+          specs: parseProductDetail(product.detailDesc),
+        }
+      ));
 
   } catch (error) {
       console.error("ProductService: Lỗi khi fetch tất cả sản phẩm:", error);
@@ -71,13 +103,7 @@ export const getProductById = async (id) => {
         return {
           ...data,
           images: data.images || [data.image], // fallback nếu chỉ có 1 ảnh
-          specs: data.specs || {
-            cpu: '',
-            ram: '',
-            storage: '',
-            display: '',
-            gpu: '',
-          },
+          specs: parseProductDetail(data.detailDesc),
           discount: data.discount || 0,
           originalPrice: data.originalPrice || null,
           description: data.description || data.detailDesc || '',
@@ -121,7 +147,10 @@ export const searchProductsByName = async (name) => {
 
     const data = await response.json();
     console.log(`ProductService: Tìm kiếm sản phẩm với tên "${name}" thành công.`);
-    return data;
+    return data.map(product => ({
+      ...product,
+      specs:parseProductDetail(product.detailDesc),
+    }));
 
   } catch (error) {
     console.error(`ProductService: Lỗi khi tìm kiếm sản phẩm với tên "${name}":`, error);

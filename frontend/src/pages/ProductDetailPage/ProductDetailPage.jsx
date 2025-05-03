@@ -1,10 +1,9 @@
-// src/pages/ProductDetailPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProductById, generateFactoryDescription } from '../services/productService';
-import ProductCard from '../components/ProductCard';
-import { useCart } from '../context/CartContext';
-import { formatCurrency } from '../utils/formatters';
+import { getProductById, generateFactoryDescription } from '../../services/productService';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import { useCart } from '../../context/CartContext';
+import { formatCurrency } from '../../utils/formatters';
 import DOMPurify from 'dompurify';
 
 function ProductDetailPage() {
@@ -27,7 +26,6 @@ function ProductDetailPage() {
           setProduct(fetchedProduct);
           setSelectedImage(fetchedProduct.images?.[0] || fetchedProduct.image || 'https://via.placeholder.com/600x400?text=No+Image');
 
-          // Fetch related products if available
           if (fetchedProduct.relatedProducts?.length > 0) {
             const relatedPromises = fetchedProduct.relatedProducts.map((rel) =>
               getProductById(rel.id)
@@ -51,7 +49,7 @@ function ProductDetailPage() {
     fetchProduct();
   }, [id]);
 
-  // Handle adding to cart
+  //Them vao gio hang
   const handleAddToCart = () => {
     if (product) {
       addToCart(product, quantity);
@@ -59,7 +57,7 @@ function ProductDetailPage() {
     }
   };
 
-  // Handle buy now
+  // Mua ngay
   const handleBuyNow = () => {
     if (product) {
       addToCart(product, quantity);
@@ -67,7 +65,7 @@ function ProductDetailPage() {
     }
   };
 
-  // Handle quantity change with inventory check
+  // Check so luong trong kho
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (value > product?.quantity) {
@@ -78,20 +76,42 @@ function ProductDetailPage() {
     }
   };
 
-  // Render loading, error, or not found states
-  if (loading) return <div className="container my-4">Đang tải...</div>;
-  if (error) return <div className="container my-4">{error}</div>;
-  if (!product) return <div className="container my-4">Sản phẩm không tồn tại hoặc đã bị xóa.</div>;
+  // Thong so ki thuat
+  const getCategoryIcon = (category) => {
+    const icons = {
+      CPU: 'bi-cpu',
+      RAM: 'bi-memory',
+      ROM: 'bi-device-hdd',
+      Screen: 'bi-display',
+      GPU: 'bi-gpu-card',
+      Battery: 'bi-battery-full',
+      Weight: 'bi-box2',
+      OS: 'bi-windows',
+      Camera: 'bi-camera',
+    };
+    return icons[category] || 'bi-info-circle';
+  };
 
-  // Tạo mô tả động từ factory chỉ khi render trang chi tiết
+  // Render loading, error, or not found states
+  if (loading) 
+    return <div className="container my-4">Đang tải...</div>;
+  if (error) 
+    return <div className="container my-4">{error}</div>;
+  if (!product) 
+    return <div className="container my-4">Sản phẩm không tồn tại hoặc đã bị xóa.</div>;
+
+  // Tạo mô tả chi tiết cho nhà sản xuất
   const factoryDescription = product.factory ? generateFactoryDescription(product.factory) : '';
+
+  // Check if specs exist
+  const hasSpecs = product.specs && Object.keys(product.specs).length > 0;
 
   return (
     <div className="container my-4">
       <div className="row">
-        {/* Left column: Product images */}
+        {/* Cot trai: Anh san pham */}
         <div className="col-md-6 mb-3">
-          <div className="card">
+          <div className="card shadow-sm">
             <img
               src={selectedImage}
               alt={product.name}
@@ -123,7 +143,9 @@ function ProductDetailPage() {
 
         {/* Right column: Product details */}
         <div className="col-md-6">
-          <h2>{product.name}</h2>
+          <h2 className="product-title-detail ">{product.name}</h2>
+          <p className="text-muted mb-2">{product.shortDesc}</p>
+          
           <div className="d-flex align-items-baseline mb-2">
             <span className="text-danger fs-3 fw-bold me-3">{formatCurrency(product.price)}</span>
             {product.originalPrice && (
@@ -132,58 +154,78 @@ function ProductDetailPage() {
               </span>
             )}
           </div>
+          {/* Giam gia */}
           {product.discount > 0 && (
             <p className="text-success mb-3">
               <i className="bi bi-tag-fill"></i> Tiết kiệm: {formatCurrency(product.discount)}
             </p>
           )}
-          <p className="text-muted mb-2">
-            <i className="bi bi-box-seam me-1"></i> Còn lại: {product.quantity} sản phẩm
-          </p>
-          <p className="text-muted mb-3">
-            <i className="bi bi-cart-check me-1"></i> Đã bán: {product.sold || 0}
-          </p>
 
-          {/* Technical specifications */}
-          {product.specs && Object.keys(product.specs).length > 0 && (
-            <div className="card mb-3 bg-light border-0">
-              <div className="card-body py-2 px-3">
-                <h6 className="card-title mb-2">Thông số kỹ thuật chính:</h6>
-                <ul className="list-unstyled mb-0" style={{ fontSize: '0.9rem' }}>
-                  {/* Can tach ra sau nay */}
-                  {product.description}
-                  {/* ----------------  */}
-                  {product.specs.cpu && (
-                    <li>
-                      <i className="bi bi-cpu me-2"></i> {product.specs.cpu}
-                    </li>
+          {/* Technical specifications - Enhanced version */}
+          {hasSpecs && (
+            <div className="specs-section mb-4">
+              <div className="card spec-card border-0">
+                <div className="card-header bg-light d-flex justify-content-between align-items-center">
+                  <h6 className="m-0">
+                    <i className="bi bi-gear me-2"></i>
+                    Thông số kỹ thuật
+                  </h6>
+                  {product.target && (
+                    <span className="badge bg-primary">
+                      <i className="bi bi-bullseye me-1"></i>
+                      {product.target}
+                    </span>
                   )}
-                  {product.specs.ram && (
-                    <li>
-                      <i className="bi bi-memory me-2"></i> {product.specs.ram}
-                    </li>
-                  )}
-                  {product.specs.storage && (
-                    <li>
-                      <i className="bi bi-device-hdd me-2"></i> {product.specs.storage}
-                    </li>
-                  )}
-                  {product.specs.display && (
-                    <li>
-                      <i className="bi bi-display me-2"></i> {product.specs.display}
-                    </li>
-                  )}
-                  {product.specs.gpu && (
-                    <li>
-                      <i className="bi bi-gpu-card me-2"></i> {product.specs.gpu}
-                    </li>
-                  )}
-                </ul>
+                </div>
+                <div className="card-body py-3">
+                  <div className="row">
+                    {Object.entries(product.specs).map(([key, value], index) => (
+                      <div key={index} className="col-md-6 mb-2">
+                        <div className="spec-item d-flex align-items-center">
+                          <div className="spec-icon">
+                            <i className={`bi ${getCategoryIcon(key)} fs-5`}></i>
+                          </div>
+                          <div className="spec-details ms-2">
+                            <div className="spec-name text-muted small">{key}</div>
+                            <div className="spec-value fw-medium">{value}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Quantity input */}
+          {/* Factory info card */}
+          {product.factory && (
+            <div className="factory-info mt-4">
+              <div className="card border-0 bg-light">
+                <div className="card-body py-2">
+                  <div className="d-flex align-items-center">
+                    <i className="bi bi-building fs-4 me-2 text-primary"></i>
+                    <div>
+                      <div className="text-muted small">Nhà sản xuất</div>
+                      <div className="fw-medium">{product.factory}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* So luong trong kho va da ban*/}
+          <div className="d-flex my-3">
+            <div className="me-4">
+              <i className="bi bi-box-seam me-1"></i> Còn lại: <span className="fw-medium">{product.quantity} sản phẩm</span>
+            </div>
+            <div>
+              <i className="bi bi-cart-check me-1"></i> Đã bán: <span className="fw-medium">{product.sold || 0}</span>
+            </div>
+          </div>
+
+          {/* So luong mua */}
           <div className="mb-3">
             <label htmlFor="quantity" className="form-label fw-bold">
               Số lượng:
@@ -216,7 +258,7 @@ function ProductDetailPage() {
       {factoryDescription && (
         <div className="row mt-4">
           <div className="col-12">
-            <div className="card product-description">
+            <div className="card product-description shadow-sm">
               <div className="card-header bg-light">
                 <h5 className="mb-0">Mô tả sản phẩm</h5>
               </div>

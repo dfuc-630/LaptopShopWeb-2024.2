@@ -35,20 +35,20 @@ export function CartProvider({ children }) {
         const cartItem = {
           id: productToAdd.id,
           name: productToAdd.name,
-          price: productToAdd.price, // Quan trọng: price phải là số ở đây
+          price: productToAdd.price,
           image: productToAdd.images ? productToAdd.images[0] : (productToAdd.image || ''), // Lấy ảnh đầu tiên hoặc ảnh mặc định
           quantity: quantityToAdd,
         };
         return [...prevItems, cartItem];
       }
     });
-     // console.log("Added to cart:", productToAdd.name, quantityToAdd); // Để debug
+     // console.log("Added to cart:", productToAdd.name, quantityToAdd); // debug
   }, []);
 
   // Hàm xóa sản phẩm khỏi giỏ hàng
   const removeFromCart = useCallback((productId) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-     // console.log("Removed from cart:", productId); // Để debug
+     // console.log("Removed from cart:", productId); // debug
   }, []);
 
   // Hàm cập nhật số lượng sản phẩm
@@ -60,13 +60,13 @@ export function CartProvider({ children }) {
         item.id === productId ? { ...item, quantity: quantity } : item
       )
     );
-    // console.log("Updated quantity:", productId, quantity); // Để debug
+    // console.log("Updated quantity:", productId, quantity); // debug
   }, []);
 
   // Hàm xóa toàn bộ giỏ hàng
   const clearCart = useCallback(() => {
     setCartItems([]);
-    // console.log("Cart cleared"); // Để debug
+    // console.log("Cart cleared"); // debug
   }, []);
 
   // Hàm tính tổng số lượng các sản phẩm trong giỏ

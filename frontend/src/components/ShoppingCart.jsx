@@ -1,11 +1,9 @@
 // src/components/ShoppingCart.jsx
-import React, { useState } from 'react'; // Thêm useState
-import { Link, useNavigate } from 'react-router-dom'; // Thêm useNavigate
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { formatCurrency } from '../utils/formatters';
-import { Container } from 'react-bootstrap'; // Sử dụng Container từ React Bootstrap
-// Import thêm các component từ React Bootstrap
-import { Card, ListGroup, Button, Row, Col, InputGroup, Form, Alert, Spinner } from 'react-bootstrap';
+import { Container, Card, ListGroup, Button, Row, Col, InputGroup, Form, Alert, Spinner } from 'react-bootstrap';
 
 function ShoppingCart() {
   const {

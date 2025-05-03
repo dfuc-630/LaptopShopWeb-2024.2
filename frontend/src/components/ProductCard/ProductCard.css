@@ -91,3 +91,84 @@
 .details-button .bi-info-circle {
   vertical-align: middle;
 }
+
+
+.product-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.image-container {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.specs-container {
+  width: 30%;
+  padding: 3px;
+  font-size: 0.85rem;
+}
+
+.specs-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.specs-list li {
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #555;
+}
+
+.specs-list i {
+  margin-right: 4px;
+  color: #007bff;
+}
+
+.product-title {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  height: 40px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-price {
+  font-size: 1.1rem;
+}
+
+.product-actions {
+  width: 100%;
+}
+
+.details-button, .add-to-cart-button {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.card-body {
+  padding: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .image-container, .specs-container {
+    width: 50%;
+    padding: 5px;
+  }
+  
+  .product-image {
+    max-height: 100px;
+  }
+  
+  .specs-list li {
+    font-size: 0.7rem;
+  }
+}

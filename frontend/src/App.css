@@ -1,58 +1,56 @@
-/* src/styles/ProductDetailPage.css */
-
 /* Định dạng chung cho card-body */
 .product-description .card-body {
-    padding: 1.5rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  padding: 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Định dạng mô tả từ API (văn bản) */
+.product-description .api-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
+}
+
+/* Định dạng mô tả động từ factory */
+.product-description .factory-description {
+  margin-top: 1rem;
+}
+
+/* Định dạng các thẻ HTML trong factoryDescription */
+.product-description .factory-description h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-description .factory-description p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.product-description .factory-description strong {
+  font-weight: 700;
+  color: #d32f2f; /* Màu đỏ để nổi bật, có thể thay đổi */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-description .card-body {
+    padding: 1rem;
   }
-  
-  /* Định dạng mô tả từ API (văn bản) */
-  .product-description .api-description {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #333;
-    margin-bottom: 1.5rem;
-    white-space: pre-line;
-  }
-  
-  /* Định dạng mô tả động từ factory */
-  .product-description .factory-description {
-    margin-top: 1rem;
-  }
-  
-  /* Định dạng các thẻ HTML trong factoryDescription */
+
   .product-description .factory-description h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
   }
-  
+
+  .product-description .api-description,
   .product-description .factory-description p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #333;
-    margin-bottom: 1rem;
+    font-size: 0.95rem;
   }
-  
-  .product-description .factory-description strong {
-    font-weight: 700;
-    color: #d32f2f; /* Màu đỏ để nổi bật, có thể thay đổi */
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .product-description .card-body {
-      padding: 1rem;
-    }
-  
-    .product-description .factory-description h3 {
-      font-size: 1.25rem;
-    }
-  
-    .product-description .api-description,
-    .product-description .factory-description p {
-      font-size: 0.95rem;
-    }
-  }
+}
