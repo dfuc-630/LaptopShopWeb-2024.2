@@ -12,6 +12,19 @@ import AccountPage from './pages/AccountPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx'; 
 import OrdersPage from './pages/OrdersPage.jsx'; 
 import SearchResults from './pages/SearchResults.jsx'; // Trang tìm kiếm
+// Connect
+import ConnectPage from './pages/ConnectPage.jsx';
+//About Us
+import AboutUs from './pages/AboutUs.jsx'; 
+import CareerSection from './pages/AboutUs/CareerSection.jsx'; 
+import NewsSection from './pages/AboutUs/NewsSection.jsx'; 
+import IntroductionSection from './pages/AboutUs/IntroductionSection.jsx'; 
+// Policy
+import Policy from './pages/Policy.jsx';
+import WarrantyPolicy from './pages/Policy/WarrantyPolicy.jsx';
+import RefundPolicy from './pages/Policy/RefundPolicy.jsx';
+import SecurityPolicy from './pages/Policy/SecurityPolicy.jsx';
+import BuyPolicy from './pages/Policy/BuyPolicy.jsx';
 // Components
 import Header from './components/Layouts/Header.jsx';
 import Footer from './components/Layouts/Footer.jsx';
@@ -37,7 +50,19 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<HomePage />} />
               <Route path="/product/:id" element={<ProductDetailPage />} />
-
+              <Route path="/search" element={<SearchResults />} />
+              <Route path="/ket-noi" element={<ConnectPage />} />
+              <Route path="/ve-chung-toi" element={<AboutUs />} />
+              <Route path="/tuyen-dung" element={<CareerSection />} />
+              <Route path="/tin-tuc" element={<NewsSection />} />
+              <Route path="/gioi-thieu" element={<IntroductionSection />} />
+              {/* Policy Section (nested) */}
+              <Route path="/chinh-sach" element={<Policy />}> 
+                <Route path="bao-hanh" element={<WarrantyPolicy />} />
+                <Route path="doi-tra" element={<RefundPolicy />} />
+                <Route path="bao-mat" element={<SecurityPolicy />} />
+                <Route path="mua-hang" element={<BuyPolicy />} />
+              </Route>
               {/* Protected Routes */}
               <Route
                 path="/cart"
@@ -85,7 +110,7 @@ function App() {
                 />
 
 
-              {/* Route trang chưa có link trong footer ví dụ */}
+              {/* Route trang chưa có link trong footer ví dụ*/}
               {/* <Route 
                 path="/gioi-thieu" 
                 element={
