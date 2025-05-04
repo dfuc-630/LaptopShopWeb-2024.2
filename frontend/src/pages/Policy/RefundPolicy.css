@@ -1,0 +1,45 @@
+.doi-tra-policy {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+.doi-tra-policy h2 {
+  color: #1a1818; 
+  margin-bottom: 15px;
+}
+.policy-table th,
+.policy-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.policy-table th {
+  background-color: #6e6e6e;
+  color: white;
+  font-weight: bold;
+}
+
+.policy-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.policy-table tr:hover {
+  background-color: #ddd;
+}
+
+.policy-table ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.policy-table ul li {
+  list-style: disc;
+}

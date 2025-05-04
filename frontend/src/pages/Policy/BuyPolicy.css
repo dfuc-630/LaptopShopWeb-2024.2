@@ -1,0 +1,45 @@
+.mua-hang-policy {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mua-hang-policy h2 {
+  font-size: 2rem;
+  color: #18191a;
+  margin-bottom: 20px;
+}
+
+.mua-hang-policy h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.mua-hang-policy ul,
+.mua-hang-policy ol {
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.mua-hang-policy ul li,
+.mua-hang-policy ol li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.mua-hang-policy p {
+  color: #555;
+  line-height: 1.6;
+}
+
+.mua-hang-policy a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.mua-hang-policy a:hover {
+  text-decoration: underline;
+}
