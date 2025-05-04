@@ -11,7 +11,6 @@ import CartPage from './pages/CartPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx'; 
 import OrdersPage from './pages/OrdersPage.jsx'; 
-import KetNoiPage from './pages/KetNoiPage.jsx'; 
 import SearchResults from './pages/SearchResults.jsx'; // Trang tìm kiếm
 // Components
 import Header from './components/Layouts/Header.jsx';
@@ -87,14 +86,14 @@ function App() {
 
 
               {/* Route trang chưa có link trong footer ví dụ */}
-              <Route 
+              {/* <Route 
                 path="/gioi-thieu" 
                 element={
                   <ProtectedRoute>
                     <KetNoiPage />   
                   </ProtectedRoute>
                 } 
-              />
+              /> */}
               {/* ... thêm các route khác cho chính sách, tuyển dụng... */}
               <Route 
                 path="/search" 

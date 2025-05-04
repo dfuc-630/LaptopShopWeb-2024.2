@@ -116,10 +116,6 @@ export const getProductById = async (id) => {
     }
 };
 
-// src/services/productService.js
-
-// ... (giữ nguyên các phần code hiện có)
-
 /**
  * Searches for products by name using the server API.
  * @param {string} name - The name or keyword to search for products.
