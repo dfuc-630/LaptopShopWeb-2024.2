@@ -1,0 +1,85 @@
+.tuyen-dung-section {
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 3.5rem; /* Tăng kích thước chữ */
+  font-weight: 900; /* Tăng độ đậm của chữ */
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000; /* Đổi màu chữ thành đen để rõ ràng hơn */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Thêm bóng chữ nhẹ */
+}
+
+.section-description {
+  text-align: center;
+  font-size: 1rem;
+  color: #555555;
+  margin-bottom: 30px;
+}
+
+.position-list {
+  list-style: none;
+  padding: 0;
+}
+
+.position-item {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.position-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.position-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.requirements-list,
+.benefits-list {
+  list-style: disc;
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.apply-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.apply-button:hover {
+  background-color: #0056b3;
+}
+
+.additional-info {
+  margin-top: 30px;
+}
+
+.additional-info h3 {
+  font-size: 1.2rem;
+  color: #1b1c1e;
+  margin-bottom: 10px;
+}
+
+.additional-info p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}

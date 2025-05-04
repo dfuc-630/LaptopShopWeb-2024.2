@@ -1,0 +1,85 @@
+/* src/components/VeChungToi/GioiThieuSection.css */
+.gioi-thieu-section {
+  padding: 30px;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #ddd; /* Tăng độ dày đường kẻ ngang */
+  background-color: #ffffff; /* Thêm màu nền nhẹ */
+  border-radius: 8px; /* Bo góc cho section */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng đổ bóng */
+}
+
+.gioi-thieu-section h3 {
+  color: #1b1d1d; /* Màu tiêu đề đậm hơn */
+  margin-bottom: 20px;
+  font-size: 1.8rem; /* Tăng kích thước tiêu đề */
+  font-weight: 600; /* Đậm hơn */
+  text-transform: uppercase; /* Viết hoa tiêu đề */
+  text-align: center; /* Căn giữa tiêu đề */
+}
+
+.gioi-thieu-section p {
+  line-height: 1.8; /* Tăng khoảng cách dòng */
+  margin-bottom: 15px;
+  font-size: 1rem; /* Kích thước chữ vừa phải */
+  color: #0f0f0f; /* Màu chữ nhẹ nhàng hơn */
+  text-align: justify; /* Căn đều đoạn văn */
+}
+
+.gioi-thieu-section ul {
+  list-style: disc;
+  margin-left: 30px;
+  margin-top: 10px;
+  color: #333; /* Màu chữ cho danh sách */
+}
+
+.gioi-thieu-section ul li {
+  margin-bottom: 10px; /* Thêm khoảng cách giữa các mục */
+  font-size: 1rem;
+}
+
+.section-title {
+  font-size: 2.5rem; /* Tăng kích thước tiêu đề chính */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Thêm hiệu ứng bóng chữ */
+}
+
+/* Thêm hiệu ứng hover cho danh sách */
+.gioi-thieu-section ul li:hover {
+  color: #151617; /* Đổi màu khi hover */
+  cursor: pointer;
+  transition: color 0.3s ease; /* Hiệu ứng chuyển đổi màu */
+}
+
+/* Thêm kiểu dáng cho các tiêu đề phụ */
+.gioi-thieu-section h3 {
+  border-bottom: 2px solid #101011; /* Đường kẻ dưới tiêu đề phụ */
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* Thêm kiểu dáng cho các đoạn văn nổi bật */
+.gioi-thieu-section p strong {
+  color: #ac2624; /* Làm nổi bật chữ in đậm */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .gioi-thieu-section {
+      padding: 20px;
+  }
+
+  .section-title {
+      font-size: 2rem; /* Giảm kích thước tiêu đề trên màn hình nhỏ */
+  }
+
+  .gioi-thieu-section h3 {
+      font-size: 1.5rem; /* Giảm kích thước tiêu đề phụ */
+  }
+
+  .gioi-thieu-section p {
+      font-size: 0.9rem; /* Giảm kích thước chữ đoạn văn */
+  }
+}

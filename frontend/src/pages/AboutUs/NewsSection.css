@@ -1,0 +1,162 @@
+/* src/components/VeChungToi/TinTucSection.css */
+.tin-tuc-section {
+  padding: 30px;
+  margin-bottom: 40px;
+  background-color: #f9f9f9; /* Thêm màu nền nhẹ */
+  border-radius: 8px; /* Bo góc cho section */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng đổ bóng */
+}
+
+.tin-tuc-section h2 {
+  color: #dc3545; /* Màu tiêu đề nổi bật */
+  font-size: 2rem; /* Tăng kích thước tiêu đề */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.current-page {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.page-button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.page-button:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.page-button.active {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+.section-description {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.danh-sach-tin-tuc {
+  list-style: none;
+  padding-left: 0;
+}
+
+.item-tin-tuc {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #fff; /* Màu nền trắng cho từng mục */
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Bo góc cho từng mục */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi hover */
+}
+
+.item-tin-tuc:hover {
+  transform: translateY(-5px); /* Nâng mục lên khi hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tăng hiệu ứng đổ bóng khi hover */
+}
+
+.item-tin-tuc h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5rem; /* Tăng kích thước tiêu đề tin tức */
+  color: #333;
+}
+
+.item-tin-tuc .ngay-dang {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.item-tin-tuc .mo-ta {
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.item-tin-tuc details summary {
+  font-size: 1rem;
+  color: #007bff;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.item-tin-tuc details p {
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 10px;
+}
+
+.item-tin-tuc button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.item-tin-tuc button:hover {
+  background-color: #0056b3; /* Đổi màu khi hover */
+}
+
+.xem-tat-ca {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.xem-tat-ca-link {
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.xem-tat-ca-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tin-tuc-section {
+      padding: 20px;
+  }
+
+  .tin-tuc-section h2 {
+      font-size: 1.8rem;
+  }
+
+  .item-tin-tuc {
+      padding: 15px;
+  }
+
+  .item-tin-tuc h3 {
+      font-size: 1.3rem;
+  }
+
+  .item-tin-tuc .mo-ta {
+      font-size: 0.9rem;
+  }
+}
