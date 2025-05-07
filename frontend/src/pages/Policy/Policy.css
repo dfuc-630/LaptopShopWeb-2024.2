@@ -1,87 +1,107 @@
 .chinh-sach-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .page-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .chinh-sach-menu {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    background-color: #555555;
-    border-radius: 8px;
-  }
-  
-  .chinh-sach-menu li {
-    margin: 0 10px;
-  }
-  
-  .chinh-sach-menu li a {
-    text-decoration: none; /* Loại bỏ gạch chân */
-    color: white; /* Đặt màu chữ thành trắng */
-    font-weight: normal; /* Không in đậm mặc định */
-    font-size: 1.2rem;
-    transition: color 0.3s ease, transform 0.2s ease, font-weight 0.3s ease;
-  }
-  
-  .chinh-sach-menu li a:hover {
-    color: #ffdd57; /* Đổi màu khi hover */
-    transform: scale(1.1); /* Phóng to nhẹ khi hover */
-  }
-  
-  .chinh-sach-menu li a:focus-visible,
-  .chinh-sach-menu li a:active {
-    font-weight: bold; /* In đậm khi được nhấn */
-    text-decoration: underline; /* Gạch chân khi được nhấn */
-    color: #ffdd57; /* Đổi màu khi được nhấn */
-    outline: none; /* Loại bỏ viền mặc định của trình duyệt */
-  }
-  
-  .chinh-sach-content {
-    margin-top: 20px;
-  }
-  
-  .chinh-sach-content section {
-    margin-bottom: 40px;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .chinh-sach-content h2 {
-    font-size: 1.8rem;
-    color: #202021;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #262728;
-    padding-bottom: 5px;
-  }
-  
-  .chinh-sach-content p,
-  .chinh-sach-content ul {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.6;
-  }
-  
-  .chinh-sach-content ul {
-    list-style: disc;
-    margin-left: 20px;
-  }
-  
-  .chinh-sach-content ul li {
-    margin-bottom: 10px;
-  }
+  padding: 20px;
+  max-width: 100%; /* Make the container take full width */
+  margin: 0; /* Remove horizontal margin to fit the page */
+  background-color: #f9f9f9;
+  border-radius: 0; /* Remove border-radius if you want it to fit edge to edge */
+  box-shadow: none; /* Remove box-shadow if you want it to fit edge to edge */
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.chinh-sach-menu {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  background-color: #555555;
+  border-radius: 8px;
+}
+
+.chinh-sach-menu li {
+  margin: 0 10px;
+}
+
+.chinh-sach-menu li a {
+  text-decoration: none; /* Loại bỏ gạch chân */
+  color: white; /* Đặt màu chữ thành trắng */
+  font-weight: normal; /* Không in đậm mặc định */
+  font-size: 1.2rem;
+  transition: color 0.3s ease, transform 0.2s ease, font-weight 0.3s ease;
+}
+
+.chinh-sach-menu li a:hover {
+  color: #ffdd57; /* Đổi màu khi hover */
+  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+.chinh-sach-menu li a:focus-visible,
+.chinh-sach-menu li a:active {
+  font-weight: bold; /* In đậm khi được nhấn */
+  text-decoration: underline; /* Gạch chân khi được nhấn */
+  color: #ffdd57; /* Đổi màu khi được nhấn */
+  outline: none; /* Loại bỏ viền mặc định của trình duyệt */
+}
+
+.chinh-sach-content {
+  margin-top: 20px;
+  padding: 0 20px; /* Keep some horizontal padding for readability */
+}
+
+.chinh-sach-content section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chinh-sach-content h2 {
+  font-size: 1.8rem;
+  color: #202021;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #262728;
+  padding-bottom: 5px;
+}
+
+.chinh-sach-content p,
+.chinh-sach-content ul {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.chinh-sach-content ul {
+  list-style: disc;
+  margin-left: 20px;
+}
+
+.chinh-sach-content ul li {
+  margin-bottom: 10px;
+}
+
+/* Style for the table to make it full width */
+.chinh-sach-content table {
+  width: 100%;
+  border-collapse: collapse; /* Collapse borders for a cleaner look */
+  margin-bottom: 20px; /* Add some spacing below the table */
+}
+
+.chinh-sach-content th,
+.chinh-sach-content td {
+  border: 1px solid #ddd; /* Add borders to table cells */
+  padding: 8px;
+  text-align: left;
+}
+
+.chinh-sach-content th {
+  background-color: #f2f2f2; /* Light background for table headers */
+  font-weight: bold;
+}

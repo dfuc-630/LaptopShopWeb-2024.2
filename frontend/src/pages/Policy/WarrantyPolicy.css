@@ -1,22 +1,35 @@
-/* src/components/ChinhSach/BaoHanhPolicy.css */
 .bao-hanh-policy {
-    padding: 15px;
-  }
-  .bao-hanh-policy h2 {
-    color: #1a1818; /* Màu đặc trưng cho bảo hành */
-    margin-bottom: 15px;
-  }
-  
-  .bao-hanh-policy h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .bao-hanh-policy ul {
-    margin-left: 20px;
-    margin-bottom: 15px;
-  }
-  
-  .bao-hanh-policy li {
-    line-height: 1.6;
-  }
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bao-hanh-policy h2 {
+  font-size: 2rem;
+  color: #181a1b;
+  margin-bottom: 20px;
+}
+
+.bao-hanh-policy h3 {
+  font-size: 1.5rem;
+  color: #131314;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.bao-hanh-policy ul {
+  list-style: disc;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.bao-hanh-policy ul li {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.bao-hanh-policy p {
+  color: #555;
+  line-height: 1.6;
+}
