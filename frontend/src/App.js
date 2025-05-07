@@ -5,22 +5,23 @@ import { CartProvider } from './context/CartContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx'; 
 
 // Pages
-import HomePage from './pages/HomePage.jsx';
+import ListProduct from './pages/ListProduct/ListProduct.jsx';
 import ProductDetailPage from './pages/ProductDetailPage/ProductDetailPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx'; 
 import OrdersPage from './pages/OrdersPage.jsx'; 
-import SearchResults from './pages/SearchResults.jsx'; // Trang tìm kiếm
+import SearchResults from './pages/SearchResults.jsx';
+import HomePage from './pages/Home/Home.jsx';
 // Connect
 import ConnectPage from './pages/ConnectPage.jsx';
 //About Us
-import AboutUs from './pages/AboutUs.jsx'; 
+import AboutUs from './pages/AboutUs/AboutUs.jsx'; 
 import CareerSection from './pages/AboutUs/CareerSection.jsx'; 
 import NewsSection from './pages/AboutUs/NewsSection.jsx'; 
 import IntroductionSection from './pages/AboutUs/IntroductionSection.jsx'; 
 // Policy
-import Policy from './pages/Policy.jsx';
+import Policy from './pages/Policy/Policy.jsx';
 import WarrantyPolicy from './pages/Policy/WarrantyPolicy.jsx';
 import RefundPolicy from './pages/Policy/RefundPolicy.jsx';
 import SecurityPolicy from './pages/Policy/SecurityPolicy.jsx';
@@ -33,7 +34,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 // CSS Bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; // File CSS tùy chỉnh của bạn (nếu có)
+import './App.css';
 
 function App() {
   return (
@@ -63,9 +64,9 @@ function App() {
                 <Route path="bao-mat" element={<SecurityPolicy />} />
                 <Route path="mua-hang" element={<BuyPolicy />} />
               </Route>
+              <Route path="/listproduct" element={<ListProduct/>}/>
               {/* Protected Routes */}
-              <Route
-                path="/cart"
+              <Route path="/cart"
                 element={
                   <ProtectedRoute>
                     <CartPage />
@@ -109,16 +110,6 @@ function App() {
                   }
                 />
 
-
-              {/* Route trang chưa có link trong footer ví dụ*/}
-              {/* <Route 
-                path="/gioi-thieu" 
-                element={
-                  <ProtectedRoute>
-                    <KetNoiPage />   
-                  </ProtectedRoute>
-                } 
-              /> */}
               {/* ... thêm các route khác cho chính sách, tuyển dụng... */}
               <Route 
                 path="/search" 

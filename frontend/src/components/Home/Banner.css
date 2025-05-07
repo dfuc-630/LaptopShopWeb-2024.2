@@ -1,0 +1,21 @@
+.banner-container:hover .carousel-control-prev-custom,
+.banner-container:hover .carousel-control-next-custom {
+opacity: 0.8 !important;
+transition: opacity 0.3s ease;
+}
+
+.carousel-control-prev-custom,
+.carousel-control-next-custom {
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+
+.banner-image-container {
+    position: relative;
+}
