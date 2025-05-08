@@ -36,7 +36,7 @@ public class HomePageController {
             UserInfo.userInfo = null;
         else
             UserInfo.userInfo = username;
-        return "redirect:http://localhost:3000";
+        return "client/homepage/show";
     }
 
     @GetMapping("/register")

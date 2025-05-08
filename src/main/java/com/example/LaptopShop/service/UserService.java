@@ -2,6 +2,7 @@ package com.example.LaptopShop.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.LaptopShop.domain.Role;
@@ -18,12 +19,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ProductRepository productRepository;
+    private final PinService pinService;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
-            ProductRepository productRepository) {
+            ProductRepository productRepository, PinService pinService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.productRepository = productRepository;
+        this.pinService = pinService;
     }
 
     public String handleHello() {
@@ -81,4 +84,9 @@ public class UserService {
         return 0;
         // return this.orderRepository.count() ;
     }
+
+    public void setUserPin(String email, String pin) {
+        pinService.setUserPin(email, pin);
+    }
+
 }

@@ -23,6 +23,7 @@ public class User {
     private String fullName;
     private String address;
     private String phone;
+    private String pin;
     private String avatar;
 
     @ManyToOne
@@ -108,6 +109,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public String getPin() {
+        return pin;
     }
 
 }
