@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 
 function ListProduct() {
   const {data: products, isLoading, error} = useQuery({
-    queryKey: ['products'],
+    queryKey: ['allProducts'],
     queryFn: getAllProducts,
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 15 * 60 * 1000, // 15 minutes

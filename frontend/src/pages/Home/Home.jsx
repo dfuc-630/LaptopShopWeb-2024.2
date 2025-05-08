@@ -8,11 +8,14 @@ import ProductCard from '../../components/ProductCard/ProductCard';
 import AudienceCard from '../../components/Home/AudienceCard';
 import RecommendationCard from '../../components/Home/RecommendationCard';
 
+import ListAcer from '../../components/Home/ListAcer/ListAcer.jsx';
+
 export default function Homepage() {
   const navigate = useNavigate();
   const { data: allProducts = [] } = useQuery({ 
     queryKey: ['allProducts'], 
-    queryFn: getAllProducts 
+    queryFn: getAllProducts,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const hotProduct = getHotProduct(allProducts);
@@ -127,6 +130,9 @@ export default function Homepage() {
             ))}
           </Row>
         </Container>
+      </section>
+      <section> 
+        <ListAcer/>          
       </section>
       <section className="py-5 bg-light">
         <Container>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Carousel } from 'react-bootstrap';
 import { useState} from 'react';
-
+// import bannerImage1 from '../../assets/H1_1440x242_a9763619b0.webp';
 import './Banner.css';
 
 function Banner () {
@@ -11,21 +11,21 @@ function Banner () {
     const bannerSlides = [
       {
         id: 1,
-        image: "/api/placeholder/1200/400",
+        image: "/assets/Banner1.webp",
         title: "Laptop Mới Nhất 2025",
         description: "Hiệu suất vượt trội, thiết kế sang trọng",
         buttonText: "Khám phá ngay"
       },
       {
         id: 2,
-        image: "/api/placeholder/1200/400",
+        image: "/assets/BannerImage2.webp",
         title: "Giảm giá đến 30%",
         description: "Cho các dòng laptop cao cấp",
         buttonText: "Xem ưu đãi"
       },
       {
         id: 3,
-        image: "/api/placeholder/1200/400",
+        image: "/assets/Banner3.webp",
         title: "Bảo hành 3 năm",
         description: "Đổi mới trong 30 ngày nếu có lỗi",
         buttonText: "Tìm hiểu thêm"
