@@ -23,8 +23,12 @@ public class PinService {
     public boolean verifyPin(String email, String inputPin) {
         User user = userRepository.findByEmail(email);
 
-        if (user == null || user.getPin() == null) {
-            return false;
+        if (user == null) {
+            throw new IllegalArgumentException("Không tìm thấy người dùng với email: " + email);
+        }
+
+        if (user.getPin() == null) {
+            throw new IllegalStateException("Người dùng chưa thiết lập mã PIN.");
         }
 
         if (isBlocked(email)) {

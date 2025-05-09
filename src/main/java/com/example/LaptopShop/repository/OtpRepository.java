@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.LaptopShop.domain.OtpEntity;
 
 public interface OtpRepository extends JpaRepository<OtpEntity, Long> {
-    Optional<OtpEntity> findByEmailAndOtpCode(String email, String otpCode);
+    Optional<OtpEntity> findByEmailAndOtpCodeAndOrderId(String email, String otpCode, Long orderId);
 }
