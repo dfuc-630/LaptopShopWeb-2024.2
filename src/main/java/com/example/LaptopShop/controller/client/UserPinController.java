@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.LaptopShop.domain.dto.ChangePinRequest;
@@ -19,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/user/pin")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('USER')")
+
 public class UserPinController {
 
     private final UserService userService;

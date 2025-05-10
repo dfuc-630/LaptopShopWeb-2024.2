@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/checkout/otp")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('USER')")
+
 public class OtpController {
 
     private final OtpService otpService;
