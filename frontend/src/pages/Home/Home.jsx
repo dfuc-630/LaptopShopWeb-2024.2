@@ -9,6 +9,9 @@ import AudienceCard from '../../components/Home/AudienceCard';
 import RecommendationCard from '../../components/Home/RecommendationCard';
 
 import ListAcer from '../../components/Home/ListAcer/ListAcer.jsx';
+import ListAsus from '../../components/Home/ListAsus/ListAsus.jsx';
+import ListLenovo from '../../components/Home/ListLenovo/ListLenovo.jsx';
+import ListMacbook from '../../components/Home/ListMacbook/ListMacbook.jsx';
 
 export default function Homepage() {
   const navigate = useNavigate();
@@ -133,6 +136,15 @@ export default function Homepage() {
       </section>
       <section> 
         <ListAcer/>          
+      </section>
+      <section> 
+        <ListAsus/>          
+      </section>
+      <section>
+        <ListLenovo/>
+      </section>
+      <section>
+        <ListMacbook/>
       </section>
       <section className="py-5 bg-light">
         <Container>
