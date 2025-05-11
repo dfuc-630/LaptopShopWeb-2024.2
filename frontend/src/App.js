@@ -13,7 +13,7 @@ import CheckoutPage from './pages/CheckoutPage.jsx';
 import OrdersPage from './pages/OrdersPage.jsx'; 
 import SearchResults from './pages/SearchResults.jsx';
 import HomePage from './pages/Home/Home.jsx';
-import AcerProduct from './pages/AcerProduct.jsx';
+import AcerProduct from './pages/BrandLaptop/AcerProduct.jsx';
 // Connect
 import ConnectPage from './pages/ConnectPage.jsx';
 //About Us
@@ -65,8 +65,14 @@ function App() {
                 <Route path="bao-mat" element={<SecurityPolicy />} />
                 <Route path="mua-hang" element={<BuyPolicy />} />
               </Route>
+
               <Route path="/listproduct" element={<ListProduct/>}/>
+              {/* BrandLaptop */}
               <Route path="/acer-laptop" element={<AcerProduct/>}/>
+
+              {/* TargetLaptop */}
+
+              
               {/* Protected Routes */}
               <Route path="/cart"
                 element={

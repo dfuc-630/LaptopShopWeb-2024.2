@@ -2,13 +2,13 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFilter } from 'react-icons/fa';
 import { Button, Offcanvas, Card } from 'react-bootstrap';
-import { useProductFilter } from '../hooks/useProductFilter';
-import FilterSidebar from '../components/FilterSidebar/FilterSidebar.jsx';
-import SortOptions from '../components/SortOptions/SortOptions.jsx';
-import ActiveFilters from '../components/ActiveFilters/ActiveFilters.jsx';
-import ProductList from '../components/ProductList/ProductList.jsx';
+import { useProductFilter } from '../../hooks/useProductFilter.js';
+import FilterSidebar from '../../components/FilterSidebar/FilterSidebar.jsx';
+import SortOptions from '../../components/SortOptions/SortOptions.jsx';
+import ActiveFilters from '../../components/ActiveFilters/ActiveFilters.jsx';
+import ProductList from '../../components/ProductList/ProductList.jsx';
 import { useQuery } from '@tanstack/react-query';
-import { getAllProducts } from '../services/productService.js';
+import { getAllProducts } from '../../services/productService.js';
 
 function AcerProduct() {
     const [showFiltersMobile, setShowFiltersMobile] = useState(false); //State dùng để hiển thị bộ lọc trên di động
