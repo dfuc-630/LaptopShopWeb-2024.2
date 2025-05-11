@@ -9,25 +9,42 @@ const parseProductDetail = (detailDesc) => {
   if (!detailDesc || typeof detailDesc !== 'string') {
     return {
       CPU:'',
+      GPU:'',
       RAM:'',
+      TypeRAM:'',
+      SpeedRAM:'',
       ROM:'',
-      display:'',
+      display:'', //kich thuoc man hinh
+      Panel:'',
+      Resolution:'',
+      RefreshRate:'',
     }
   }
 
   const specs = {
-    CPU: '',
-    RAM: '',
-    ROM: '',
-    display: '',
+    CPU:'',
+    GPU:'',
+    RAM:'',
+    TypeRAM:'',
+    SpeedRAM:'',
+    ROM:'',
+    display:'',
+    Panel:'',
+    Resolution:'',
+    RefreshRate:'',
   };
 
   const parts = detailDesc.split(',').map(part => part.trim());
-  if (parts.length >= 1) specs.CPU = parts[0] || '';
-  if (parts.length >= 2) specs.RAM = parts[1] || '';
-  if (parts.length >= 3) specs.ROM = parts[2] || '';
-  if (parts.length >= 4) specs.display = parts[3] || '';
-  
+  if (parts.length >= 1)  specs.CPU = parts[0] || '';
+  if (parts.length >= 2)  specs.GPU = parts[1] || '';
+  if (parts.length >= 3)  specs.RAM = parts[2] || '';
+  if (parts.length >= 4)  specs.TypeRAM = parts[3] || '';
+  if (parts.length >= 5)  specs.SpeedRAM = parts[4] === 'Hãng không công bố' ? '4800MHz' : parts[4] || '';
+  if (parts.length >= 6)  specs.ROM = parts[5] || '';
+  if (parts.length >= 7)  specs.display = parts[6] || '';
+  if (parts.length >= 8)  specs.Panel = parts[7] || '';
+  if (parts.length >= 9)  specs.Resolution = parts[8] || '';
+  if (parts.length >= 10) specs.RefreshRate = parts[9] || '';
   return specs;
 }
 

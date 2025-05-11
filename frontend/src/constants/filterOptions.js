@@ -16,7 +16,7 @@ export const factories = [
   ];
   
   export const screenSizes = [
-    'Dưới 14 inch', 'Từ 14 - 15 inch', 'Từ 15 - 17 inch'
+    'Dưới 14 inch', 'Từ 14 - 15 inch', 'Từ 15 - 17 inch', 'Trên 17 inch'
   ];
   
   export const cpus = [
@@ -26,7 +26,9 @@ export const factories = [
   ];
   
   export const rams = [
-    '64GB', '48GB', '36GB', '32GB', '24GB', '18GB', '16GB', '12GB', '8GB', '4GB'
+    '4GB',     '8GB',     '12GB',    '16GB',
+    '18GB',    '24GB',    '36GB',    '32GB',
+    '48GB',    '64GB', 
   ];
   
   export const roms = [
@@ -34,11 +36,11 @@ export const factories = [
   ];
   
   export const refreshRates = [
-    '≤120 Hz', '144 Hz', '165 Hz', '240 Hz'
+    'Dưới 100Hz', 'Từ 100 đến 144Hz', 'Trên 144Hz'
   ];
   
   export const sortOptions = [
-    { value: 'default', label: 'Mặc định' },
+    { value: 'default', label: 'Nổi bật' },
     { value: 'price_asc', label: 'Giá tăng dần' },
     { value: 'price_desc', label: 'Giá giảm dần' },
     { value: 'name_asc', label: 'Tên A-Z' },

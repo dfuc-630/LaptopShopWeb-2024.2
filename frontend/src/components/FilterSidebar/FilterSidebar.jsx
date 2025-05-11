@@ -1,10 +1,9 @@
 import React from 'react';
-import { Accordion, Button, Card, Form, InputGroup } from 'react-bootstrap';
-import { FaFilter, FaSearch, FaTimes } from 'react-icons/fa';
-import { factories, priceRanges, demands, screenSizes, cpus, rams, roms, refreshRates } from '../constants/filterOptions';
+import { Accordion, Button, Card, Form } from 'react-bootstrap';
+import { FaFilter, FaTimes } from 'react-icons/fa';
+import { factories, priceRanges, demands, screenSizes, cpus, rams, roms, refreshRates } from '../../constants/filterOptions';
 
 const FilterSidebar = ({
-  searchQuery, setSearchQuery, handleSearch,
   filterFactories, setFilterFactories,
   filterPriceRanges, setFilterPriceRanges,
   filterDemands, setFilterDemands,
@@ -42,20 +41,6 @@ const FilterSidebar = ({
         </Button>
       </Card.Header>
       <Card.Body>
-        <Form onSubmit={handleSearch} className="mb-3">
-          <InputGroup>
-            <Form.Control
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Nhập từ khóa tìm kiếm"
-            />
-            <Button type="submit" variant="primary">
-              <FaSearch className="me-1" /> Tìm
-            </Button>
-          </InputGroup>
-        </Form>
-
         <Accordion defaultActiveKey={['0', '1', '2']} alwaysOpen>
           <Accordion.Item eventKey="0">
             <Accordion.Header>Hãng sản xuất</Accordion.Header>
@@ -130,13 +115,6 @@ const FilterSidebar = ({
           <Accordion.Item eventKey="4">
             <Accordion.Header>Công nghệ CPU</Accordion.Header>
             <Accordion.Body className="p-2">
-              <InputGroup className="mb-2">
-                <Form.Control
-                  type="text"
-                  placeholder="Tìm CPU..."
-                  size="sm"
-                />
-              </InputGroup>
               <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
                 {cpus.map(cpu => (
                   <Form.Check

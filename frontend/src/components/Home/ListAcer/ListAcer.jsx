@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Button, Spinner } from 'react-bootstrap';
 import ProductCard from '../../ProductCard/ProductCard';
 import { getAllProducts } from '../../../services/productService';
@@ -6,6 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import './ListAcer.css';
 
 const ListAcer = () => {
+    const navigate = useNavigate();
+    const handleViewMore = () => {
+        navigate('/acer-laptop');
+    }
+
     const scrollContainerRef = useRef(null);
     
     const { data: allProducts = [], isLoading, error } = useQuery({ 
@@ -60,6 +66,7 @@ const ListAcer = () => {
         );
     }
 
+
     return (
         <div className="acer-products-section py-4">
             <Container>
@@ -71,10 +78,10 @@ const ListAcer = () => {
                         <small className="product-count">{acerProducts.length} sản phẩm</small>
                     </div>
                     
-                    <a href="/acer" className="view-all-link">
+                    <Button className="view-all-link" onClick={handleViewMore}>
                         Xem tất cả 
                         <span className="arrow">→</span>
-                    </a>
+                    </Button>
                 </div>
                 
                 <div className="products-carousel-container position-relative">
