@@ -10,12 +10,11 @@ function ProductDetailPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
   const navigate = useNavigate();
-
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -136,8 +135,56 @@ function ProductDetailPage() {
                     onClick={() => setSelectedImage(image)}
                   />
                 ))}
+              </div>            )}
+          </div>
+          
+          {/* Chính sách sản phẩm */}
+          <div className="policy-section mt-3">
+            <div className="card border-0">
+              <div className="card-body">
+                <div className="row g-3">
+                  <div className="col-6">
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-shield-check fs-4 text-primary me-2"></i>
+                      <div>
+                        <div className="fw-medium">Hàng chính hãng - Bảo hành 24 tháng</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-truck fs-4 text-primary me-2"></i>
+                      <div>
+                        <div className="fw-medium">Giao hàng miễn phí toàn quốc</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-tools fs-4 text-primary me-2"></i>
+                      <div>
+                        <div className="fw-medium">Hỗ trợ cài đặt miễn phí</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="d-flex align-items-center">
+                      <i className="bi bi-headset fs-4 text-primary me-2"></i>                      <div>
+                        <div className="fw-medium">Kỹ thuật viên hỗ trợ trực tuyến</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Tìm hiểu thêm button */}
+                <div className="text-center mt-3">                  <button
+                    className="btn btn-outline-primary"
+                    onClick={() => navigate('/chinh-sach')}
+                  >
+                    Tìm hiểu thêm <i className="bi bi-arrow-right"></i>
+                  </button>
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
 
@@ -252,9 +299,7 @@ function ProductDetailPage() {
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Product description */}
+      </div>      {/* Product description */}
       {factoryDescription && (
         <div className="row mt-4">
           <div className="col-12">
@@ -263,14 +308,20 @@ function ProductDetailPage() {
                 <h5 className="mb-0">Mô tả sản phẩm</h5>
               </div>
               <div className="card-body">
-                {factoryDescription && (
+                <div className={`factory-description ${!isExpanded ? 'description-collapsed' : ''}`}>
                   <div
-                    className="factory-description"
+                    className="content"
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(factoryDescription),
                     }}
                   />
-                )}
+                </div>                <button
+                  className={`btn-expand-collapse ${isExpanded ? 'expanded' : ''}`}
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  <span>{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
+                  <i className="bi bi-chevron-down ms-2"></i>
+                </button>
               </div>
             </div>
           </div>
