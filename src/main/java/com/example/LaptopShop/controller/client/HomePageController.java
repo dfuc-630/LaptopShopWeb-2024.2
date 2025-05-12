@@ -36,7 +36,7 @@ public class HomePageController {
             UserInfo.userInfo = null;
         else
             UserInfo.userInfo = username;
-        return "client/homepage/show";
+        return "redirect:https://www.google.com";
     }
 
     @GetMapping("/register")
