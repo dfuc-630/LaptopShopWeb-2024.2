@@ -1,20 +1,17 @@
-# Sử dụng image Java 17 hoặc version bạn cần
-FROM openjdk:17-jdk-slim
+# --- Stage 1: Build ứng dụng ---
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Tạo thư mục để lưu trữ ứng dụng
+# --- Stage 2: Chạy ứng dụng ---
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-# Sao chép file JAR của bạn vào container
-COPY target/laptopshop-web-backend.jar /app/app.jar
+# Copy file JAR đã build từ stage 1
+COPY --from=builder /app/target/*.jar app.jar
 
-# Cấu hình môi trường (nếu cần)
-ENV DB_URL jdbc:mysql://trolley.proxy.rlwy.net:47837/railway
-ENV DB_USERNAME root
-ENV DB_PASSWORD iLEVkVjGmAZUfvvEslQtWUhbTXBkiuGy
-ENV SPRING_DATASOURCE_URL jdbc:mysql://trolley.proxy.rlwy.net:47837/railway
-ENV SPRING_DATASOURCE_USERNAME root
-ENV SPRING_DATASOURCE_PASSWORD iLEVkVjGmAZUfvvEslQtWUhbTXBkiuGy
-ENV SPRING_DATASOURCE_DRIVER_CLASS_NAME com.mysql.cj.jdbc.Driver
+# Biến môi trường sẽ được Render cung cấp — KHÔNG khai báo ở đây để bảo mật
 
-# Chạy ứng dụng Java
+# Chạy ứng dụng Spring Boot
 CMD ["java", "-jar", "app.jar"]
