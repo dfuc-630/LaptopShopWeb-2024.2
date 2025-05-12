@@ -22,9 +22,9 @@ public class OtpEntity {
     private LocalDateTime expiredAt;
     private boolean verified = false;
 
-    private Long order_id;
+    private Long orderId;
 
-    public void setOrderId(Long order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }
