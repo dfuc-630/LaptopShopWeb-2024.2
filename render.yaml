@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: laptopshop-web-backend  # Tên service theo tên project của bạn
+    env: java
+    buildCommand: "mvn clean install"  # Dùng Maven thay vì mvnw nếu bạn đang dùng Windows
+    startCommand: "java -jar target\LaptopShop-0.0.1-SNAPSHOT.jar"  
+    envVars:
+      - key: DB_URL
+        value: jdbc:mysql://trolley.proxy.rlwy.net:47837/railway  # DB_URL từ Railway
+      - key: DB_USERNAME
+        value: root  # DB_USERNAME của bạn
+      - key: DB_PASSWORD
+        value: iLEVkVjGmAZUfvvEslQtWUhbTXBkiuGy  # DB_PASSWORD của bạn
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://trolley.proxy.rlwy.net:47837/railway
+      - key: SPRING_DATASOURCE_USERNAME
+        value: root
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: iLEVkVjGmAZUfvvEslQtWUhbTXBkiuGy
+      - key: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+        value: com.mysql.cj.jdbc.Driver  # Đảm bảo driver MySQL đã được sử dụng
+    plan: free
