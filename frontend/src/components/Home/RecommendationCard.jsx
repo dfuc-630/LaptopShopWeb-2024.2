@@ -1,4 +1,5 @@
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const RecommendationCard = ({ recommendation }) => {
   return (
@@ -12,6 +13,11 @@ const RecommendationCard = ({ recommendation }) => {
         </div>
         <Card.Title className="fw-bold mb-3">{recommendation.title}</Card.Title>
         <Card.Text>{recommendation.description}</Card.Text>
+        <div className="mt-auto pt-3">
+          <Link to={recommendation.link || '#'} className="btn btn-outline-primary">
+            Xem chi tiết
+          </Link>
+        </div>
       </Card.Body>
     </Card>
   );

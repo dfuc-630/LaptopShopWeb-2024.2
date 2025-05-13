@@ -10,7 +10,7 @@ import ProductList from '../../components/ProductList/ProductList.jsx';
 import { useQuery } from '@tanstack/react-query';
 import { getAllProducts } from '../../services/productService.js';
 
-function GamingLaptop() {
+function StudentLaptop() {
   const [showFiltersMobile, setShowFiltersMobile] = useState(false); //State dùng để hiển thị bộ lọc trên di động
   
   const { data: allProducts = [], isLoading, error } = useQuery({ 
@@ -19,8 +19,8 @@ function GamingLaptop() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Filter for Gaming laptops
-  const gamingProducts = allProducts.filter(product => product.target === 'Laptop gaming');
+  // Filter for Student laptops
+  const studentProducts = allProducts.filter(product => product.target ==('Laptop văn phòng'));
 
   const {
     sortedProducts,
@@ -35,7 +35,7 @@ function GamingLaptop() {
     filterRefreshRates, setFilterRefreshRates,
     sortOption,         setSortOption,
     clearFilters,
-  } = useProductFilter(gamingProducts);
+  } = useProductFilter(studentProducts);
   
   const filterSectionRef = useRef(null);
   
@@ -65,13 +65,13 @@ function GamingLaptop() {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
-              <li className="breadcrumb-item active">Laptop Gaming</li>
+              <li className="breadcrumb-item active">Laptop Sinh viên</li>
             </ol>
           </nav>
-          <h2 className="mb-3 fw-bold">Laptop Gaming</h2>
+          <h2 className="mb-3 fw-bold">Laptop cho Sinh viên</h2>
           <div className="row align-items-center">
             <div className="col-md-8">
-              <p className="mb-3">Card đồ họa cao cấp, tần số quét cao, trải nghiệm chơi game đỉnh cao</p>
+              <p className="mb-3">Laptop giá hợp lý, pin lâu, phù hợp học tập và làm việc nhóm</p>
             </div>
             <div className="col-auto">
               <button 
@@ -209,4 +209,4 @@ function GamingLaptop() {
   );
 }
 
-export default GamingLaptop;
+export default StudentLaptop; 

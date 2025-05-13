@@ -64,7 +64,7 @@ const ListMacbook = () => {
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <div>
                         <h2 className="macbook-section-title fs-4 fw-bold mb-0">
-                            <span className="text-primary">MACBOOK</span> | MÁY TÍNH APPLE
+                            <span className="text-primary">MACBOOK</span> | MÁY TÍNH MACBOOK
                         </h2>
                         <small className="product-count">{macbookProducts.length} sản phẩm</small>
                     </div>

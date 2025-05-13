@@ -84,19 +84,22 @@ export default function Homepage() {
       id: 1,
       iconClass: "bi bi-mortarboard",
       title: "Laptop cho Sinh viên",
-      description: "Laptop giá hợp lý, pin lâu, phù hợp học tập và làm việc nhóm"
+      description: "Laptop giá hợp lý, pin lâu, phù hợp học tập và làm việc nhóm",
+      link: "/student-laptop"
     },
     {
       id: 2,
       iconClass: "bi bi-brush",
       title: "Laptop cho Đồ họa",
-      description: "Hiệu suất mạnh mẽ, màn hình chuẩn màu, hỗ trợ thiết kế chuyên nghiệp"
+      description: "Hiệu suất mạnh mẽ, màn hình chuẩn màu, hỗ trợ thiết kế chuyên nghiệp",
+      link: "/design-laptop"
     },
     {
       id: 3,
       iconClass: "bi bi-controller",
       title: "Laptop cho Gaming",
-      description: "Card đồ họa cao cấp, tần số quét cao, trải nghiệm chơi game đỉnh cao"
+      description: "Card đồ họa cao cấp, tần số quét cao, trải nghiệm chơi game đỉnh cao",
+      link: "/gaming-laptop"
     }
   ];
 
