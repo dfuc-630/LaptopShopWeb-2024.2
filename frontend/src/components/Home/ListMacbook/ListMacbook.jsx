@@ -69,7 +69,7 @@ const ListMacbook = () => {
                         <small className="product-count">{macbookProducts.length} sản phẩm</small>
                     </div>
                     
-                    <a href="/macbook" className="view-all-link">
+                    <a href="/macbook-laptop" className="view-all-link">
                         Xem tất cả 
                         <span className="arrow">→</span>
                     </a>

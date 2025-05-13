@@ -69,7 +69,7 @@ const ListLenovo = () => {
                         <small className="product-count">{lenovoProducts.length} sản phẩm</small>
                     </div>
                     
-                    <a href="/lenovo" className="view-all-link">
+                    <a href="/lenovo-laptop" className="view-all-link">
                         Xem tất cả 
                         <span className="arrow">→</span>
                     </a>

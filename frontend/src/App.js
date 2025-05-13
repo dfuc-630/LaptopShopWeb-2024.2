@@ -14,6 +14,9 @@ import OrdersPage from './pages/OrdersPage.jsx';
 import SearchResults from './pages/SearchResults.jsx';
 import HomePage from './pages/Home/Home.jsx';
 import AcerProduct from './pages/BrandLaptop/AcerProduct.jsx';
+import AsusLaptop from './pages/BrandLaptop/AsusLaptop.jsx';
+import MacbookLaptop from './pages/BrandLaptop/MacbookLaptop.jsx';
+import LenovoLaptop from './pages/BrandLaptop/LenovoLaptop.jsx';
 // Connect
 import ConnectPage from './pages/ConnectPage.jsx';
 //About Us
@@ -69,7 +72,9 @@ function App() {
               <Route path="/listproduct" element={<ListProduct/>}/>
               {/* BrandLaptop */}
               <Route path="/acer-laptop" element={<AcerProduct/>}/>
-
+              <Route path="/asus-laptop" element={<AsusLaptop/>}/>
+              <Route path="/macbook-laptop" element={<MacbookLaptop/>}/>
+              <Route path="/lenovo-laptop" element={<LenovoLaptop/>}/>
               {/* TargetLaptop */}
 
               

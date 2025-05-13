@@ -70,7 +70,7 @@ const ListAsus = () => {
                         <small className="product-count">{asusProducts.length} sản phẩm</small>
                     </div>
                     
-                    <a href="/asus" className="view-all-link">
+                    <a href="/asus-laptop" className="view-all-link">
                         Xem tất cả 
                         <span className="arrow">→</span>
                     </a>
