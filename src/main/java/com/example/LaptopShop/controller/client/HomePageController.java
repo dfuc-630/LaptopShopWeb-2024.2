@@ -36,7 +36,7 @@ public class HomePageController {
             UserInfo.userInfo = null;
         else
             UserInfo.userInfo = username;
-        return "client/homepage/show";
+        return "client/homepage/show"; // hompage frontend sửa vào đây theo cú pháp: "redirect:/https/"
     }
 
     @GetMapping("/register")
