@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Update Product</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+    <!-- Include Header and Sidebar using Thymeleaf -->
+    <th:block th:replace="~{../layout/header}"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:replace="~{../layout/sidebar}"></th:block>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Update Product</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active"><a href="/admin/product">Product</a> / Update</li>
+                    </ol>
+
+                    <div class="row">
+                        <div class="col-md-6 col-12 mx-auto">
+                            <h3>Update a product</h3>
+                            <hr />
+                            <form th:action="@{/admin/product/update}" method="post" th:object="${newProduct}">
+                                <div class="mb-3" style="display: none;">
+                                    <label class="form-label">ID</label>
+                                    <input type="text" class="form-control" th:field="*{id}" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" th:field="*{name}" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input type="text" class="form-control" th:field="*{price}" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="factory" class="form-label">Factory</label>
+                                    <select class="form-select" th:field="*{factory}" aria-label="Default select example">
+                                        <option value="APPLE">Apple</option>
+                                        <option value="ASUS">Asus</option>
+                                        <option value="LENOVO">Lenovo</option>
+                                        <option value="DELL">Dell</option>
+                                        <option value="LG">LG</option>
+                                        <option value="ACER">Acer</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sold" class="form-label">Sold</label>
+                                    <input type="text" class="form-control" th:field="*{sold}" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="target" class="form-label">Target</label>
+                                    <select class="form-select" th:field="*{target}" aria-label="Default select example">
+                                        <option value="GAMING">Gaming</option>
+                                        <option value="SINHVIEN-VANPHONG">Sinh viên - văn phòng</option>
+                                        <option value="THIET-KE-DO-HOA">Thiết kế đồ họa</option>
+                                        <option value="MONG-NHE">Mỏng nhẹ</option>
+                                        <option value="DOANH-NHAN">Doanh nhân</option>
+                                    </select>
+                                </div>
+                                <div class="row mx-auto">
+                                    <a href="/admin/product" class="btn btn-success col-2">Back</a>
+                                    <button type="submit" class="btn btn-warning col-2 mx-2">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+            <!-- Include Footer using Thymeleaf -->
+            <th:block th:replace="~{../layout/footer}"></th:block>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
