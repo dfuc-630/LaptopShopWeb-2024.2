@@ -37,7 +37,7 @@ public class HomePageController {
             UserInfo.userInfo = null;
         else
             UserInfo.userInfo = username;
-        return "client/homepage/show"; // hompage frontend sửa vào đây theo cú pháp: "redirect:/https/"
+        return "redirect:http://localhost:3000"; // hompage frontend sửa vào đây theo cú pháp: "redirect:http://"
     }
 
     @GetMapping("/register")
@@ -64,7 +64,7 @@ public class HomePageController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model, CsrfToken csrfToken) {
+    public String getLoginPage(Model model, CsrfToken csrfToken) {
         model.addAttribute("_csrf", csrfToken);
         return "client/auth/login";
     }
