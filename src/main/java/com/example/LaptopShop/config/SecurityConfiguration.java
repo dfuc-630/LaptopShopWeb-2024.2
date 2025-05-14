@@ -66,17 +66,16 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/data/**"))
+                        .ignoringRequestMatchers("/otp/**", "/data/**"))
                 .cors().and()
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
                         .requestMatchers(HttpMethod.POST, "/data/order/submit").permitAll()
                         .requestMatchers("/", "/register", "/product/**", "/login", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/data/**")
+                                "/images/**", "/data/**", "/static/**")
                         .permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                // ✅ Xử lý lỗi 302 khi chưa đăng nhập: trả 401 JSON thay vì redirect
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, authException) -> {
                             String accept = request.getHeader("Accept");
@@ -109,8 +108,8 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://dominhphuc20225064.id.vn")); // ✅ không có dấu `/` cuối
-        configuration.setAllowCredentials(true); // ✅ Cho phép cookie đi kèm
+        configuration.setAllowedOrigins(List.of("https://dominhphuc20225064.id.vn")); // Không có dấu /
+        configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
 
