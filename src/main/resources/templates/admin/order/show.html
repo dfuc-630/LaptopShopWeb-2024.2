@@ -13,9 +13,9 @@
 </head>
 
 <body class="sb-nav-fixed">
-    <div th:replace="layout/header :: header"></div>
+    <div th:replace="~{admin/layout/header :: header}"></div>
     <div id="layoutSidenav">
-        <div th:replace="layout/sidebar :: sidebar"></div>
+        <div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
@@ -28,7 +28,7 @@
                     <div>order</div>
                 </div>
             </main>
-            <div th:replace="layout/footer :: footer"></div>
+            <div th:replace="~{admin/layout/footer :: footer}"></div>
         </div>
     </div>
 
