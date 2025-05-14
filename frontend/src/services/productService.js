@@ -57,7 +57,12 @@ export const getAllProducts = async () => {
   const url = `${API_BASE_URL}`;
   console.log(`ProductService: Fetching all products from ${url}`);
   try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        credentials: "include",
+        headers: {
+          "Accept": "application/json"
+        }
+      });
 
       if (!response.ok) {
           console.error(`ProductService: Lỗi HTTP: ${response.status} - ${response.statusText}`);
@@ -99,7 +104,12 @@ export const getProductById = async (id) => {
     console.log(`ProductService: Fetching product ID ${productId} from ${url}`);
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          credentials: "include",
+          headers: {
+            "Accept": "application/json"
+          }
+        });
 
         if (response.status === 404) {
             console.log(`ProductService: Không tìm thấy sản phẩm ID ${productId} (404).`);
@@ -149,7 +159,12 @@ export const searchProductsByName = async (name) => {
   console.log(`ProductService: Searching products with name "${name}" from ${url}`);
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      credentials: "include",
+      headers: {
+        "Accept": "application/json"
+      }
+    });
 
     if (!response.ok) {
       console.error(`ProductService: Lỗi HTTP: ${response.status} - ${response.statusText}`);
