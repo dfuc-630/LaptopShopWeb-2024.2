@@ -1,9 +1,10 @@
 package com.example.LaptopShop.service;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -15,57 +16,81 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class OtpService {
-    private final OtpRepository otpRepository;
-    // gioi han so lan nhap otp
-    private final int MAX_ATTEMPTS = 5;
-    private final Map<String, Integer> attempts = new ConcurrentHashMap<>();
 
-    public String genrateOtp() {
+    private final OtpRepository otpRepository;
+    private final EmailService emailService;
+
+    private final int MAX_ATTEMPTS = 5;
+    private final int BLOCK_DURATION_MINUTES = 5;
+
+    // Lưu: email → số lần thử
+    private final Map<String, Integer> attempts = new ConcurrentHashMap<>();
+    // Lưu: email → thời gian bị block
+    private final Map<String, LocalDateTime> blockTimes = new ConcurrentHashMap<>();
+
+    public String generateOtp() {
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
     }
 
     public void sendOtpToUser(String email, Long orderId) {
-        String otpCode = genrateOtp();
+        String otpCode = generateOtp();
 
         OtpEntity otpEntity = new OtpEntity();
         otpEntity.setEmail(email);
         otpEntity.setOtpCode(otpCode);
         otpEntity.setCreatedAt(LocalDateTime.now());
-        otpEntity.setExpiredAt(LocalDateTime.now().plusMinutes(5)); // Otp het han sau 5p
+        otpEntity.setExpiredAt(LocalDateTime.now().plusMinutes(5));
         otpEntity.setVerified(false);
         otpEntity.setOrderId(orderId);
 
         otpRepository.save(otpEntity);
+        emailService.sendOtpEmail(email, otpCode, orderId);
 
         System.out.println("OTP gửi tới " + email + ": " + otpCode);
     }
 
-    public boolean verifyOtp(String email, String otpCode, Long orderId) {
-        var otpOptional = otpRepository.findByEmailAndOtpCodeAndOrderId(email, otpCode, orderId);
-
-        if (otpOptional.isEmpty()) {
-            throw new IllegalArgumentException("Nhập mã otp sai hoặc đơn hàng không tồn tại");
+    public String verifyOtp(String email, String otpCode, Long orderId) {
+        if (isBlocked(email)) {
+            if (canUnblock(email)) {
+                resetAttempts(email);
+            } else {
+                return "Bạn đã vượt quá số lần nhập OTP. Vui lòng thử lại sau 5 phút.";
+            }
         }
 
-        var otp = otpOptional.get();
+        Optional<OtpEntity> otpOptional = otpRepository.findByEmailAndOrderId(email, orderId);
+        if (otpOptional.isEmpty()) {
+            return "Đơn hàng không tồn tại hoặc không đúng email.";
+        }
+
+        OtpEntity otp = otpOptional.get();
 
         if (otp.isVerified()) {
-            throw new IllegalStateException("Mã OTP đã được sử dụng.");
+            return "Mã OTP đã được sử dụng.";
         }
 
         if (otp.getExpiredAt().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Mã OTP đã hết hạn.");
+            return "Mã OTP đã hết hạn.";
         }
 
-        otp.setVerified(true);
-        otpRepository.save(otp);
-        return true;
-    }
+        if (otp.getOtpCode().equals(otpCode)) {
+            otp.setVerified(true);
+            otpRepository.save(otp);
+            resetAttempts(email);
+            return "Xác minh OTP thành công.";
+        } else {
+            recordFailedAttempt(email);
+            int remaining = Math.max(0, MAX_ATTEMPTS - getFailedAttempts(email));
 
-    public int getMaxAttempts() {
-        return MAX_ATTEMPTS;
+            if (isBlocked(email)) {
+                blockTimes.put(email, LocalDateTime.now());
+                return "Bạn đã vượt quá số lần nhập OTP. Vui lòng thử lại sau 5 phút.";
+            }
+
+            return "Mã OTP không đúng. Bạn còn " + remaining + " lần thử.";
+        }
     }
 
     public void recordFailedAttempt(String email) {
@@ -80,7 +105,16 @@ public class OtpService {
         return getFailedAttempts(email) >= MAX_ATTEMPTS;
     }
 
+    public boolean canUnblock(String email) {
+        LocalDateTime blockTime = blockTimes.get(email);
+        if (blockTime == null)
+            return false;
+
+        return LocalDateTime.now().isAfter(blockTime.plusMinutes(BLOCK_DURATION_MINUTES));
+    }
+
     public void resetAttempts(String email) {
         attempts.remove(email);
+        blockTimes.remove(email);
     }
 }

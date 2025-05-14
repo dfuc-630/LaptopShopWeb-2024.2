@@ -2,6 +2,7 @@ package com.example.LaptopShop.controller.client;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,18 +47,25 @@ public class HomePageController {
     }
 
     @PostMapping("/register")
-    public String handleRegister(@ModelAttribute("registerUser") RegisterDTO registerDTO) {
-        User user = this.userService.registerDTOtoUser(registerDTO);
-        String hashPassword = this.passwordEncoder.encode(user.getPassword());
+    public String handleRegister(@ModelAttribute("registerUser") RegisterDTO registerDTO, Model model) {
+        if (userService.getUserByEmail(registerDTO.getEmail()) != null) {
+            model.addAttribute("registerUser", registerDTO);
+            model.addAttribute("emailExistsError", "Email đã tồn tại. Vui lòng chọn email khác.");
+            return "client/auth/register";
+        }
+
+        User user = userService.registerDTOtoUser(registerDTO);
+        String hashPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
-        user.setRole(this.userService.getRoleByName("USER"));
-        this.userService.handleSaveUser(user);
+        user.setRole(userService.getRoleByName("USER"));
+        userService.handleSaveUser(user);
+
         return "redirect:/login";
     }
 
     @GetMapping("/login")
-    public String getLoginPage(Model model) {
-
+    public String loginPage(Model model, CsrfToken csrfToken) {
+        model.addAttribute("_csrf", csrfToken);
         return "client/auth/login";
     }
 

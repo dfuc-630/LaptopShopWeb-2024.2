@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác nhận OTP</title>
+</head>
+<body>
+    <h2>Xác nhận thanh toán bằng OTP</h2>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" value="trinhtuanphong2106@gmail.com" readonly /><br><br>
+
+    <label for="orderId">Order ID:</label>
+    <input type="number" id="orderId" value="1" /><br><br>
+
+    <button onclick="sendOtp()">Gửi mã OTP</button>
+
+    <br><br>
+
+    <input type="text" id="otpInput" placeholder="Nhập mã OTP" />
+    <button onclick="verifyOtp()">Xác thực OTP</button>
+
+    <p id="otpError" style="color: red;"></p>
+
+    <script>
+        function sendOtp() {
+            const orderId = document.getElementById("orderId").value;
+
+            fetch('/checkout/otp/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ orderId: orderId })
+            })
+            .then(res => res.json())
+            .then(data => alert(data.message))
+            .catch(() => alert("Gửi OTP thất bại."));
+        }
+
+        function verifyOtp() {
+            const otp = document.getElementById("otpInput").value;
+            const orderId = document.getElementById("orderId").value;
+
+            fetch('/checkout/otp/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ otp: otp, orderId: orderId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message === 'Xác minh OTP thành công') {
+                    window.location.href = "/checkout/success";
+                } else {
+                    document.getElementById("otpError").innerText = data.message;
+                }
+            })
+            .catch(() => {
+                document.getElementById("otpError").innerText = "Có lỗi xảy ra trong quá trình xác minh.";
+            });
+        }
+    </script>
+</body>
+</html>
