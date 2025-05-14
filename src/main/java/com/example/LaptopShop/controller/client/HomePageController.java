@@ -37,7 +37,8 @@ public class HomePageController {
             UserInfo.userInfo = null;
         else
             UserInfo.userInfo = username;
-        return "redirect:http://localhost:3000"; // hompage frontend sửa vào đây theo cú pháp: "redirect:http://"
+        return "redirect:https://dominhphuc20225064.id.vn"; // hompage frontend sửa vào đây theo cú pháp:
+                                                            // "redirect:http://"
     }
 
     @GetMapping("/register")
