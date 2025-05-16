@@ -89,4 +89,7 @@ public class UserService {
         pinService.setUserPin(email, pin);
     }
 
+    public List<User> searchUsersByName(String name) {
+        return userRepository.findByFullNameContainingIgnoreCase(name);
+    }
 }

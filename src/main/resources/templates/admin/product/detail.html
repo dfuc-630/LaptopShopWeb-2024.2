@@ -44,7 +44,7 @@
                                     <li class="list-group-item">Target: <span th:text="${product.target}"></span></li>
                                     <!-- Image displayed dynamically -->
                                     <li class="list-group-item">
-                                        <img th:src="@{/images/img/{image}(image=${product.image})}" alt="Product Image">
+                                        <img th:src="${product.image}" alt="Product Image" style="width:200px;" />
                                     </li>
                                 </ul>
                             </div>

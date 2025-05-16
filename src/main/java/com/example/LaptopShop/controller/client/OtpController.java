@@ -14,7 +14,7 @@ import com.example.LaptopShop.service.OtpService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/checkout/otp")
+@RequestMapping("/otp")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('USER')")
 public class OtpController {
@@ -40,7 +40,6 @@ public class OtpController {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("message", "Bạn chưa đăng nhập"));
         }
-
         String email = principal.getName();
         String resultMessage = otpService.verifyOtp(email, request.getOtp(), request.getOrderId());
 

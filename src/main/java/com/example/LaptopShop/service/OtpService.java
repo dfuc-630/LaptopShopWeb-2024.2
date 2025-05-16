@@ -23,9 +23,9 @@ public class OtpService {
     private final int MAX_ATTEMPTS = 5;
     private final int BLOCK_DURATION_MINUTES = 5;
 
-    // Lưu: email → số lần thử
+    // luu so lan thu
     private final Map<String, Integer> attempts = new ConcurrentHashMap<>();
-    // Lưu: email → thời gian bị block
+    // luu thoi diem block
     private final Map<String, LocalDateTime> blockTimes = new ConcurrentHashMap<>();
 
     public String generateOtp() {

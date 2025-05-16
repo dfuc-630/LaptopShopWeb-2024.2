@@ -1,6 +1,7 @@
 package com.example.LaptopShop.controller.admin;
 
 import java.util.List;
+import java.util.Locale.Category;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,15 @@ public class ProductController {
 
         String username = UserInfo.userInfo;
         model.addAttribute("username", username);
+        return "admin/product/show";
+    }
+
+    @GetMapping("/admin/product/search")
+    public String searchProducts(@RequestParam(required = false) String name, Model model) {
+
+        List<Product> products = productService.searchProductsByName(name);
+
+        model.addAttribute("products", products);
         return "admin/product/show";
     }
 

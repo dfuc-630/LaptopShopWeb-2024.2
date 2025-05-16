@@ -8,17 +8,17 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Update User</title>
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="sb-nav-fixed">
     <!-- Header -->
-    <div th:replace="layout/header :: header"></div>
+    <div th:replace="~{admin/layout/header :: header}"></div>
 
     <div id="layoutSidenav">
         <!-- Sidebar -->
-        <div th:replace="layout/sidebar :: sidebar"></div>
+        <div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
 
         <div id="layoutSidenav_content">
             <main>
@@ -72,7 +72,7 @@
             </main>
 
             <!-- Footer -->
-            <div th:replace="layout/footer :: footer"></div>
+            <div th:replace="~{admin/layout/footer :: footer}"></div>
         </div>
     </div>
 

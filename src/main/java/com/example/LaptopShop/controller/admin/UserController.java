@@ -129,6 +129,14 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
+    @GetMapping("/admin/user/search")
+    public String searchUser(Model model, @RequestParam(required = false) String name) {
+
+        List<User> users = userService.searchUsersByName(name);
+        model.addAttribute("usersView", users);
+        return "admin/user/show";
+    }
+
 }
 
 // @RestController
