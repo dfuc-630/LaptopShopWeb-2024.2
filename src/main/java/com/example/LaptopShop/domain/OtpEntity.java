@@ -2,19 +2,14 @@ package com.example.LaptopShop.domain;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 public class OtpEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // id auto increment
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -24,17 +19,6 @@ public class OtpEntity {
     private LocalDateTime expiredAt;
     private boolean verified = false;
 
+    private Long userId;
     private Long orderId;
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail(String email) {
-        return this.email;
-    }
 }

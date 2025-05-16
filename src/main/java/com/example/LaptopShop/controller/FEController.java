@@ -1,10 +1,12 @@
 package com.example.LaptopShop.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,7 @@ import com.example.LaptopShop.domain.dto.OrderDTORequest;
 import com.example.LaptopShop.domain.dto.OrderData;
 import com.example.LaptopShop.repository.OrderDTORepository;
 import com.example.LaptopShop.repository.UserRepository;
+import com.example.LaptopShop.service.OtpService;
 import com.example.LaptopShop.service.ProductService;
 import com.example.LaptopShop.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,10 +36,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class FEController {
     private final ProductService productService;
     private final UserService userService;
+    private final OtpService optService;
 
-    public FEController(ProductService productService, UserService userService) {
+    public FEController(ProductService productService, UserService userService, OtpService optService) {
         this.productService = productService;
         this.userService = userService;
+        this.optService = optService;
     }
 
     @GetMapping("/data/product")
@@ -95,19 +100,31 @@ public class FEController {
     @PostMapping("/data/order/submit")
     public ResponseEntity<?> postMethodName(@RequestBody OrderDTORequest request) {
         User user = userRepository.findById(request.getUserId()).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "Người dùng không tồn tại"));
+        }
         OrderDTO order = new OrderDTO();
         order.setUser(user);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            String jsonData = mapper.writeValueAsString(request.getData()); // Chuyển OrderData → String JSON
+            OrderData orderData = request.getData();
+            // orderData.setStatus("Chờ xác thực");
+            // orderData.setOrderDate(LocalDateTime.now());
+            String jsonData = mapper.writeValueAsString(orderData); // Chuyển OrderData → String JSON
             order.setData(jsonData);
             orderDTORepository.save(order);
+
+            String email = user.getEmail();
+            optService.sendOtpToUser(user.getId(), email, order.getId());
+
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("success", false, "message", "Dữ liệu đơn hàng không hợp lệ"));
         }
 
-        return ResponseEntity.ok(Map.of("success", true, "message", "Đơn hàng đã tạo"));
+        return ResponseEntity
+                .ok(Map.of("success", true, "message", "Đơn hàng đã tạo và mã OTP đã được gửi tới " + user.getEmail()));
 
     }
 

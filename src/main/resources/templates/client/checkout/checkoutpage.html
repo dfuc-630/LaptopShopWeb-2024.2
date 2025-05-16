@@ -8,7 +8,7 @@
     <h2>Xác nhận thanh toán bằng OTP</h2>
 
     <label for="email">Email:</label>
-    <input type="text" id="email" value="trinhtuanphong2106@gmail.com" readonly /><br><br>
+    <input type="text" id="email" readonly /><br><br>
 
     <label for="orderId">Order ID:</label>
     <input type="number" id="orderId" value="1" /><br><br>
@@ -23,6 +23,25 @@
     <p id="otpError" style="color: red;"></p>
 
     <script>
+        // Lấy email của người dùng đã đăng nhập
+        function fetchUserInfo() {
+            fetch('/data/userInfo', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.email) {
+                    document.getElementById("email").value = data.email;
+                } else {
+                    alert("Không thể lấy email của người dùng.");
+                }
+            })
+            .catch(() => alert("Lỗi khi lấy thông tin người dùng."));
+        }
+
+        // Gửi OTP đến email của người dùng
         function sendOtp() {
             const orderId = document.getElementById("orderId").value;
 
@@ -37,6 +56,7 @@
             .catch(() => alert("Gửi OTP thất bại."));
         }
 
+        // Xác thực OTP
         function verifyOtp() {
             const otp = document.getElementById("otpInput").value;
             const orderId = document.getElementById("orderId").value;
@@ -45,7 +65,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ otp: otp, orderId: orderId})
+                body: JSON.stringify({ otp: otp, orderId: orderId })
             })
             .then(res => res.json())
             .then(data => {
@@ -59,6 +79,9 @@
                 document.getElementById("otpError").innerText = "Có lỗi xảy ra trong quá trình xác minh.";
             });
         }
+
+        // Gọi hàm fetchUserInfo khi trang được tải
+        window.onload = fetchUserInfo;
     </script>
 </body>
 </html>

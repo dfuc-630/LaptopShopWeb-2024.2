@@ -1,5 +1,6 @@
 package com.example.LaptopShop.domain.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderData {
@@ -13,6 +14,8 @@ public class OrderData {
     private String discountCode;
     private long discountAmount;
     private long totalAmount;
+    // private String status;
+    // private LocalDateTime orderDate;
 
     public List<Item> getItems() {
         return items;
@@ -93,5 +96,21 @@ public class OrderData {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    // public String getStatus() {
+    // return status;
+    // }
+
+    // public void setStatus(String status) {
+    // this.status = status;
+    // }
+
+    // public LocalDateTime getOrderDate() {
+    // return orderDate;
+    // }
+
+    // public void setOrderDate(LocalDateTime orderDate) {
+    // this.orderDate = orderDate;
+    // }
 
 }
