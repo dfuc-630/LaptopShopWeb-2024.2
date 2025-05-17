@@ -21,16 +21,27 @@ const extractRefreshRate = (refreshRateString) => {
   return isNaN(value) ? null : value;
 };
 
-export const useProductFilter = (initialProducts = []) => {
-  const [filterFactories, setFilterFactories] = useState([]);
-  const [filterPriceRanges, setFilterPriceRanges] = useState([]);
-  const [filterDemands, setFilterDemands] = useState([]);
-  const [filterScreenSizes, setFilterScreenSizes] = useState([]);
-  const [filterCPUs, setFilterCPUs] = useState([]);
-  const [filterRAMs, setFilterRAMs] = useState([]);
-  const [filterROMs, setFilterROMs] = useState([]);
-  const [filterRefreshRates, setFilterRefreshRates] = useState([]);
-  const [sortOption, setSortOption] = useState('default');
+export const useProductFilter = (
+  initialProducts = [], 
+  initialFactories = [],
+  initialPriceRanges = [],
+  initialDemands = [],
+  initialScreenSizes = [],
+  initialCPUs = [],
+  initialRAMs = [],
+  initialROMs = [],
+  initialRefreshRates = [],
+  initialSortOption = 'default'
+) => {
+  const [filterFactories, setFilterFactories] = useState(initialFactories);
+  const [filterPriceRanges, setFilterPriceRanges] = useState(initialPriceRanges);
+  const [filterDemands, setFilterDemands] = useState(initialDemands);
+  const [filterScreenSizes, setFilterScreenSizes] = useState(initialScreenSizes);
+  const [filterCPUs, setFilterCPUs] = useState(initialCPUs);
+  const [filterRAMs, setFilterRAMs] = useState(initialRAMs);
+  const [filterROMs, setFilterROMs] = useState(initialROMs);
+  const [filterRefreshRates, setFilterRefreshRates] = useState(initialRefreshRates);
+  const [sortOption, setSortOption] = useState(initialSortOption);
 
   const filteredProducts = useMemo(() => {
     return initialProducts

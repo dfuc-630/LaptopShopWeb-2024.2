@@ -31,21 +31,21 @@ export default function Homepage() {
   const bannerSlides = [
     {
       id: 1,
-      image: hotProduct?.image || "/api/placeholder/1200/400",
-      title: hotProduct ? `Top 1: ${hotProduct.name}` : "Laptop Mới Nhất 2025",
-      description: hotProduct ? `Hiệu suất vượt trội với ${hotProduct.specs}` : "Hiệu suất vượt trội, thiết kế sang trọng",
+      image: "/assets/Banner1.webp",
+      title: "Laptop Mới Nhất 2025",
+      description: "Hiệu suất vượt trội, thiết kế sang trọng",
       buttonText: "Khám phá ngay"
     },
     {
       id: 2,
-      image: "/api/placeholder/1200/400",
+      image: "/assets/banner2.jpg",
       title: "Giảm giá đến 30%",
       description: "Cho các dòng laptop cao cấp",
       buttonText: "Xem ưu đãi"
     },
     {
       id: 3,
-      image: "/api/placeholder/1200/400",
+      image: "/assets/banner3.jpg",
       title: "Bảo hành 3 năm",
       description: "Đổi mới trong 30 ngày nếu có lỗi",
       buttonText: "Tìm hiểu thêm"
@@ -89,8 +89,8 @@ export default function Homepage() {
     },
     {
       id: 2,
-      iconClass: "bi bi-brush",
-      title: "Laptop cho Đồ họa",
+      iconClass: "bi bi-laptop",
+      title: "Macbook",
       description: "Hiệu suất mạnh mẽ, màn hình chuẩn màu, hỗ trợ thiết kế chuyên nghiệp",
       link: "/design-laptop"
     },

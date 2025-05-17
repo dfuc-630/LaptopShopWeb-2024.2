@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './NewsSection.css'; // Import CSS cho section này
 
 function NewsSection() {
+  const sectionRef = useRef(null);
   const tinTucMoiNhat = [
     {
       id: 1,
@@ -102,10 +103,19 @@ function NewsSection() {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    // Scroll to the top of the section when changing page
+    if (sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleDetailClick = () => {
+    // Also scroll to top when viewing details
+    window.scrollTo(0, 0);
   };
 
   return (
-    <section className="tin-tuc-section">
+    <section className="tin-tuc-section" ref={sectionRef}>
       <h2 className="section-title">Tin tức mới nhất</h2>
       <p className="section-description">
         Cập nhật những thông tin mới nhất về sản phẩm, sự kiện và các chương trình khuyến mãi từ <strong>HustLaptop</strong>.
@@ -118,7 +128,7 @@ function NewsSection() {
             <p className="ngay-dang">Ngày đăng: {tin.date}</p>
             <p className="mo-ta">{tin.excerpt}</p>
             <details className="chi-tiet">
-              <summary>Xem chi tiết</summary>
+              <summary onClick={handleDetailClick}>Xem chi tiết</summary>
               <p>{tin.details}</p>
             </details>
           </li>

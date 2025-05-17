@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFilter } from 'react-icons/fa';
 import { Button, Offcanvas, Card } from 'react-bootstrap';
@@ -13,14 +13,18 @@ import { getAllProducts } from '../../services/productService.js';
 function DesignLaptop() {
   const [showFiltersMobile, setShowFiltersMobile] = useState(false); //State dùng để hiển thị bộ lọc trên di động
   
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data: allProducts = [], isLoading, error } = useQuery({ 
     queryKey: ['allProducts'], 
     queryFn: getAllProducts,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Filter for Design laptops (using the same Gaming - Đồ họa target)
-  const designProducts = allProducts.filter(product => product.target === 'Laptop đồ họa');
+  // Filter for Macbook products (using the target value from API)
+  const designProducts = allProducts.filter(product => product.target === 'Macbook');
 
   const {
     sortedProducts,
@@ -65,10 +69,10 @@ function DesignLaptop() {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><Link to="/">Trang chủ</Link></li>
-              <li className="breadcrumb-item active">Laptop Đồ họa</li>
+              <li className="breadcrumb-item active">Macbook</li>
             </ol>
           </nav>
-          <h2 className="mb-3 fw-bold">Laptop cho Đồ họa</h2>
+          <h2 className="mb-3 fw-bold">Macbook</h2>
           <div className="row align-items-center">
             <div className="col-md-8">
               <p className="mb-3">Hiệu suất mạnh mẽ, màn hình chuẩn màu, hỗ trợ thiết kế chuyên nghiệp</p>

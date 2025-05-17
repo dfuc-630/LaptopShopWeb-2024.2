@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFilter } from 'react-icons/fa';
 import { Button, Offcanvas, Card } from 'react-bootstrap';
@@ -12,6 +12,10 @@ import { getAllProducts } from '../../services/productService.js';
 
 function GamingLaptop() {
   const [showFiltersMobile, setShowFiltersMobile] = useState(false); //State dùng để hiển thị bộ lọc trên di động
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   const { data: allProducts = [], isLoading, error } = useQuery({ 
     queryKey: ['allProducts'], 

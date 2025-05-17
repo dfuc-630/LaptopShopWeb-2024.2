@@ -15,17 +15,24 @@ function Policy() {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+    } else {
+      window.scrollTo(0, 0);
     }
   }, [location]);
+
+  // Add click handler for the menu links to scroll to the top first
+  const handleMenuClick = () => {
+    window.scrollTo(0, 0);
+  };
 
   return (
     <div className="chinh-sach-container">
       <h1 className="page-title">Chính Sách</h1>
       <ul className="chinh-sach-menu">
-        <li><a href="#bao-hanh">Bảo hành</a></li>
-        <li><a href="#doi-tra">Đổi trả</a></li>
-        <li><a href="#bao-mat">Bảo mật</a></li>
-        <li><a href="#mua-hang">Mua hàng</a></li>
+        <li><a href="#bao-hanh" onClick={handleMenuClick}>Bảo hành</a></li>
+        <li><a href="#doi-tra" onClick={handleMenuClick}>Đổi trả</a></li>
+        <li><a href="#bao-mat" onClick={handleMenuClick}>Bảo mật</a></li>
+        <li><a href="#mua-hang" onClick={handleMenuClick}>Mua hàng</a></li>
       </ul>
 
       <div className="chinh-sach-content">

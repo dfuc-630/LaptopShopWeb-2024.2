@@ -1,14 +1,16 @@
 import React from 'react';
 import { Button, Carousel } from 'react-bootstrap';
-import { useState} from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import bannerImage1 from '../../assets/H1_1440x242_a9763619b0.webp';
 import './Banner.css';
 
-function Banner () {
+function Banner({ slides }) {
     const [activeSlide, setActiveSlide] = useState(0);
+    const navigate = useNavigate();
   
-    // Banner slides data
-    const bannerSlides = [
+    // Use provided slides or fallback to default
+    const bannerSlides = slides || [
       {
         id: 1,
         image: "/assets/Banner1.webp",
@@ -18,14 +20,14 @@ function Banner () {
       },
       {
         id: 2,
-        image: "/assets/BannerImage2.webp",
+        image: "/assets/banner2.jpg",
         title: "Giảm giá đến 30%",
         description: "Cho các dòng laptop cao cấp",
         buttonText: "Xem ưu đãi"
       },
       {
         id: 3,
-        image: "/assets/Banner3.webp",
+        image: "/assets/banner3.jpg",
         title: "Bảo hành 3 năm",
         description: "Đổi mới trong 30 ngày nếu có lỗi",
         buttonText: "Tìm hiểu thêm"
@@ -40,6 +42,18 @@ function Banner () {
     const handleNext = () => {
         setActiveSlide((prev) => (prev === bannerSlides.length - 1 ? 0 : prev + 1));
     };
+    
+    // Handle button click - navigate based on button text
+    const handleButtonClick = (buttonText) => {
+        if (buttonText === "Khám phá ngay") {
+            navigate('/listproduct');
+        } else if (buttonText === "Tìm hiểu thêm") {
+            navigate('/chinh-sach/bao-hanh');
+        } else if (buttonText === "Xem ưu đãi") {
+            navigate('/macbook-laptop');
+        }
+    };
+    
     return (
         <div className="position-relative banner-container">
         <Carousel 
@@ -62,7 +76,13 @@ function Banner () {
                 <Carousel.Caption className="d-flex flex-column justify-content-center align-items-center h-100" style={{ top: 0, backgroundColor: 'rgba(0,0,0,0.4)' }}>
                   <h2 className="display-4 fw-bold">{slide.title}</h2>
                   <p className="lead mb-4">{slide.description}</p>
-                  <Button variant="primary" size="lg">{slide.buttonText}</Button>
+                  <Button 
+                    variant="primary" 
+                    size="lg" 
+                    onClick={() => handleButtonClick(slide.buttonText)}
+                  >
+                    {slide.buttonText}
+                  </Button>
                 </Carousel.Caption>
               </div>
             </Carousel.Item>

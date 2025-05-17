@@ -8,6 +8,10 @@ function Footer() {
   const youtubeUrl = "https://www.youtube.com/user/FptShopOnline"; // Ví dụ
   const tiktokUrl = "https://www.tiktok.com/@fptshop.official"; // Ví dụ
 
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <footer className="bg-dark text-white py-4 mt-auto"> {/* Thêm mt-auto */}
       <div className="container">
@@ -41,9 +45,9 @@ function Footer() {
             <h5>Về chúng tôi</h5>
             <ul className="list-unstyled">
               {/* Dùng Link cho các trang nội bộ */}
-              <li><Link to="/gioi-thieu" className="text-white text-decoration-none small">Giới thiệu công ty</Link></li>
-              <li><Link to="/tuyen-dung" className="text-white text-decoration-none small">Tuyển dụng</Link></li>
-              <li><Link to="/tin-tuc" className="text-white text-decoration-none small">Tin tức</Link></li>
+              <li><Link to="/gioi-thieu" className="text-white text-decoration-none small" onClick={handleClick}>Giới thiệu công ty</Link></li>
+              <li><Link to="/tuyen-dung" className="text-white text-decoration-none small" onClick={handleClick}>Tuyển dụng</Link></li>
+              <li><Link to="/tin-tuc" className="text-white text-decoration-none small" onClick={handleClick}>Tin tức</Link></li>
             </ul>
           </div>
 
@@ -51,10 +55,10 @@ function Footer() {
           <div className="col-md-2 col-6 mb-3">
             <h5>Chính sách</h5>
             <ul className="list-unstyled">
-              <li><Link to="/chinh-sach/bao-hanh" className="text-white text-decoration-none small">Chính sách bảo hành</Link></li>
-              <li><Link to="/chinh-sach/doi-tra" className="text-white text-decoration-none small">Chính sách đổi trả</Link></li>
-              <li><Link to="/chinh-sach/bao-mat" className="text-white text-decoration-none small">Chính sách bảo mật</Link></li>
-              <li><Link to="/chinh-sach/mua-hang" className="text-white text-decoration-none small">Chính sách mua hàng</Link></li>
+              <li><Link to="/chinh-sach/bao-hanh" className="text-white text-decoration-none small" onClick={handleClick}>Chính sách bảo hành</Link></li>
+              <li><Link to="/chinh-sach/doi-tra" className="text-white text-decoration-none small" onClick={handleClick}>Chính sách đổi trả</Link></li>
+              <li><Link to="/chinh-sach/bao-mat" className="text-white text-decoration-none small" onClick={handleClick}>Chính sách bảo mật</Link></li>
+              <li><Link to="/chinh-sach/mua-hang" className="text-white text-decoration-none small" onClick={handleClick}>Chính sách mua hàng</Link></li>
             </ul>
           </div>
 

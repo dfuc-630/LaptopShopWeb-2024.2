@@ -2,6 +2,10 @@ import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const RecommendationCard = ({ recommendation }) => {
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <Card className="h-100 text-center border-0 shadow-sm">
       <Card.Body className="d-flex flex-column align-items-center">
@@ -14,7 +18,7 @@ const RecommendationCard = ({ recommendation }) => {
         <Card.Title className="fw-bold mb-3">{recommendation.title}</Card.Title>
         <Card.Text>{recommendation.description}</Card.Text>
         <div className="mt-auto pt-3">
-          <Link to={recommendation.link || '#'} className="btn btn-outline-primary">
+          <Link to={recommendation.link || '#'} className="btn btn-outline-primary" onClick={handleClick}>
             Xem chi tiết
           </Link>
         </div>

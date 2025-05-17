@@ -15,6 +15,10 @@ function ProductCard({ product }) {
       console.log(`Đã thêm ${product.name} vào giỏ`);
     }
   };
+  
+  const handleClick = () => {
+    window.scrollTo(0, 0);
+  };
 
   if (!product) {
     return null;
@@ -27,7 +31,7 @@ function ProductCard({ product }) {
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 mb-4 product-card-wrapper">
       <div className="card h-100 shadow-sm product-card">
-        <Link to={`/product/${product.id}`} className="text-decoration-none text-dark product-link">
+        <Link to={`/product/${product.id}`} className="text-decoration-none text-dark product-link" onClick={handleClick}>
           <div className="d-flex product-content">
             {/* Image on the left */}
             <div className="image-container">
@@ -62,7 +66,7 @@ function ProductCard({ product }) {
               {formatCurrency(product.price)}
             </p>
             <div className="mt-auto d-flex justify-content-between align-items-center product-actions">
-              <Link to={`/product/${product.id}`} className="btn btn-outline-primary btn-sm details-button">
+              <Link to={`/product/${product.id}`} className="btn btn-outline-primary btn-sm details-button" onClick={handleClick}>
                 <i className="bi bi-info-circle me-1"></i> Chi tiết
               </Link>
               <button

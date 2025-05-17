@@ -284,3 +284,146 @@ export const generateFactoryDescription = (factory) => {
   }
   return description;
 };
+
+/**
+ * Fetches products with pagination from the server API.
+ * @param {number} page - The page number to fetch (starts from 1).
+ * @returns {Promise<Object>} A promise that resolves to an object containing products and pagination info.
+ * @throws {Error} If the network request fails or the server returns an error status.
+ */
+export const getProductsByPage = async (page = 1) => {
+  const url = `${API_BASE_URL}/page/${page}`;
+  console.log(`ProductService: Fetching products page ${page} from ${url}`);
+  
+  try {
+    // First get the current page products
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error(`ProductService: HTTP Error: ${response.status} - ${response.statusText}`);
+      const text = await response.text();
+      console.log('Response:', text);
+      throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log(`ProductService: Successfully fetched page ${page}`);
+    
+    // Process the products data
+    let products = [];
+    let totalItems = 0;
+    
+    if (Array.isArray(data)) {
+      // Simple array response - just products
+      products = data.map(product => ({
+        ...product,
+        specs: parseProductDetail(product.detailDesc),
+      }));
+      
+      // Get the total product count by making one additional API call
+      try {
+        // Try to get total count from a separate API endpoint
+        const countResponse = await fetch(`${API_BASE_URL}/count`);
+        if (countResponse.ok) {
+          const countData = await countResponse.json();
+          totalItems = countData.count || countData.total || countData.totalItems || 0;
+        } else {
+          // If there's no count endpoint, estimate based on current page
+          // For page 1, we check if we got less than the expected items per page
+          const productsPerPage = 9; // Assuming 9 products per page as in UI
+          
+          if (page === 1 && products.length < productsPerPage) {
+            // If we're on page 1 and have fewer items than expected, that's the total
+            totalItems = products.length;
+          } else {
+            // Otherwise, make a call to the next page to see if it exists
+            const nextPageResponse = await fetch(`${API_BASE_URL}/page/${page + 1}`);
+            if (nextPageResponse.ok) {
+              const nextPageData = await nextPageResponse.json();
+              if (Array.isArray(nextPageData) && nextPageData.length > 0) {
+                // There's at least one more page, so we know there are more items
+                totalItems = (page * productsPerPage) + nextPageData.length;
+              } else {
+                // No more pages, so this is the last page
+                totalItems = page * productsPerPage;
+              }
+            } else {
+              // No next page, so calculate based on current page
+              totalItems = page * productsPerPage;
+            }
+          }
+        }
+      } catch (error) {
+        console.warn('Could not determine total product count, using current page data instead');
+        // Fallback to minimum known count
+        totalItems = Math.max(page * products.length, products.length);
+      }
+      
+      console.log(`ProductService: Estimated total product count: ${totalItems}`);
+    } else if (data && typeof data === 'object') {
+      // Object response with metadata - extract products and pagination info
+      if (Array.isArray(data.products || data.content || data.items || data.data)) {
+        // Handle different possible response structures
+        const productsArray = data.products || data.content || data.items || data.data;
+        products = productsArray.map(product => ({
+          ...product,
+          specs: parseProductDetail(product.detailDesc),
+        }));
+      }
+      
+      // Extract total count if available in response
+      totalItems = data.totalItems || data.totalElements || data.total || 0;
+    }
+    
+    return {
+      products,
+      pagination: {
+        totalItems,
+        currentPage: page,
+        hasItems: products.length > 0,
+        isLastPage: products.length === 0
+      }
+    };
+  } catch (error) {
+    console.error(`ProductService: Error fetching products page ${page}:`, error);
+    throw new Error('Unable to connect or fetch product data from server.');
+  }
+};
+
+/**
+ * Gets the total count of products available in the system.
+ * @returns {Promise<number>} A promise that resolves to the total number of products.
+ */
+export const getTotalProductCount = async () => {
+  // First try the dedicated count endpoint
+  try {
+    const countResponse = await fetch(`${API_BASE_URL}/count`);
+    if (countResponse.ok) {
+      const countData = await countResponse.json();
+      const count = countData.count || countData.total || countData.totalItems || 0;
+      if (count > 0) {
+        console.log(`ProductService: Got product count from API: ${count}`);
+        return count;
+      }
+    }
+  } catch (error) {
+    console.warn("ProductService: Count endpoint not available, falling back to getAllProducts");
+  }
+  
+  // If count endpoint fails or returns 0, fallback to getting all products
+  try {
+    const response = await fetch(API_BASE_URL);
+    if (response.ok) {
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        console.log(`ProductService: Estimated count from all products: ${data.length}`);
+        return data.length;
+      }
+    }
+  } catch (error) {
+    console.error("ProductService: Failed to get product count", error);
+  }
+  
+  // Return 0 if all attempts fail
+  return 0;
+};
