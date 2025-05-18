@@ -12,10 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "orderdto")
 public class OrderDTO {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -25,6 +27,9 @@ public class OrderDTO {
     private User user;
 
     private String data;
+
+    @Transient
+    private OrderData parsedData;
 
     public long getId() {
         return id;
@@ -53,6 +58,14 @@ public class OrderDTO {
     @Override
     public String toString() {
         return "OrderDTO [id=" + id + ", user=" + user + ", data=" + data + "]";
+    }
+
+    public OrderData getParsedData() {
+        return parsedData;
+    }
+
+    public void setParsedData(OrderData parsedData) {
+        this.parsedData = parsedData;
     }
 
 }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Detail</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        .order-summary { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 5px; }
+        .order-summary-item { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .total-amount { font-weight: bold; font-size: 1.2em; border-top: 1px solid #ddd; padding-top: 10px; }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+    <div th:replace="~{admin/layout/header :: header}"></div>
+
+    <div id="layoutSidenav">
+        <div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Order Detail</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a th:href="@{/admin}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/admin/order}">Orders</a></li>
+                        <li class="breadcrumb-item active">Detail</li>
+                    </ol>
+
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <div class="row" th:if="${order} and ${data}">
+                        <div class="col-12">
+                            <h3 th:text="'Order Information - ID: ' + ${order.id}"></h3>
+                            <hr />
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>User</th>
+                                        <th>Customer Name</th>
+                                        <th>Total Items</th>
+                                        <th>Total Amount</th>
+                                        <th>Payment Method</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td th:text="${order.id}">1</td>
+                                        <td th:text="${order.user.fullName}">Nguyen Van A</td>
+                                        <td th:text="${data.shippingInfo.name}">Name</td>
+                                        <td th:text="${data.items.size()} + ' items'">1 item</td>
+                                        <td th:text="${#numbers.formatDecimal(data.totalAmount, 0, 'POINT', 3, 'COMMA')} + ' ₫'">100,000 ₫</td>
+                                        <td th:text="${data.paymentMethod == 'cod' ? 'Cash on Delivery' : data.paymentMethod}">Cash on Delivery</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Order Items Table -->
+                            <div class="order-items-table mt-4">
+                                <h4>Order Items</h4>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Product ID</th>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item : ${data.items}">
+                                            <td th:text="${item.productId}">1</td>
+                                            <td th:text="${item.name}">Product 1</td>
+                                            <td th:text="${item.quantity}">2</td>
+                                            <td th:text="${#numbers.formatDecimal(item.price, 0, 'POINT', 3, 'COMMA')}">50,000</td>
+                                            <td th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 'POINT', 3, 'COMMA')}">100,000</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Order Summary -->
+                            <div class="order-summary">
+                                <h4>Order Summary</h4>
+                                <div class="order-summary-item">
+                                    <span>Subtotal:</span>
+                                    <span th:text="${#numbers.formatDecimal(data.subtotal, 0, 'POINT', 3, 'COMMA')}">100,000</span> ₫
+                                </div>
+                                <div class="order-summary-item">
+                                    <span>Shipping Cost:</span>
+                                    <span th:text="${#numbers.formatDecimal(data.shippingCost, 0, 'POINT', 3, 'COMMA')}">20,000</span> ₫
+                                </div>
+                                <div class="order-summary-item total-amount">
+                                    <span>Total Amount:</span>
+                                    <span th:text="${#numbers.formatDecimal(data.totalAmount, 0, 'POINT', 3, 'COMMA')}">120,000</span> ₫
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <a th:href="@{/admin/order}" class="btn btn-primary">Back to Orders</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <div th:replace="~{admin/layout/footer :: footer}"></div>
+        </div>
+    </div>
+</body>
+</html>

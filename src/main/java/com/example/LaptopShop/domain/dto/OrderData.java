@@ -14,7 +14,7 @@ public class OrderData {
     private String discountCode;
     private long discountAmount;
     private long totalAmount;
-    // private String status;
+    private String status;
     // private LocalDateTime orderDate;
 
     public List<Item> getItems() {
@@ -97,13 +97,13 @@ public class OrderData {
         this.userId = userId;
     }
 
-    // public String getStatus() {
-    // return status;
-    // }
+    public String getStatus() {
+        return status;
+    }
 
-    // public void setStatus(String status) {
-    // this.status = status;
-    // }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     // public LocalDateTime getOrderDate() {
     // return orderDate;

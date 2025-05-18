@@ -38,7 +38,9 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">ID: <span th:text="${product.id}"></span></li>
                                     <li class="list-group-item">Name: <span th:text="${product.name}"></span></li>
-                                    <li class="list-group-item">Price: <span th:text="${product.price}"></span></li>
+                                    <li class="list-group-item">
+                                        Price: <span th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 3, 'COMMA')} + ' ₫'"></span>
+                                    </li>
                                     <li class="list-group-item">Factory: <span th:text="${product.factory}"></span></li>
                                     <li class="list-group-item">Sold: <span th:text="${product.sold}"></span></li>
                                     <li class="list-group-item">Target: <span th:text="${product.target}"></span></li>

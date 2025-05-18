@@ -1,40 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <meta charset="UTF-8">
+    <title>Manage Orders</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-
 <body class="sb-nav-fixed">
-    <div th:replace="~{admin/layout/header :: header}"></div>
-    <div id="layoutSidenav">
-        <div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Dashboard</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">
-                            <a th:href="@{/admin}">Dashboard</a> / Order
-                        </li>
-                    </ol>
-                    <div>order</div>
+
+<!-- Include Header -->
+<div th:replace="~{admin/layout/header :: header}"></div>
+
+<div id="layoutSidenav">
+    <!-- Include Sidebar -->
+    <div th:replace="~{admin/layout/sidebar :: sidebar}"></div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Manage Orders</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/admin}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Orders</li>
+                </ol>
+
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <div class="d-flex justify-content-between">
+                            <h3>Orders List</h3>
+                        </div>
+                        <hr/>
+
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>User</th>
+                                    <th>Customer Name</th>
+                                    <th>Total Items</th>
+                                    <th>Total Amount</th>
+                                    <th>Payment Method</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="order : ${orders}">
+                                    <td th:text="${order.id}">1</td>
+                                    <td th:text="${order.user.fullName}">Nguyen Van A</td>
+                                    
+                                    <td th:if="${order.parsedData != null}"
+                                        th:text="${order.parsedData.shippingInfo.name}">Name</td>
+                                    <td th:unless="${order.parsedData != null}" colspan="4" class="text-danger">
+                                        Error parsing order data
+                                    </td>
+
+                                    <td th:if="${order.parsedData != null}"
+                                        th:text="${order.parsedData.items.size()} + ' items'"></td>
+
+                                    <td th:if="${order.parsedData != null}"
+                                        th:text="${#numbers.formatDecimal(order.parsedData.totalAmount, 0, 'POINT', 3, 'COMMA')} + ' ₫'"></td>
+
+                                    <td th:if="${order.parsedData != null}"
+                                        th:text="${order.parsedData.paymentMethod == 'cod' ? 'Cash on Delivery' : order.parsedData.paymentMethod}"></td>
+
+                                    <td th:if="${order.parsedData != null}"
+                                        th:text="${order.parsedData.status}"></td>
+
+                                    <td>    
+                                        <a th:href="@{'/admin/order/' + ${order.id}}" class="btn btn-success">View</a>
+                                        <a th:href="@{'/admin/order/delete/' + ${order.id}}" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </main>
-            <div th:replace="~{admin/layout/footer :: footer}"></div>
-        </div>
+
+            </div>
+        </main>
+        <!-- Include Footer -->
+        <div th:replace="~{admin/layout/footer :: footer}"></div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-    <script th:src="@{/js/scripts.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/scripts.js}"></script>
+
 </body>
-
 </html>

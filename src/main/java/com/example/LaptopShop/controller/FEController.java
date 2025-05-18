@@ -109,8 +109,7 @@ public class FEController {
         ObjectMapper mapper = new ObjectMapper();
         try {
             OrderData orderData = request.getData();
-            // orderData.setStatus("Chờ xác thực");
-            // orderData.setOrderDate(LocalDateTime.now());
+            orderData.setStatus("Chờ xác thực");
             String jsonData = mapper.writeValueAsString(orderData); // Chuyển OrderData → String JSON
             order.setData(jsonData);
             orderDTORepository.save(order);
