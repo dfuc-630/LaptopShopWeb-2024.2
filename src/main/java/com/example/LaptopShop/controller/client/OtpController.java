@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/otp")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('USER')")
+
 public class OtpController {
 
     private final OtpService otpService;

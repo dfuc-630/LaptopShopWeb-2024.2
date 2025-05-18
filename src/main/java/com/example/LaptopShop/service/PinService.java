@@ -3,6 +3,7 @@ package com.example.LaptopShop.service;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PinService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final @Lazy PasswordEncoder passwordEncoder;
 
     private final int MAX_ATTEMPTS = 5;
     private final Map<String, Integer> attempts = new ConcurrentHashMap<>();

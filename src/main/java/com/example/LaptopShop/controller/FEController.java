@@ -135,6 +135,10 @@ public class FEController {
         ObjectMapper mapper = new ObjectMapper();
         try {
             OrderData orderData = request.getData();
+            if (orderData == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("success", false, "message", "Danh sách sản phẩm không hợp lệ"));
+            }
             orderData.setStatus("Chờ xác thực");
             String jsonData = mapper.writeValueAsString(orderData); // Chuyển OrderData → String JSON
             order.setData(jsonData);

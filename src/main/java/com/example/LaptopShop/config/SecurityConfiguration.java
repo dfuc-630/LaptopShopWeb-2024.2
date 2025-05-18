@@ -112,7 +112,10 @@ public class SecurityConfiguration {
             JwtRequestFilter jwtRequestFilter, // Spring tự động tiêm JwtRequestFilter vào đây
             UserDetailsService userDetailsService) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/otp/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers(
+                        "/otp/**",
+                        "/api/auth/**",
+                        "/data/**"))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
