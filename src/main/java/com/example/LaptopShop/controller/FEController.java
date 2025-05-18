@@ -76,14 +76,40 @@ public class FEController {
         return products;
     }
 
-    @GetMapping("/data/userInfo")
-    public User getMethodName() {
-        String userEmail = UserInfo.userInfo;
-        User user = this.userService.getUserByEmail(userEmail);
-        if (user == null) {
-            return null;
+    public ResponseEntity<?> getUserInfo() {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (username == null || username.equals("anonymousUser")) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+
+                    .body(Map.of("error", "Unauthorized"));
+
         }
-        return user;
+
+        User user = userService.getUserByEmail(username);
+
+        if (user == null) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+
+                    .body(Map.of("error", "User not found"));
+
+        }
+
+        return ResponseEntity.ok(Map.of(
+
+                "id", user.getId(),
+
+                "email", user.getEmail(),
+
+                "fullName", user.getFullName(),
+
+                "role", user.getRole().getName()
+
+        ));
+
     }
 
     @GetMapping("/data/product/search/{name}")
@@ -113,25 +139,25 @@ public class FEController {
             String jsonData = mapper.writeValueAsString(orderData); // Chuyển OrderData → String JSON
             order.setData(jsonData);
             orderDTORepository.save(order);
-
             String email = user.getEmail();
             optService.sendOtpToUser(user.getId(), email, order.getId());
-
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("success", false, "message", "Dữ liệu đơn hàng không hợp lệ"));
         }
-
         return ResponseEntity
                 .ok(Map.of("success", true, "message", "Đơn hàng đã tạo và mã OTP đã được gửi tới " + user.getEmail()));
 
     }
 
     @GetMapping("/data/order/{userId}")
-    public List<OrderDTO> getMethodName(@PathVariable Long userId) {
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable Long userId) {
         User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "User not found"));
+        }
         List<OrderDTO> orders = orderDTORepository.findByUser(user);
-        return orders;
+        return ResponseEntity.ok(orders);
     }
-
 }

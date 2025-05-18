@@ -15,7 +15,8 @@ public class EmailService {
 
     public void sendOtpEmail(String to, String otpCode, Long orderId) {
         String subject = "Mã OTP xác nhận đơn hàng #" + orderId;
-        String body = "Mã OTP của bạn là: " + otpCode + "\nVui lòng không chia sẻ mã này cho bất kỳ ai.";
+        String body = "Được gửi từ LaptopShopWeb" + "\nMã OTP của bạn là: " + otpCode
+                + "\nVui lòng không chia sẻ mã này cho bất kỳ ai.";
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
