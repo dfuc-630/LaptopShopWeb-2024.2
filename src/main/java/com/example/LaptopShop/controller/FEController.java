@@ -1,53 +1,42 @@
 package com.example.LaptopShop.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.LaptopShop.domain.Product;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.domain.dto.OrderDTO;
 import com.example.LaptopShop.domain.dto.OrderDTORequest;
-import com.example.LaptopShop.domain.dto.OrderData;
 import com.example.LaptopShop.repository.OrderDTORepository;
 import com.example.LaptopShop.repository.UserRepository;
-import com.example.LaptopShop.service.OtpService;
 import com.example.LaptopShop.service.ProductService;
 import com.example.LaptopShop.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class FEController {
     private final ProductService productService;
     private final UserService userService;
-    private final OtpService optService;
 
-    public FEController(ProductService productService, UserService userService, OtpService optService) {
+    public FEController(ProductService productService, UserService userService) {
         this.productService = productService;
         this.userService = userService;
-        this.optService = optService;
     }
 
     @GetMapping("/data/product")
     public List<Product> getProduct() {
-        List<Product> products = this.productService.getAllProducts();
-        return products;
+        return productService.getAllProducts();
     }
 
     @GetMapping("/data/product/page/{id}")
@@ -66,24 +55,32 @@ public class FEController {
 
     @GetMapping("/data/product/{id}")
     public Product getProductById(@PathVariable long id) {
-        Product product = this.productService.getProductById(id);
-        return product;
+        return productService.getProductById(id);
     }
 
     @GetMapping("/data/product/target/{target}")
     public List<Product> getProductByTarget(@PathVariable String target) {
-        List<Product> products = this.productService.getProductByTarget(target);
-        return products;
+        return productService.getProductByTarget(target);
     }
 
     @GetMapping("/data/userInfo")
-    public User getMethodName() {
-        String userEmail = UserInfo.userInfo;
-        User user = this.userService.getUserByEmail(userEmail);
-        if (user == null) {
-            return null;
+    public ResponseEntity<?> getUserInfo() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null || username.equals("anonymousUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "Unauthorized"));
         }
-        return user;
+        User user = userService.getUserByEmail(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "User not found"));
+        }
+        return ResponseEntity.ok(Map.of(
+            "id", user.getId(),
+            "email", user.getEmail(),
+            "fullName", user.getFullName(),
+            "role", user.getRole().getName()
+        ));
     }
 
     @GetMapping("/data/product/search/{name}")
@@ -101,37 +98,32 @@ public class FEController {
     public ResponseEntity<?> postMethodName(@RequestBody OrderDTORequest request) {
         User user = userRepository.findById(request.getUserId()).orElse(null);
         if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("success", false, "message", "Người dùng không tồn tại"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("success", false, "message", "User not found"));
         }
         OrderDTO order = new OrderDTO();
         order.setUser(user);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            OrderData orderData = request.getData();
-            orderData.setStatus("Chờ xác thực");
-            String jsonData = mapper.writeValueAsString(orderData); // Chuyển OrderData → String JSON
+            String jsonData = mapper.writeValueAsString(request.getData());
             order.setData(jsonData);
             orderDTORepository.save(order);
-
-            String email = user.getEmail();
-            optService.sendOtpToUser(user.getId(), email, order.getId());
-
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("success", false, "message", "Dữ liệu đơn hàng không hợp lệ"));
+                .body(Map.of("success", false, "message", "Invalid order data"));
         }
 
-        return ResponseEntity
-                .ok(Map.of("success", true, "message", "Đơn hàng đã tạo và mã OTP đã được gửi tới " + user.getEmail()));
-
+        return ResponseEntity.ok(Map.of("success", true, "message", "Order submitted successfully"));
     }
 
     @GetMapping("/data/order/{userId}")
-    public List<OrderDTO> getMethodName(@PathVariable Long userId) {
+    public ResponseEntity<?> getOrdersByUserId(@PathVariable Long userId) {
         User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "User not found"));
+        }
         List<OrderDTO> orders = orderDTORepository.findByUser(user);
-        return orders;
+        return ResponseEntity.ok(orders);
     }
-
 }

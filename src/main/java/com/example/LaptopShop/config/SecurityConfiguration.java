@@ -1,11 +1,15 @@
 package com.example.LaptopShop.config;
 
-import java.util.List;
-
+import com.example.LaptopShop.filter.JwtRequestFilter;
+import com.example.LaptopShop.service.CustomUserDetailsService;
+import com.example.LaptopShop.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,36 +17,76 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import com.example.LaptopShop.service.CustomUserDetailsService;
-import com.example.LaptopShop.service.UserService;
-
-import jakarta.servlet.DispatcherType;
+import org.springframework.core.annotation.Order;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.List;
+
 @Configuration
-@EnableMethodSecurity(securedEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // ==== Admin (Session, Form Login) ====
     @Bean
-    public UserDetailsService userDetailsService(UserService userService) {
-        return new CustomUserDetailsService(userService);
+    @Order(1)
+    public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .securityMatcher("/admin/**", "/login")
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login").permitAll()
+                .anyRequest().hasRole("ADMIN")
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/admin", true)
+                .permitAll()
+            )
+            .logout(logout -> logout.logoutUrl("/logout"))
+            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+
+        return http.build();
+    }
+
+    // ==== API Client (JWT, Stateless) ====
+    @Bean
+    @Order(2)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**", "/", "/register", "/product/**", "/client/**", "/css/**", "/js/**", "/images/**", "/data/**").permitAll()
+                .anyRequest().authenticated())
+            .authenticationProvider(authProvider(passwordEncoder(), userDetailsService))
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"error\": \"Unauthorized\"}");
+                }))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
     @Bean
-    public DaoAuthenticationProvider authProvider(
-            PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
@@ -51,67 +95,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationSuccessHandler customSuccessHandler() {
-        return new CustomSuccessHandler();
-    }
-
-    @Bean
-    public SpringSessionRememberMeServices rememberMeServices() {
-        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-        rememberMeServices.setAlwaysRemember(true);
-        return rememberMeServices;
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/otp/**", "/data/**"))
-                .cors().and()
-                .authorizeHttpRequests(authorize -> authorize
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/data/order/submit").permitAll()
-                        .requestMatchers("/", "/register", "/product/**", "/login", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/data/**", "/static/**")
-                        .permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            String accept = request.getHeader("Accept");
-                            if (accept != null && accept.contains("application/json")) {
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                response.setContentType("application/json");
-                                response.getWriter().write("{\"error\": \"Unauthorized\"}");
-                            } else {
-                                response.sendRedirect("/login");
-                            }
-                        }))
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                        .invalidSessionUrl("/logout?expired")
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false))
-                .logout(logout -> logout
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true))
-                .rememberMe(r -> r.rememberMeServices(rememberMeServices()))
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .failureUrl("/login?error")
-                        .successHandler(customSuccessHandler())
-                        .permitAll());
-
-        return http.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://dominhphuc20225064.id.vn")); // Không có dấu /
+        configuration.setAllowedOrigins(List.of("https://dominhphuc20225064.id.vn", "http://localhost:3000"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

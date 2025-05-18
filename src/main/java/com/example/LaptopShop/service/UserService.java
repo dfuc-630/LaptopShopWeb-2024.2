@@ -2,13 +2,11 @@ package com.example.LaptopShop.service;
 
 import java.util.List;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.LaptopShop.domain.Role;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.domain.dto.RegisterDTO;
-import com.example.LaptopShop.repository.OrderDTORepository;
 import com.example.LaptopShop.repository.ProductRepository;
 import com.example.LaptopShop.repository.RoleRepository;
 import com.example.LaptopShop.repository.UserRepository;
@@ -20,16 +18,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ProductRepository productRepository;
-    private final PinService pinService;
-    private final OrderDTORepository orderDTORepository;
 
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
-            ProductRepository productRepository, PinService pinService, OrderDTORepository orderDTORepository) {
+            ProductRepository productRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.productRepository = productRepository;
-        this.pinService = pinService;
-        this.orderDTORepository = orderDTORepository;
     }
 
     public String handleHello() {
@@ -84,14 +78,11 @@ public class UserService {
     }
 
     public long countOrders() {
-        return this.orderDTORepository.count();
+        return 0;
+        // return this.orderRepository.count() ;
     }
-
-    public void setUserPin(String email, String pin) {
-        pinService.setUserPin(email, pin);
-    }
-
     public List<User> searchUsersByName(String name) {
         return userRepository.findByFullNameContainingIgnoreCase(name);
     }
 }
+
