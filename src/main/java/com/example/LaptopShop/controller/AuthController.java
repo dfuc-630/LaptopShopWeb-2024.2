@@ -64,6 +64,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,6 +76,8 @@ import java.util.Map;
 @RestController
 public class AuthController {
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -83,6 +86,10 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    AuthController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/api/auth/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
@@ -188,6 +195,44 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity.status(400)
                 .body(Map.of("success", false, "message", "Mật khẩu hiện tại không đúng hoặc lỗi hệ thống"));
+        }
+    }
+
+    @PostMapping("/api/auth/register")
+    public ResponseEntity<?> register(@RequestBody Map<String, String> registerRequest) {
+        try {
+            String email = registerRequest.get("email");
+            String password = registerRequest.get("password");
+            String fullName = registerRequest.get("fullName");
+            String phone = registerRequest.get("phone");
+            String address = registerRequest.get("address");
+
+            // Kiểm tra email đã tồn tại
+            if (userService.getUserByEmail(email) != null) {
+                return ResponseEntity.status(400)
+                    .body(Map.of("success", false, "message", "Email đã tồn tại. Vui lòng chọn email khác."));
+            }
+
+            // Tạo user mới
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setFullName(fullName);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setRole(userService.getRoleByName("USER"));
+
+            // Lưu user
+            userService.handleSaveUser(user);
+
+            // Trả về phản hồi thành công
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Đăng ký thành công. Vui lòng đăng nhập."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(400)
+                .body(Map.of("success", false, "message", "Đăng ký thất bại: " + e.getMessage()));
         }
     }
 }

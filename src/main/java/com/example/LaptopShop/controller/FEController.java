@@ -79,7 +79,9 @@ public class FEController {
             "id", user.getId(),
             "email", user.getEmail(),
             "fullName", user.getFullName(),
-            "role", user.getRole().getName()
+            "role", user.getRole().getName(),
+            "address", user.getAddress(),
+            "phone", user.getPhone()
         ));
     }
 

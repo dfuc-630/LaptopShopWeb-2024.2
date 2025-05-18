@@ -10,7 +10,7 @@ import com.example.LaptopShop.domain.dto.RegisterDTO;
 import com.example.LaptopShop.repository.ProductRepository;
 import com.example.LaptopShop.repository.RoleRepository;
 import com.example.LaptopShop.repository.UserRepository;
-
+import com.example.LaptopShop.repository.OrderDTORepository;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -18,12 +18,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ProductRepository productRepository;
-
+    private final OrderDTORepository orderDTORepository;
     public UserService(UserRepository userRepository, RoleRepository roleRepository,
-            ProductRepository productRepository) {
+            ProductRepository productRepository, OrderDTORepository orderDTORepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.productRepository = productRepository;
+        this.orderDTORepository = orderDTORepository;
     }
 
     public String handleHello() {
@@ -78,8 +79,7 @@ public class UserService {
     }
 
     public long countOrders() {
-        return 0;
-        // return this.orderRepository.count() ;
+        return this.orderDTORepository.count() ;
     }
     public List<User> searchUsersByName(String name) {
         return userRepository.findByFullNameContainingIgnoreCase(name);
