@@ -16,6 +16,7 @@ function SearchResults() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFiltersMobile, setShowFiltersMobile] = useState(false);
+  const [showSidebarDesktop, setShowSidebarDesktop] = useState(true);
   const location = useLocation();
 
   const query = new URLSearchParams(location.search).get('name') || '';
@@ -123,32 +124,42 @@ function SearchResults() {
       </Offcanvas>
 
       <div className="row">
-        <div className="col-md-3 d-none d-md-block">
-          <FilterSidebar
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            filterFactories={filterFactories}
-            setFilterFactories={setFilterFactories}
-            filterPriceRanges={filterPriceRanges}
-            setFilterPriceRanges={setFilterPriceRanges}
-            filterDemands={filterDemands}
-            setFilterDemands={setFilterDemands}
-            filterScreenSizes={filterScreenSizes}
-            setFilterScreenSizes={setFilterScreenSizes}
-            filterCPUs={filterCPUs}
-            setFilterCPUs={setFilterCPUs}
-            filterRAMs={filterRAMs}
-            setFilterRAMs={setFilterRAMs}
-            filterROMs={filterROMs}
-            setFilterROMs={setFilterROMs}
-            filterRefreshRates={filterRefreshRates}
-            setFilterRefreshRates={setFilterRefreshRates}
-            clearFilters={clearFilters}
-            setShowFiltersMobile={setShowFiltersMobile}
-          />
+        <div className="col-12 d-none d-md-block mb-2">
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => setShowSidebarDesktop((prev) => !prev)}
+          >
+            {showSidebarDesktop ? 'Ẩn bộ lọc' : 'Hiện bộ lọc'}
+          </Button>
         </div>
-
-        <div className="col-12 col-md-9">
+        {showSidebarDesktop && (
+          <div className="col-md-3 d-none d-md-block">
+            <FilterSidebar
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              filterFactories={filterFactories}
+              setFilterFactories={setFilterFactories}
+              filterPriceRanges={filterPriceRanges}
+              setFilterPriceRanges={setFilterPriceRanges}
+              filterDemands={filterDemands}
+              setFilterDemands={setFilterDemands}
+              filterScreenSizes={filterScreenSizes}
+              setFilterScreenSizes={setFilterScreenSizes}
+              filterCPUs={filterCPUs}
+              setFilterCPUs={setFilterCPUs}
+              filterRAMs={filterRAMs}
+              setFilterRAMs={setFilterRAMs}
+              filterROMs={filterROMs}
+              setFilterROMs={setFilterROMs}
+              filterRefreshRates={filterRefreshRates}
+              setFilterRefreshRates={setFilterRefreshRates}
+              clearFilters={clearFilters}
+              setShowFiltersMobile={setShowFiltersMobile}
+            />
+          </div>
+        )}
+        <div className={showSidebarDesktop ? "col-12 col-md-9" : "col-12"}>
           <Card className="mb-3 shadow-sm">
             <Card.Body>
               <div className="row align-items-center">

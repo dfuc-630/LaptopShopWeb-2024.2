@@ -14,6 +14,7 @@ import { getProductsByPage, getTotalProductCount } from '../../services/productS
 
 function ListProduct() {
   const [showFiltersMobile, setShowFiltersMobile] = useState(false);
+  const [showSidebarDesktop, setShowSidebarDesktop] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -288,31 +289,43 @@ function ListProduct() {
 
       {/* Tim kiem cac san pham */}
       <div className="row" ref={filterSectionRef}>
-        <div className="col-md-3">
-          <FilterSidebar
-            filterFactories={filterFactories}
-            setFilterFactories={setFilterFactories}
-            filterPriceRanges={filterPriceRanges}
-            setFilterPriceRanges={setFilterPriceRanges}
-            filterDemands={filterDemands}
-            setFilterDemands={setFilterDemands}
-            filterScreenSizes={filterScreenSizes}
-            setFilterScreenSizes={setFilterScreenSizes}
-            filterCPUs={filterCPUs}
-            setFilterCPUs={setFilterCPUs}
-            filterRAMs={filterRAMs}
-            setFilterRAMs={setFilterRAMs}
-            filterROMs={filterROMs}
-            setFilterROMs={setFilterROMs}
-            filterRefreshRates={filterRefreshRates}
-            setFilterRefreshRates={setFilterRefreshRates}
-            clearFilters={handleClearFilters}
-            setShowFiltersMobile={setShowFiltersMobile}
-          />
+        {/* Toggle button for desktop */}
+        <div className="col-12 d-none d-md-block mb-2">
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => setShowSidebarDesktop((prev) => !prev)}
+          >
+            {showSidebarDesktop ? 'Ẩn bộ lọc' : 'Hiện bộ lọc'}
+          </Button>
         </div>
-
-        {/* Thong tin chung */}
-        <div className="col-12 col-md-9">
+        {/* Sidebar - only show if showSidebarDesktop is true */}
+        {showSidebarDesktop && (
+          <div className="col-md-3 d-none d-md-block">
+            <FilterSidebar
+              filterFactories={filterFactories}
+              setFilterFactories={setFilterFactories}
+              filterPriceRanges={filterPriceRanges}
+              setFilterPriceRanges={setFilterPriceRanges}
+              filterDemands={filterDemands}
+              setFilterDemands={setFilterDemands}
+              filterScreenSizes={filterScreenSizes}
+              setFilterScreenSizes={setFilterScreenSizes}
+              filterCPUs={filterCPUs}
+              setFilterCPUs={setFilterCPUs}
+              filterRAMs={filterRAMs}
+              setFilterRAMs={setFilterRAMs}
+              filterROMs={filterROMs}
+              setFilterROMs={setFilterROMs}
+              filterRefreshRates={filterRefreshRates}
+              setFilterRefreshRates={setFilterRefreshRates}
+              clearFilters={handleClearFilters}
+              setShowFiltersMobile={setShowFiltersMobile}
+            />
+          </div>
+        )}
+        {/* Product list - take full width if sidebar is hidden */}
+        <div className={showSidebarDesktop ? "col-12 col-md-9" : "col-12"}>
           <Card>
             <Card.Body>
               <div className="row align-items-center">
@@ -335,7 +348,6 @@ function ListProduct() {
               </div>
             </Card.Body>
           </Card>
-
           {/* Cac option loc dang chon */}
           <ActiveFilters
             filterFactories={filterFactories}
@@ -356,40 +368,14 @@ function ListProduct() {
             setFilterRefreshRates={setFilterRefreshRates}
             clearFilters={handleClearFilters}
           />
-
           {/* Danh sach san pham */}
-          {isInitialLoading ? (
-            <div className="d-flex justify-content-center my-5">
-              <Spinner animation="border" role="status" variant="primary">
-                <span className="visually-hidden">Đang tải...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <ProductList products={sortedProducts} clearFilters={handleClearFilters}/>
-          )}
-          
+          <ProductList products={sortedProducts} isLoading={isInitialLoading} />
           {/* Pagination */}
-          {totalProducts > 0 && (
-            <>
-              <div className="d-flex justify-content-center my-3">
-                <div className="text-center">
-                  {isLoading ? (
-                    <small className="text-muted">Đang tải trang {currentPage}...</small>
-                  ) : (
-                    <small className="text-muted">
-                      Đang xem trang {currentPage} / {totalPages} ({totalProducts} sản phẩm)
-                    </small>
-                  )}
-                </div>
-              </div>
-              <Pagination 
-                currentPage={currentPage}
-                totalProducts={totalProducts}
-                productsPerPage={productsPerPage}
-                onPageChange={handlePageChange}
-              />
-            </>
-          )}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </div>

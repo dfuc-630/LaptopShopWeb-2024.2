@@ -12,6 +12,7 @@ import { getAllProducts } from '../../services/productService.js';
 
 function MacbookLaptop() {
     const [showFiltersMobile, setShowFiltersMobile] = useState(false); //State dùng để hiển thị bộ lọc trên di động
+    const [showSidebarDesktop, setShowSidebarDesktop] = useState(true); // NEW STATE
     
     const { data: allProducts = [], isLoading, error } = useQuery({ 
         queryKey: ['allProducts'], 
@@ -140,31 +141,43 @@ function MacbookLaptop() {
 
             {/* Tim kiem cac san pham */}
             <div className="row" ref={filterSectionRef}>
-                <div className="col-md-3">
-                    <FilterSidebar
-                        filterFactories={filterFactories}
-                        setFilterFactories={setFilterFactories}
-                        filterPriceRanges={filterPriceRanges}
-                        setFilterPriceRanges={setFilterPriceRanges}
-                        filterDemands={filterDemands}
-                        setFilterDemands={setFilterDemands}
-                        filterScreenSizes={filterScreenSizes}
-                        setFilterScreenSizes={setFilterScreenSizes}
-                        filterCPUs={filterCPUs}
-                        setFilterCPUs={setFilterCPUs}
-                        filterRAMs={filterRAMs}
-                        setFilterRAMs={setFilterRAMs}
-                        filterROMs={filterROMs}
-                        setFilterROMs={setFilterROMs}
-                        filterRefreshRates={filterRefreshRates}
-                        setFilterRefreshRates={setFilterRefreshRates}
-                        clearFilters={clearFilters}
-                        setShowFiltersMobile={setShowFiltersMobile}
-                    />
+                {/* Toggle button for desktop */}
+                <div className="col-12 d-none d-md-block mb-2">
+                    <Button
+                        variant="outline-primary"
+                        size="sm"
+                        onClick={() => setShowSidebarDesktop((prev) => !prev)}
+                    >
+                        {showSidebarDesktop ? 'Ẩn bộ lọc' : 'Hiện bộ lọc'}
+                    </Button>
                 </div>
-
-                {/* Thong tin chung */}
-                <div className="col-12 col-md-9">
+                {/* Sidebar - only show if showSidebarDesktop is true */}
+                {showSidebarDesktop && (
+                    <div className="col-md-3 d-none d-md-block">
+                        <FilterSidebar
+                            filterFactories={filterFactories}
+                            setFilterFactories={setFilterFactories}
+                            filterPriceRanges={filterPriceRanges}
+                            setFilterPriceRanges={setFilterPriceRanges}
+                            filterDemands={filterDemands}
+                            setFilterDemands={setFilterDemands}
+                            filterScreenSizes={filterScreenSizes}
+                            setFilterScreenSizes={setFilterScreenSizes}
+                            filterCPUs={filterCPUs}
+                            setFilterCPUs={setFilterCPUs}
+                            filterRAMs={filterRAMs}
+                            setFilterRAMs={setFilterRAMs}
+                            filterROMs={filterROMs}
+                            setFilterROMs={setFilterROMs}
+                            filterRefreshRates={filterRefreshRates}
+                            setFilterRefreshRates={setFilterRefreshRates}
+                            clearFilters={clearFilters}
+                            setShowFiltersMobile={setShowFiltersMobile}
+                        />
+                    </div>
+                )}
+                {/* Product list - take full width if sidebar is hidden */}
+                <div className={showSidebarDesktop ? "col-12 col-md-9" : "col-12"}>
                     <Card>
                         <Card.Body>
                             <div className="row align-items-center">
@@ -179,7 +192,6 @@ function MacbookLaptop() {
                             </div>
                         </Card.Body>
                     </Card>
-
                     {/* Cac option loc dang chon */}
                     <ActiveFilters
                         filterFactories={filterFactories}
@@ -200,7 +212,6 @@ function MacbookLaptop() {
                         setFilterRefreshRates={setFilterRefreshRates}
                         clearFilters={clearFilters}
                         />
-
                     {/* Danh sach san pham */}
                     <ProductList products={sortedProducts} clearFilters={clearFilters}/>
                 </div>
