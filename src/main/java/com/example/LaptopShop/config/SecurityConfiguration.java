@@ -115,7 +115,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.ignoringRequestMatchers(
                         "/otp/**",
                         "/api/auth/**",
-                        "/data/**"))
+                        "/data/**",
+                        "/user/pin/**"))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.INCLUDE).permitAll()

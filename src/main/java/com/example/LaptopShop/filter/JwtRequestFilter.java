@@ -30,12 +30,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String uri = request.getRequestURI();
-        if (uri.equals("/data/order/submit") || uri.startsWith("/otp/")) {
+        // Nếu muốn bỏ qua xác thực cho /otp/*, giữ lại điều kiện này
+        if (uri.startsWith("/otp/")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // ✅ Còn lại xử lý như bình thường
         final String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;

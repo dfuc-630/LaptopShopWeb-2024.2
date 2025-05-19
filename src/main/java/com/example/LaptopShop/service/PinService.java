@@ -74,4 +74,9 @@ public class PinService {
             userRepository.save(user);
         }
     }
+
+    public boolean hasPin(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null && user.getPin() != null && !user.getPin().isEmpty();
+    }
 }

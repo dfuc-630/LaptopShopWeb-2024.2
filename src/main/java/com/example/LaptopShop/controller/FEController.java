@@ -76,40 +76,26 @@ public class FEController {
         return products;
     }
 
+    @GetMapping("/api/userInfo")
     public ResponseEntity<?> getUserInfo() {
-
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-
         if (username == null || username.equals("anonymousUser")) {
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-
-                    .body(Map.of("error", "Unauthorized"));
-
+                .body(Map.of("error", "Unauthorized"));
         }
-
         User user = userService.getUserByEmail(username);
-
         if (user == null) {
-
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-
-                    .body(Map.of("error", "User not found"));
-
+                .body(Map.of("error", "User not found"));
         }
-
         return ResponseEntity.ok(Map.of(
-
-                "id", user.getId(),
-
-                "email", user.getEmail(),
-
-                "fullName", user.getFullName(),
-
-                "role", user.getRole().getName()
-
+            "id", user.getId(),
+            "email", user.getEmail(),
+            "fullName", user.getFullName(),
+            "role", user.getRole().getName(),
+            "address", user.getAddress(),
+            "phone", user.getPhone()
         ));
-
     }
 
     @GetMapping("/data/product/search/{name}")
@@ -151,7 +137,6 @@ public class FEController {
         }
         return ResponseEntity
                 .ok(Map.of("success", true, "message", "Đơn hàng đã tạo và mã OTP đã được gửi tới " + user.getEmail()));
-
     }
 
     @GetMapping("/data/order/{userId}")

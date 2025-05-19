@@ -3,7 +3,8 @@ package com.example.LaptopShop.controller.client;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,15 +24,18 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasRole('USER')")
 
 public class UserPinController {
+      private static final Logger logger = LoggerFactory.getLogger(UserPinController.class);
 
     private final UserService userService;
     private final PinService pinService;
 
-    @PostMapping("/setup")
+     @PostMapping("/setup")
     public ResponseEntity<Map<String, String>> setPin(@RequestBody PinSetupRequest request, Principal principal) {
         Map<String, String> response = new HashMap<>();
+        logger.info("POST /user/pin/setup called by user: {}", principal != null ? principal.getName() : "anonymous");
 
         if (principal == null) {
+            logger.warn("Attempt to setup PIN without login");
             response.put("message", "Bạn chưa đăng nhập");
             return ResponseEntity.status(403).body(response);
         }
@@ -39,17 +43,22 @@ public class UserPinController {
         String pin = request.getPin();
         String confirmPin = request.getConfirmPin();
 
+        logger.debug("Setup PIN for user {}: pin={}, confirmPin={}", principal.getName(), pin, confirmPin);
+
         if (pin == null || !pin.matches("\\d{6}")) {
+            logger.warn("Invalid PIN format by user {}", principal.getName());
             response.put("message", "Mã PIN không hợp lệ. Phải đúng 6 chữ số.");
             return ResponseEntity.badRequest().body(response);
         }
 
         if (!pin.equals(confirmPin)) {
+            logger.warn("PIN confirmation mismatch by user {}", principal.getName());
             response.put("message", "Mã PIN xác nhận không khớp.");
             return ResponseEntity.badRequest().body(response);
         }
 
         userService.setUserPin(principal.getName(), pin);
+        logger.info("PIN setup successful for user {}", principal.getName());
         response.put("message", "Thiết lập mã PIN thành công");
         return ResponseEntity.ok(response);
     }
@@ -112,6 +121,19 @@ public class UserPinController {
 
         pinService.setUserPin(email, newPin);
         response.put("message", "Đổi mã PIN thành công.");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/has")
+    public ResponseEntity<Map<String, Boolean>> hasPin(Principal principal) {
+        Map<String, Boolean> response = new HashMap<>();
+        if (principal == null) {
+            response.put("hasPin", false);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
+        String email = principal.getName();
+        boolean hasPin = pinService.hasPin(email);
+        response.put("hasPin", hasPin);
         return ResponseEntity.ok(response);
     }
 }
