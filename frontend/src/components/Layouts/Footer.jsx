@@ -65,15 +65,13 @@ function Footer() {
           {/* Hỗ trợ thanh toán */}
           <div className="col-md-3 col-6 mb-3">
             <h5>Hỗ trợ thanh toán</h5>
-            {/* Thay placeholder bằng logo thật */}
             <div className="d-flex flex-wrap gap-2">
-              <img src="/images/payment/visa.png" alt="Visa" title="Visa" style={{ height: '25px' }} />
-              <img src="/images/payment/mastercard.png" alt="MasterCard" title="MasterCard" style={{ height: '25px' }} />
-              <img src="/images/payment/jcb.png" alt="JCB" title="JCB" style={{ height: '25px' }} />
-              <img src="/images/payment/momo.png" alt="Momo" title="Momo" style={{ height: '25px' }} />
-              <img src="/images/payment/zalopay.png" alt="ZaloPay" title="ZaloPay" style={{ height: '25px' }} />
-              <img src="/images/payment/vnpay.png" alt="VNPay" title="VNPay" style={{ height: '25px' }} />
-               {/* Thêm các phương thức khác */}
+              <img src="/assets/payment/visa.jpeg" alt="Visa" title="Visa" style={{ height: '25px' }} />
+              <img src="/assets/payment/mastercard.png" alt="MasterCard" title="MasterCard" style={{ height: '25px' }} />
+              <img src="/assets/payment/jcb.jpeg" alt="JCB" title="JCB" style={{ height: '25px' }} />
+              <img src="/assets/payment/momo.png" alt="Momo" title="Momo" style={{ height: '25px' }} />
+              <img src="/assets/payment/zalopay.png" alt="ZaloPay" title="ZaloPay" style={{ height: '25px' }} />
+              <img src="/assets/payment/vnpay.png" alt="VNPay" title="VNPay" style={{ height: '25px' }} />
             </div>
           </div>
         </div>

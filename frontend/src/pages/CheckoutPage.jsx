@@ -309,7 +309,7 @@ function CheckoutPage() {
                                     id="payment-cod"
                                     value="cod"
                                     label="Thanh toán tiền mặt khi nhận hàng"
-                                    icon="/images/payment/cod.png"
+                                    icon="/assets/payment/cod.png"
                                     checked={paymentMethod === 'cod'}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                     disabled={isPlacingOrder}
@@ -318,7 +318,7 @@ function CheckoutPage() {
                                     id="payment-vnpay"
                                     value="vnpay"
                                     label="VNPAY (ATM/Visa/Master/JCB/QR Pay)"
-                                    icon="/images/payment/vnpay.png"
+                                    icon="/assets/payment/vnpay.png"
                                     checked={paymentMethod === 'vnpay'}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                     disabled={isPlacingOrder}
@@ -328,7 +328,7 @@ function CheckoutPage() {
                                     id="payment-momo"
                                     value="momo"
                                     label="Ví MoMo"
-                                    icon="/images/payment/momo.png"
+                                    icon="/assets/payment/momo.png"
                                     checked={paymentMethod === 'momo'}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                     disabled
@@ -338,7 +338,7 @@ function CheckoutPage() {
                                     id="payment-zalopay"
                                     value="zalopay"
                                     label="Ví ZaloPay"
-                                    icon="/images/payment/zalopay.png"
+                                    icon="/assets/payment/zalopay.png"
                                     checked={paymentMethod === 'zalopay'}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                     disabled
