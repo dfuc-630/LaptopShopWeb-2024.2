@@ -102,6 +102,24 @@ function ProductDetailPage() {
   // Tạo mô tả chi tiết cho nhà sản xuất
   const factoryDescription = product.factory ? generateFactoryDescription(product.factory) : '';
 
+  // Tách mô tả thành 2 phần: phần đầu luôn hiển thị, phần sau chỉ hiện khi mở rộng
+  const splitTitles = [
+    'Cấu hình cực mạnh', // Lenovo
+    'Cấu hình mạnh mẽ – đáp ứng mọi nhu cầu công việc', // Macbook
+    'Cấu hình khủng – chiến mượt mọi tựa game từ eSports đến AAA', // Asus
+    'Cấu hình mạnh mẽ – chiến mượt mọi tựa game', // Acer
+  ];
+  let firstPart = factoryDescription;
+  let secondPart = '';
+  for (const title of splitTitles) {
+    if (factoryDescription.includes(title)) {
+      const idx = factoryDescription.indexOf(title) + title.length;
+      firstPart = factoryDescription.slice(0, idx);
+      secondPart = factoryDescription.slice(idx);
+      break;
+    }
+  }
+
   // Check if specs exist
   const hasSpecs = product.specs && Object.keys(product.specs).length > 0;
 
@@ -308,14 +326,15 @@ function ProductDetailPage() {
                 <h5 className="mb-0">Mô tả sản phẩm</h5>
               </div>
               <div className="card-body">
-                <div className={`factory-description ${!isExpanded ? 'description-collapsed' : ''}`}>
+                <div className="factory-description">
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(factoryDescription),
+                      __html: firstPart + (isExpanded ? secondPart : ''),
                     }}
                   />
-                </div>                <button
+                </div>
+                <button
                   className={`btn-expand-collapse ${isExpanded ? 'expanded' : ''}`}
                   onClick={() => setIsExpanded(!isExpanded)}
                 >

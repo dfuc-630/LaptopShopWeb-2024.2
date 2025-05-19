@@ -382,14 +382,14 @@
 }
 
 /* Product Description Styles */
-.description-collapsed .content {
+.factory-description.description-collapsed .content {
   max-height: 100px; /* Tăng chiều cao khi thu gọn */
   overflow: hidden;
   position: relative;
   margin-bottom: 20px;
 }
 
-.description-collapsed::after {
+.factory-description.description-collapsed::after {
   content: '';
   position: absolute;
   bottom: 0;
