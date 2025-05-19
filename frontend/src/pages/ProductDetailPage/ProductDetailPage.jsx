@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProductById, generateFactoryDescription } from '../../services/productService';
+import { getProductById, generateFactoryDescription, getAllProducts } from '../../services/productService';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { useCart } from '../../context/CartContext';
 import { formatCurrency } from '../../utils/formatters';
@@ -15,6 +15,7 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [sameFactoryProducts, setSameFactoryProducts] = useState([]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -35,6 +36,13 @@ function ProductDetailPage() {
               relatedProducts: relatedData.filter((p) => p !== null),
             }));
           }
+
+          // Lấy các sản phẩm cùng loại (cùng factory)
+          const allProducts = await getAllProducts();
+          const filtered = allProducts.filter(
+            (p) => p.factory === fetchedProduct.factory && p.id !== fetchedProduct.id
+          );
+          setSameFactoryProducts(filtered.slice(0, 4));
         } else {
           setProduct(null);
         }
@@ -330,7 +338,7 @@ function ProductDetailPage() {
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: firstPart + (isExpanded ? secondPart : ''),
+                      __html: (firstPart + (isExpanded ? secondPart : '')).replace(/<input[^>]*>/gi, ''),
                     }}
                   />
                 </div>
@@ -342,6 +350,20 @@ function ProductDetailPage() {
                   <i className="bi bi-chevron-down ms-2"></i>
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sản phẩm cùng loại */}
+      {sameFactoryProducts.length > 0 && (
+        <div className="row mt-4 mb-5">
+          <div className="col-12">
+            <h5 className="mb-3 text-uppercase text-primary">Sản phẩm cùng loại</h5>
+            <div className="row row-cols-1 row-cols-md-4 g-4">
+              {sameFactoryProducts.map((item) => (
+                <ProductCard key={item.id} product={item} />
+              ))}
             </div>
           </div>
         </div>

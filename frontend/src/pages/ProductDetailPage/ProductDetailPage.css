@@ -419,30 +419,30 @@
 }
 
 .btn-expand-collapse {
-  background: none;
-  border: none;
-  color: #0d6efd;
-  padding: 8px 16px;
+  background: none !important;
+  border: none !important;
+  color: #0d6efd !important;
+  padding: 4px 0 !important;
   margin-top: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  transition: all 0.2s ease;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
 }
 
 .btn-expand-collapse:hover {
-  text-decoration: underline;
-  background-color: rgba(13, 110, 253, 0.04);
+  text-decoration: underline !important;
+  background: none !important;
+  color: #084298 !important;
 }
 
-.btn-expand-collapse i {
-  transition: transform 0.2s ease;
-}
-
-.btn-expand-collapse.expanded i {
-  transform: rotate(180deg);
+.btn-expand-collapse:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Related Products Section */
