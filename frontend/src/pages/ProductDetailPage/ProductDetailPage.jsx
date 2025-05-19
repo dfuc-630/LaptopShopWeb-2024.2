@@ -342,13 +342,31 @@ function ProductDetailPage() {
                     }}
                   />
                 </div>
-                <button
-                  className={`btn-expand-collapse ${isExpanded ? 'expanded' : ''}`}
-                  onClick={() => setIsExpanded(!isExpanded)}
-                >
-                  <span>{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
-                  <i className="bi bi-chevron-down ms-2"></i>
-                </button>
+                <div style={{ textAlign: 'center', width: '100%' }}>
+                  <button
+                    className={`btn-expand-collapse ${isExpanded ? 'expanded' : ''}`}
+                    style={{
+                      border: 'none',
+                      outline: 'none',
+                      boxShadow: 'none',
+                      background: '#fff',
+                      color: '#222',
+                      padding: '6px 28px',
+                      borderRadius: '999px',
+                      minWidth: '120px',
+                      marginTop: '10px',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.05rem',
+                    }}
+                    onClick={() => setIsExpanded(!isExpanded)}
+                  >
+                    <span>{isExpanded ? 'Thu gọn' : 'Xem thêm'}</span>
+                    <i className="bi bi-chevron-down ms-2"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

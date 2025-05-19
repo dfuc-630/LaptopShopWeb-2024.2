@@ -404,6 +404,7 @@
 .factory-description {
   position: relative;
   padding-bottom: 30px;
+  text-align: center;
 }
 
 .factory-description .content {
@@ -418,30 +419,39 @@
   text-decoration: underline;
 }
 
-.btn-expand-collapse {
-  background: none !important;
+.btn-expand-collapse,
+.factory-description .btn-expand-collapse {
+  background: #fff !important;
   border: none !important;
-  color: #0d6efd !important;
-  padding: 4px 0 !important;
+  color: #222 !important;
+  padding: 6px 28px !important;
   margin-top: 10px;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  font-size: 1rem;
-  border-radius: 6px;
-  transition: color 0.2s, background 0.2s;
-}
-
-.btn-expand-collapse:hover {
-  text-decoration: underline !important;
-  background: none !important;
-  color: #084298 !important;
-}
-
-.btn-expand-collapse:focus {
+  font-size: 1.05rem;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  transition: background 0.2s, color 0.2s;
+  min-width: 120px;
   outline: none !important;
+}
+
+.btn-expand-collapse:hover,
+.factory-description .btn-expand-collapse:hover {
+  text-decoration: none !important;
+  background: #f3f3f3 !important;
+  color: #111 !important;
+  box-shadow: none !important;
+}
+
+.btn-expand-collapse:focus,
+.factory-description .btn-expand-collapse:focus,
+.btn-expand-collapse:active,
+.factory-description .btn-expand-collapse:active {
+  outline: none !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
